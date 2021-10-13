@@ -106,6 +106,14 @@ class TaskLinker
         $this->BedRooms = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::NoOfBedroomText)->get();
         $this->NoOfBedroomWeightage = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::NoOfBedroomText, array()))->toArray() : array();
 
+        if(isset($subTask['updatedFormFieldData'])){
+            $updatedValue = isset($subTask['updatedFormFieldData']['fieldProperties']['value'])?$subTask['updatedFormFieldData']['fieldProperties']['value']:false;
+
+            if($updatedValue != false){
+                $propertyData->setMeta(ValuationProperty::NoOfBedroomText, $updatedValue);
+            }
+            return array();
+        }
         $weightageCategoryItems = isset($this->BedRooms[0]->weightageCategoryItems) ? $this->BedRooms[0]->weightageCategoryItems : array();
         $options = array();
         if (!empty($weightageCategoryItems)) {
@@ -125,7 +133,8 @@ class TaskLinker
                 'value' => $this->NoOfBedroomWeightage,
                 'link_field_with' => [
                     'table' => 'valuation_property_meta',
-                    'field' => 'NoOfBedroom'
+                    'field' => 'NoOfBedroom',
+                    'functionIdentifier' => 'noOfBedrooms'
                 ],
                 'option' => $options
             ],
@@ -140,7 +149,14 @@ class TaskLinker
         $categoryObj = new ValuationPropertyWeightageCategory();
         $this->BathRoom = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::NoOfBathoomsText)->get();
         $this->NoOfBathoomsWeightage = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::NoOfBathoomsText, array()))->toArray() : array();
+        if(isset($subTask['updatedFormFieldData'])){
+            $updatedValue = isset($subTask['updatedFormFieldData']['fieldProperties']['value'])?$subTask['updatedFormFieldData']['fieldProperties']['value']:false;
 
+            if($updatedValue != false){
+                $propertyData->setMeta(ValuationProperty::NoOfBathoomsText, $updatedValue);
+            }
+            return array();
+        }
         $weightageCategoryItems = isset($this->BathRoom[0]->weightageCategoryItems) ? $this->BathRoom[0]->weightageCategoryItems : array();
         $options = array();
         if (!empty($weightageCategoryItems)) {
@@ -160,7 +176,8 @@ class TaskLinker
                 'value' => $this->NoOfBathoomsWeightage,
                 'link_field_with' => [
                     'table' => 'valuation_property_meta',
-                    'field' => 'NoOfBathooms'
+                    'field' => 'NoOfBathooms',
+                    'functionIdentifier' => 'noOfBathrooms'
                 ],
                 'option' => $options
             ],
@@ -175,7 +192,14 @@ class TaskLinker
         $categoryObj = new ValuationPropertyWeightageCategory();
         $this->FinishingQuality = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::FinishingQualityText)->get();
         $this->FinishingQualityWeightage = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::FinishingQualityText, array()))->toArray() : array();
+        if(isset($subTask['updatedFormFieldData'])){
+            $updatedValue = isset($subTask['updatedFormFieldData']['fieldProperties']['value'])?$subTask['updatedFormFieldData']['fieldProperties']['value']:false;
 
+            if($updatedValue != false){
+                $propertyData->setMeta(ValuationProperty::FinishingQualityText, $updatedValue);
+            }
+            return array();
+        }
         $weightageCategoryItems = isset($this->FinishingQuality[0]->weightageCategoryItems) ? $this->FinishingQuality[0]->weightageCategoryItems : array();
         $options = array();
         if (!empty($weightageCategoryItems)) {
@@ -195,7 +219,8 @@ class TaskLinker
                 'value' => $this->FinishingQualityWeightage,
                 'link_field_with' => [
                     'table' => 'valuation_property_meta',
-                    'field' => 'FinishingQuality'
+                    'field' => 'FinishingQuality',
+                    'functionIdentifier' => 'finishingQuality'
                 ],
                 'option' => $options
             ],
@@ -210,7 +235,14 @@ class TaskLinker
         $categoryObj = new ValuationPropertyWeightageCategory();
         $this->LandClassification = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::LandClassificationTypeText)->get();
         $this->landClassficationMeta = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::LandClassificationTypeText, array()))->toArray() : array();
+        if(isset($subTask['updatedFormFieldData'])){
+            $updatedValue = isset($subTask['updatedFormFieldData']['fieldProperties']['value'])?$subTask['updatedFormFieldData']['fieldProperties']['value']:false;
 
+            if($updatedValue != false){
+                $propertyData->setMeta(ValuationProperty::LandClassificationTypeText, $updatedValue);
+            }
+            return array();
+        }
         $weightageCategoryItems = isset($this->LandClassification[0]->weightageCategoryItems) ? $this->LandClassification[0]->weightageCategoryItems : array();
         $options = array();
         if (!empty($weightageCategoryItems)) {
@@ -231,7 +263,8 @@ class TaskLinker
                 'value' => $this->landClassficationMeta,
                 'link_field_with' => [
                     'table' => 'valuation_property_meta',
-                    'field' => 'LandClassification'
+                    'field' => 'LandClassification',
+                    'functionIdentifier' => 'landClassification'
                 ],
                 'option' =>$options
 
@@ -247,7 +280,14 @@ class TaskLinker
         $categoryObj = new ValuationPropertyWeightageCategory();
         $this->Accessibility = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::AccessibilityText)->get();
         $this->AccessibilityMeta = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::AccessibilityText, array()))->toArray() : array();
+        if(isset($subTask['updatedFormFieldData'])){
+            $updatedValue = isset($subTask['updatedFormFieldData']['fieldProperties']['value'])?$subTask['updatedFormFieldData']['fieldProperties']['value']:false;
 
+            if($updatedValue != false){
+                $propertyData->setMeta(ValuationProperty::AccessibilityText, $updatedValue);
+            }
+            return array();
+        }
         $weightageCategoryItems = isset($this->Accessibility[0]->weightageCategoryItems) ? $this->Accessibility[0]->weightageCategoryItems : array();
         $options = array();
         if (!empty($weightageCategoryItems)) {
@@ -267,7 +307,8 @@ class TaskLinker
                 'value' => $this->AccessibilityMeta,
                 'link_field_with' => [
                     'table' => 'valuation_property_meta',
-                    'field' => 'Accessibility'
+                    'field' => 'Accessibility',
+                    'functionIdentifier' => 'accessibility'
                 ],
                 'option' => $options
             ],
@@ -282,7 +323,14 @@ class TaskLinker
         $categoryObj = new ValuationPropertyWeightageCategory();
         $this->AccessibilityType = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::AccessibilityTypeText)->get();
         $this->AccessibilityTypeMeta = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::AccessibilityTypeText, array()))->toArray() : array();
+        if(isset($subTask['updatedFormFieldData'])){
+            $updatedValue = isset($subTask['updatedFormFieldData']['fieldProperties']['value'])?$subTask['updatedFormFieldData']['fieldProperties']['value']:false;
 
+            if($updatedValue != false){
+                $propertyData->setMeta(ValuationProperty::AccessibilityTypeText, $updatedValue);
+            }
+            return array();
+        }
         $weightageCategoryItems = isset($this->AccessibilityType[0]->weightageCategoryItems) ? $this->AccessibilityType[0]->weightageCategoryItems : array();
         $options = array();
         if (!empty($weightageCategoryItems)) {
@@ -302,7 +350,8 @@ class TaskLinker
                 'value' => $this->AccessibilityTypeMeta,
                 'link_field_with' => [
                     'table' => 'valuation_property_meta',
-                    'field' => 'AccessibilityType'
+                    'field' => 'AccessibilityType',
+                    'functionIdentifier' => 'accessibilityType'
                 ],
                 'option' => $options
             ],
@@ -317,7 +366,14 @@ class TaskLinker
         $categoryObj = new ValuationPropertyWeightageCategory();
         $this->RoadAccessNo = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::NoOfAccessRoadsText)->get();
         $this->NoOfAccessRoadMeta = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::NoOfAccessRoadsText, array()))->toArray() : array();
+        if(isset($subTask['updatedFormFieldData'])){
+            $updatedValue = isset($subTask['updatedFormFieldData']['fieldProperties']['value'])?$subTask['updatedFormFieldData']['fieldProperties']['value']:false;
 
+            if($updatedValue != false){
+                $propertyData->setMeta(ValuationProperty::NoOfAccessRoadsText, $updatedValue);
+            }
+            return array();
+        }
         $weightageCategoryItems = isset($this->RoadAccessNo[0]->weightageCategoryItems) ? $this->RoadAccessNo[0]->weightageCategoryItems : array();
         $options = array();
         if (!empty($weightageCategoryItems)) {
@@ -337,7 +393,8 @@ class TaskLinker
                 'value' => $this->NoOfAccessRoadMeta,
                 'link_field_with' => [
                     'table' => 'valuation_property_meta',
-                    'field' => 'NoOfAccessRoads'
+                    'field' => 'NoOfAccessRoads',
+                    'functionIdentifier' => 'NoOfAccessRoads'
                 ],
                 'option' => $options
             ],
@@ -352,7 +409,14 @@ class TaskLinker
         $categoryObj = new ValuationPropertyWeightageCategory();
         $this->RoadAccessType = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::AccessRoadTypeText)->get();
         $this->AccessRoadTypeMeta = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::AccessRoadTypeText, array()))->toArray() : array();
+        if(isset($subTask['updatedFormFieldData'])){
+            $updatedValue = isset($subTask['updatedFormFieldData']['fieldProperties']['value'])?$subTask['updatedFormFieldData']['fieldProperties']['value']:false;
 
+            if($updatedValue != false){
+                $propertyData->setMeta(ValuationProperty::AccessRoadTypeText, $updatedValue);
+            }
+            return array();
+        }
         $weightageCategoryItems = isset($this->RoadAccessType[0]->weightageCategoryItems) ? $this->RoadAccessType[0]->weightageCategoryItems : array();
         $options = array();
         if (!empty($weightageCategoryItems)) {
@@ -372,7 +436,8 @@ class TaskLinker
                 'value' => $this->AccessRoadTypeMeta,
                 'link_field_with' => [
                     'table' => 'valuation_property_meta',
-                    'field' => 'AccessRoadType'
+                    'field' => 'AccessRoadType',
+                    'functionIdentifier' => 'AccessRoadType'
                 ],
                 'option' => $options
             ],
@@ -387,7 +452,14 @@ class TaskLinker
         $categoryObj = new ValuationPropertyWeightageCategory();
         $this->RecencyTransection = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::RecencyTransectionText)->get();
         $this->RecencyTransectionMeta = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::RecencyTransectionText, array()))->toArray() : array();
+        if(isset($subTask['updatedFormFieldData'])){
+            $updatedValue = isset($subTask['updatedFormFieldData']['fieldProperties']['value'])?$subTask['updatedFormFieldData']['fieldProperties']['value']:false;
 
+            if($updatedValue != false){
+                $propertyData->setMeta(ValuationProperty::RecencyTransectionText, $updatedValue);
+            }
+            return array();
+        }
         $weightageCategoryItems = isset($this->RecencyTransection[0]->weightageCategoryItems) ? $this->RecencyTransection[0]->weightageCategoryItems : array();
         $options = array();
         if (!empty($weightageCategoryItems)) {
@@ -407,7 +479,8 @@ class TaskLinker
                 'value' => $this->RecencyTransectionMeta,
                 'link_field_with' => [
                     'table' => 'valuation_property_meta',
-                    'field' => 'RecencyTransection'
+                    'field' => 'RecencyTransection',
+                    'functionIdentifier' => 'recencyOfTransaction'
                 ],
                 'option' => $options
             ],
@@ -422,7 +495,14 @@ class TaskLinker
         $categoryObj = new ValuationPropertyWeightageCategory();
         $this->LandShape = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::LandshapeText)->get();
         $this->landShapeMeta = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::LandshapeText, array()))->toArray() : array();
+        if(isset($subTask['updatedFormFieldData'])){
+            $updatedValue = isset($subTask['updatedFormFieldData']['fieldProperties']['value'])?$subTask['updatedFormFieldData']['fieldProperties']['value']:false;
 
+            if($updatedValue != false){
+                $propertyData->setMeta(ValuationProperty::LandshapeText, $updatedValue);
+            }
+            return array();
+        }
         $weightageCategoryItems = isset($this->LandShape[0]->weightageCategoryItems) ? $this->LandShape[0]->weightageCategoryItems : array();
         $options = array();
         if (!empty($weightageCategoryItems)) {
@@ -442,7 +522,8 @@ class TaskLinker
                 'value' => $this->landShapeMeta,
                 'link_field_with' => [
                     'table' => 'valuation_property_meta',
-                    'field' => 'Landshape'
+                    'field' => 'Landshape',
+                    'functionIdentifier' => 'landShape'
                 ],
                 'option' => $options
             ],
@@ -457,7 +538,14 @@ class TaskLinker
         $categoryObj = new ValuationPropertyWeightageCategory();
         $this->LocationClassification = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::LocationClassificationText)->get();
         $this->LocationClassificationMeta = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::LocationClassificationText, array()))->toArray() : array();
+        if(isset($subTask['updatedFormFieldData'])){
+            $updatedValue = isset($subTask['updatedFormFieldData']['fieldProperties']['value'])?$subTask['updatedFormFieldData']['fieldProperties']['value']:false;
 
+            if($updatedValue != false){
+                $propertyData->setMeta(ValuationProperty::LocationClassificationText, $updatedValue);
+            }
+            return array();
+        }
         $weightageCategoryItems = isset($this->LocationClassification[0]->weightageCategoryItems) ? $this->LocationClassification[0]->weightageCategoryItems : array();
         $options = array();
         if (!empty($weightageCategoryItems)) {
@@ -477,7 +565,8 @@ class TaskLinker
                 'value' => $this->LocationClassificationMeta,
                 'link_field_with' => [
                     'table' => 'valuation_property_meta',
-                    'field' => 'LocationClassification'
+                    'field' => 'LocationClassification',
+                    'functionIdentifier' => 'locationClassification'
                 ],
                 'option' => $options
             ],
@@ -492,7 +581,14 @@ class TaskLinker
         $categoryObj = new ValuationPropertyWeightageCategory();
         $this->Maintenance = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::MaintenanceText)->get();
         $this->MaintenanceWeightage = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::MaintenanceText, array()))->toArray() : array();
+        if(isset($subTask['updatedFormFieldData'])){
+            $updatedValue = isset($subTask['updatedFormFieldData']['fieldProperties']['value'])?$subTask['updatedFormFieldData']['fieldProperties']['value']:false;
 
+            if($updatedValue != false){
+                $propertyData->setMeta(ValuationProperty::MaintenanceText, $updatedValue);
+            }
+            return array();
+        }
         $weightageCategoryItems = isset($this->Maintenance[0]->weightageCategoryItems) ? $this->Maintenance[0]->weightageCategoryItems : array();
         $options = array();
         if (!empty($weightageCategoryItems)) {
@@ -512,7 +608,8 @@ class TaskLinker
                 'value' => $this->MaintenanceWeightage,
                 'link_field_with' => [
                     'table' => 'valuation_property_meta',
-                    'field' => 'Maintenance'
+                    'field' => 'Maintenance',
+                    'functionIdentifier' => 'maintenance'
                 ],
                 'option' => $options
             ],
@@ -527,7 +624,14 @@ class TaskLinker
         $categoryObj = new ValuationPropertyWeightageCategory();
         $this->Floorlevel = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::FloorlevelText)->get();
         $this->FloorlevelWeightage = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::FloorlevelText, array()))->toArray() : array();
+        if(isset($subTask['updatedFormFieldData'])){
+            $updatedValue = isset($subTask['updatedFormFieldData']['fieldProperties']['value'])?$subTask['updatedFormFieldData']['fieldProperties']['value']:false;
 
+            if($updatedValue != false){
+                $propertyData->setMeta(ValuationProperty::FloorlevelText, $updatedValue);
+            }
+            return array();
+        }
         $weightageCategoryItems = isset($this->Floorlevel[0]->weightageCategoryItems) ? $this->Floorlevel[0]->weightageCategoryItems : array();
         $options = array();
         if (!empty($weightageCategoryItems)) {
@@ -547,7 +651,8 @@ class TaskLinker
                 'value' => $this->FloorlevelWeightage,
                 'link_field_with' => [
                     'table' => 'valuation_property_meta',
-                    'field' => 'Floorlevel'
+                    'field' => 'Floorlevel',
+                    'functionIdentifier' => 'floorLevel'
                 ],
                 'option' => $options
             ],
@@ -562,7 +667,14 @@ class TaskLinker
         $categoryObj = new ValuationPropertyWeightageCategory();
         $this->WeitageView = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::ViewText)->get();
         $this->ViewCategoryWeightage = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::ViewText, array()))->toArray() : array();
+        if(isset($subTask['updatedFormFieldData'])){
+            $updatedValue = isset($subTask['updatedFormFieldData']['fieldProperties']['value'])?$subTask['updatedFormFieldData']['fieldProperties']['value']:false;
 
+            if($updatedValue != false){
+                $propertyData->setMeta(ValuationProperty::ViewText, $updatedValue);
+            }
+            return array();
+        }
         $weightageCategoryItems = isset($this->WeitageView[0]->weightageCategoryItems) ? $this->WeitageView[0]->weightageCategoryItems : array();
         $options = array();
         if (!empty($weightageCategoryItems)) {
@@ -582,7 +694,8 @@ class TaskLinker
                 'value' => $this->ViewCategoryWeightage,
                 'link_field_with' => [
                     'table' => 'valuation_property_meta',
-                    'field' => 'View'
+                    'field' => 'View',
+                    'functionIdentifier' => 'view'
                 ],
                 'option' => $options
             ],
@@ -597,7 +710,14 @@ class TaskLinker
         $categoryObj = new ValuationPropertyWeightageCategory();
         $this->Amenities = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::AmenitiesText)->get();
         $this->AmenitiesWeightage = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::AmenitiesText, array()))->toArray() : array();
+        if(isset($subTask['updatedFormFieldData'])){
+            $updatedValue = isset($subTask['updatedFormFieldData']['fieldProperties']['value'])?$subTask['updatedFormFieldData']['fieldProperties']['value']:false;
 
+            if($updatedValue != false){
+                $propertyData->setMeta(ValuationProperty::AmenitiesText, $updatedValue);
+            }
+            return array();
+        }
         $weightageCategoryItems = isset($this->Amenities[0]->weightageCategoryItems) ? $this->Amenities[0]->weightageCategoryItems : array();
         $options = array();
         if (!empty($weightageCategoryItems)) {
@@ -617,7 +737,8 @@ class TaskLinker
                 'value' => $this->AmenitiesWeightage,
                 'link_field_with' => [
                     'table' => 'valuation_property_meta',
-                    'field' => 'Amenities'
+                    'field' => 'Amenities',
+                    'functionIdentifier' => 'amenities'
                 ],
                 'option' => $options
             ],

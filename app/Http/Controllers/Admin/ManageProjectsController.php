@@ -447,6 +447,8 @@ class ManageProjectsController extends AdminBaseController
      */
     public function edit($id)
     {
+
+        $this->products = Product::all();
         $this->clients = User::allClients();
         $this->categories = ProjectCategory::all();
         $this->project = Project::findOrFail($id)->withCustomFields();

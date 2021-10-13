@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Project;
 use App\Currency;
 use Modules\Valuation\Entities\ValuationProperty;
+use Modules\Valuation\Entities\ValuationSowRule;
 use App\Product;
 use App\ClientDetails;
 use App\ProductCategory;
 use App\ProductSubCategory;
+use Illuminate\Http\Request;
+
 
 use Carbon\Carbon;
 
@@ -40,6 +43,10 @@ class ManageProjectReportController extends AdminBaseController
     {
         $this->generateProjectReportRoute = 'admin.report.generate';
         $this->id = $id;
+        $this->informationOfSources =   ValuationSowRule::where('rule_type', ValuationSowRule::InformationOfSources)->get();
+        $this->valuatorsLimitations =   ValuationSowRule::where('rule_type', ValuationSowRule::ValuatorsLimitations)->get();
+        $this->typeOfReport =   ValuationSowRule::where('rule_type', ValuationSowRule::TypeOfReport)->get();
+        $this->restrictionsOnDistribution =   ValuationSowRule::where('rule_type', ValuationSowRule::RestrictionsOnDistribution)->get();
         $this->currencies = Currency::all();
             $this->project = Project::findorFail($id);
 

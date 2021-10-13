@@ -10,6 +10,11 @@ use Modules\RestAPI\Http\Requests\TaskFormFields\CreateRequest;
 use Modules\RestAPI\Http\Requests\TaskFormFields\ShowRequest;
 use Modules\RestAPI\Http\Requests\TaskFormFields\UpdateRequest;
 use Modules\RestAPI\Http\Requests\TaskFormFields\DeleteRequest;
+use Illuminate\Http\Request;
+use App\Project;
+use App\Task;
+use Modules\Valuation\Entities\ValuationProperty;
+
 
 class TaskFormFieldsController extends ApiBaseController
 {
@@ -174,8 +179,27 @@ class TaskFormFieldsController extends ApiBaseController
         echo "<pre>"; print_r("var"); exit;
     }
 
-    public function sendDummyData()
+    public function saveSubTask(Request $request)
     {
+
+        $taskID = request()->route('task_id');
+
+        $content = $request->getContent();
+        $formFieldsData = json_decode($content, true);
+
+        $formFields = $formFieldsData['data']['taskFormField'];
+        $subTasks = array();
+
+        foreach ($formFields as $formField) {
+            $filedIdentifier = $formField['fieldProperties']['link_field_with']['functionIdentifier'];
+            $updatedFormFieldData = $formField;
+            $subTasks[] = array('formFieldKey' => $filedIdentifier, 'updatedFormFieldData' => $updatedFormFieldData);
+        }
+
+        $taskLinker = new TaskLinker();
+        $returnAraay = $taskLinker->index($subTasks, $taskID);
+
+        return ApiResponse::make('Data has been submitted successfully');
 
     }
 }

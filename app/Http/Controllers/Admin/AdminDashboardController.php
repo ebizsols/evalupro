@@ -1021,7 +1021,7 @@ class AdminDashboardController extends AdminBaseController
     {
 
         $this->pageTitle = 'app.projectDashboard';
-        $this->fromDate = Carbon::now()->timezone($this->global->timezone)->subDays(30)->toDateString();
+        $this->fromDate = Carbon::now()->timezone($this->global->timezone)->subDays(360)->toDateString();
         $this->toDate = Carbon::now()->timezone($this->global->timezone)->toDateString();
 
         $this->widgets = DashboardWidget::where('dashboard_type', 'admin-project-dashboard')->get();
@@ -1038,8 +1038,9 @@ class AdminDashboardController extends AdminBaseController
 
             $hoursLogged = ProjectTimeLog::whereBetween(DB::raw('DATE(`created_at`)'), [$this->fromDate, $this->toDate])
                 ->select(DB::raw('(select sum(project_time_logs.total_minutes) from `project_time_logs`) as totalHoursLogged'))
-                ->get()->count();
+                ->get()->first()->toArray();
 
+            $hoursLogged = isset($hoursLogged['totalHoursLogged'])?$hoursLogged['totalHoursLogged']:'0';
             $timeLog = intdiv($hoursLogged, 60) . ' ' . __('app.hrs') . ' ';
             if (($hoursLogged % 60) > 0) {
                 $timeLog .= ($hoursLogged % 60) . ' ' . __('app.mins');

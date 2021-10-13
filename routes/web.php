@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -625,7 +626,12 @@ Route::group(['middleware' => 'auth'], function () {
                         Route::resource('milestones', 'ManageProjectMilestonesController');
 
                         Route::post('report/generate/{id}', ['uses' => 'ManageProjectReportController@generateProjectReport'])->name('report.generate');
-                        Route::get('report/tempGenerate/{id}', ['uses' => 'ManageProjectReportController@tempGenerateProjectReport'])->name('report.tempGenerate');
+                        Route::post('report/tempGenerate', ['uses' => 'ManageProjectReportController@tempGenerateProjectReport'])->name('report.tempGenerate');
+                        // New Route
+
+                        // Route::post('report/generateReport/{id}', ['uses' => 'ManageProjectReportController@tempGenerateProjectReport'])->name('report.generateReport');
+
+                        // End New Route
                         Route::resource('report', 'ManageProjectReportController');
 
                         Route::post('valuation-method/processComparison', ['uses' => 'ManageProjectValuationMethodController@processComparison'])->name('valuation-method.processComparison');
