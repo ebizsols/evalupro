@@ -5,15 +5,17 @@
 
         <!-- .page title -->
         <div class="col-lg-8 col-md-5 col-sm-6 col-xs-12">
-            <h4 class="page-title"><i class="{{ $pageIcon }}"></i> {{ __($pageTitle) }}
+            <h4 class="page-title"><i class="{{ $pageIcon }}"></i> @lang('valuation::valuation.featureCategory.Title')
                 <span class="text-info b-l p-l-10 m-l-5">{{ $feactureCategoryCount }}</span> <span
-                        class="font-12 text-muted m-l-5"> @lang('valuation::valuation.propertyFeatureCategory.categoryCount')</span>
+                    class="font-12 text-muted m-l-5"> @lang('valuation::valuation.featureCategory.categoryCount')</span>
             </h4>
         </div>
         <!-- /.page title -->
         <!-- .breadcrumb -->
         <div class="col-lg-4 col-sm-6 col-md-7 col-xs-12 text-right">
-            <a href="{{ route($addEditViewRoute) }}" class="btn btn-outline btn-success btn-sm">@lang('valuation::valuation.propertyFeatureCategory.createCategory') <i class="fa fa-plus" aria-hidden="true"></i></a>
+            <a href="{{ route($addEditViewRoute) }}"
+                class="btn btn-outline btn-success btn-sm">@lang('valuation::valuation.featureCategory.createCategory') <i
+                    class="fa fa-plus" aria-hidden="true"></i></a>
 
             <ol class="breadcrumb">
                 <li><a href="{{ route('admin.dashboard') }}">@lang('app.menu.home')</a></li>
@@ -49,7 +51,7 @@
                                     <thead>
                                     <tr>
                                         <th>@lang('valuation::app.id')</th>
-                                        <th>@lang('valuation::valuation.propertyFeatureCategory.categoryName')</th>
+                                            <th>@lang('valuation::valuation.featureCategory.categoryName')</th>
                                         <th>@lang('valuation::app.action')</th>
                                     </tr>
                                     </thead>
@@ -149,17 +151,26 @@
                 stateSave: true,
                 ajax: '{!! route($dataRoute) !!}?startDate=' + startDate + '&endDate=' + endDate + '&client=' + client + '&status=' + status,
                 language: {
-                    "url": "<?php echo __("app.datatable") ?>"
+                    "url": "<?php echo __('app.datatable'); ?>"
                 },
                 "fnDrawCallback": function (oSettings) {
                     $("body").tooltip({
                         selector: '[data-toggle="tooltip"]'
                     });
                 },
-                columns: [
-                    {data: 'DT_RowIndex', orderable: false, searchable: false},
-                    {data: 'name', name: 'name'},
-                    {data: 'action', name: 'action'}
+                columns: [{
+                        data: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action'
+                    }
                 ]
             })
         }

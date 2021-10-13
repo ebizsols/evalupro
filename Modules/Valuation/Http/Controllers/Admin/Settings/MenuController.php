@@ -17,6 +17,9 @@ class MenuController extends ValuationAdminBaseController
     private $listingPageRoute = 'valuation.admin.settings.menu';
     private $dataRoute = 'valuation.admin.settings.menu.data';
     private $saveUpdateDataRoute = 'valuation.admin.settings.menu.saveUpdateData';
+    // New
+    private $updateMenuOrderRoute = 'valuation.admin.settings.menu.updateMenuOrder';
+    // End New
     private $addEditViewRoute = 'valuation.admin.settings.menu.addEditView';
     private $destroyRoute = 'valuation.admin.settings.menu.destroy';
 
@@ -27,7 +30,6 @@ class MenuController extends ValuationAdminBaseController
         $this->pageTitle = 'valuation::valuation.menu.title';
 
         $this->pageIcon = 'icon-speedometer';
-
     }
 
     public function __customConstruct(&$data)
@@ -36,9 +38,12 @@ class MenuController extends ValuationAdminBaseController
         $data['listingPageRoute'] = $this->listingPageRoute;
         $data['dataRoute'] = $this->dataRoute;
         $data['saveUpdateDataRoute'] = $this->saveUpdateDataRoute;
+        // New
+        $data['updateMenuOrderRoute'] = $this->updateMenuOrderRoute;
+        // End New
         $data['addEditViewRoute'] = $this->addEditViewRoute;
         $data['destroyRoute'] = $this->destroyRoute;
-        $data['companyId'] = isset(company()->id)?company()->id:0;
+        $data['companyId'] = isset(company()->id) ? company()->id : 0;
     }
 
     public function index()
@@ -68,7 +73,7 @@ class MenuController extends ValuationAdminBaseController
             $menuObj = new ValuationMenu();
             $menu = $menuObj->find($id);
 
-            if($menu->parent == 0 && $menu->id == 1){
+            if ($menu->parent == 0 && $menu->id == 1) {
                 $this->isHide = true;
             }
         }
@@ -76,9 +81,12 @@ class MenuController extends ValuationAdminBaseController
         $this->name = isset($menu->name) ? $menu->name : '';
         $this->validationName = isset($menu->validation_name) ? $menu->validation_name : '';
         $this->route = isset($menu->route) ? $menu->route : '';
+
+        $this->order = isset($menu->order) ? $menu->order : '';
+
         $this->parent = isset($menu->parent) ? $menu->parent : '';
         $this->status = isset($menu->status) ? $menu->status : '';
-        $this->menus = !empty($menus) ? $menus: array();
+        $this->menus = !empty($menus) ? $menus : array();
 
         return view($this->viewFolderPath . 'AddEditView', $this->data);
     }
@@ -97,9 +105,16 @@ class MenuController extends ValuationAdminBaseController
         $menu->company_id = isset($data['companyId']) ? $data['companyId'] : 0;
         $menu->name = isset($request->name) ? $request->name : 0;
         $menu->validation_name = isset($request->validation_name) ? $request->validation_name : '';
+
+        //changed
+        $menu->order = isset($request->order) ? $request->order : '';
+        //changed
+
         $menu->route = isset($request->route) ? $request->route : '';
+
+        //echo "<pre>"; print_r($request->parentMenuId); exit;
         $menu->parent = isset($request->parentMenuId) ? $request->parentMenuId : 1;
-        if($request->id == 1){
+        if ($request->id == 1) {
             $menu->parent = 0;
         }
         $menu->status = isset($request->status) ? $request->status : "Active";
@@ -107,6 +122,32 @@ class MenuController extends ValuationAdminBaseController
 
         return Reply::redirect(route($this->listingPageRoute), __('Save Success'));
     }
+
+    // New Code
+
+    public function updateMenuOrder(Request $request)
+    {
+
+        $data = array();
+        $this->__customConstruct($data);
+
+
+        if (ValuationMenu::find($request->menuId)) {
+            $menu = ValuationMenu::find($request->menuId);
+
+            // $id = $menu['id'];
+            $menu->order = isset($request->order) ? $request->order : '';
+            $menu->save();
+            return Reply::redirect(route($this->listingPageRoute), __('Save Success'));
+
+        } else {
+
+            return Reply::error(__('valuation::messages.dataNotFound'));
+        }
+    }
+
+    // EndNew Code
+
 
     /**
      * Remove the specified resource from storage.
@@ -147,7 +188,6 @@ class MenuController extends ValuationAdminBaseController
                 $action .= '</ul> </div>';
 
                 return $action;
-
             })
             ->addColumn('parent', function ($row) {
                 $parentId = $row->parent;
@@ -156,10 +196,26 @@ class MenuController extends ValuationAdminBaseController
                 if (!empty($menu)) {
                     $parentName = $menu->name;
                 }
+
                 return $parentName;
             })
-            ->addColumn('status', function ($row) {
 
+            ->addColumn('order', function ($row) {
+                $Id = $row->id;
+                $order = $row->order;
+                // onsubmit="orderForm()"
+                $order = '
+                <form onsubmit="return orderForm(' . $Id . ')" id="menuOrderForm-'.$Id.'" type="submit" method="POST" action="' . route("valuation.admin.settings.menu.updateMenuOrder") . '">
+                <input name="_token" type="hidden" value="' . csrf_token() . '">
+                <input type="hidden" name="menuId" value="' . $Id . '">
+                <input class="form-control text-center" type="tel" name="order" id="menuOrder-' . $Id . '" style="width:40px !important" value="' . $order  . '"</input>
+                <button type="submit" id="save-form" class="btn btn-info btn-sm"><i class="fa fa-check" aria-hidden="true"></i></button>
+               </form>
+                ';
+                return $order;
+            })
+
+            ->addColumn('status', function ($row) {
                 return $row->status;
             })
             ->editColumn(
@@ -169,8 +225,7 @@ class MenuController extends ValuationAdminBaseController
                 }
             )
             ->addIndexColumn()
-            ->rawColumns(['name', 'action'])
+            ->rawColumns(['name', 'action', 'order'])
             ->make(true);
     }
-
 }

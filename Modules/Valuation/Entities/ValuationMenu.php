@@ -23,7 +23,8 @@ class ValuationMenu extends ValuationBaseModel
         $results = DB::table('valuation_menus')
             ->where('status', 'Active')
             ->where('company_id', $companyId)
-            ->where('parent', $parentId)->get()->toArray();
+            ->where('parent', $parentId)->orderBy('order')->get()->toArray();
+
         foreach ($results as $key => $result) {
             $children = $this->menu_hierarchy($result->id, $removeMenuId);
             foreach ($children as $childKey => $child) {

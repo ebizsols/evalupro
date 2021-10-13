@@ -13,6 +13,7 @@ $valuationLang['leftMenu'] = $leftMenu;
 $menu = array();
 $menu['title'] = 'Menu';
 $menu['totalMenu'] = 'Total Menu';
+$menu['orderBy'] = 'Order By';
 $menu['createMenu'] = 'Create Menu';
 $menu['editMenu'] = 'Edit Menu';
 $menu['menuParent'] = 'Menu Parent';
@@ -71,6 +72,10 @@ $property['propertyBackBtn'] = 'Back';
 $property['sr'] = 'Sr';
 $property['propertyType'] = 'Type';
 $property['propertyCity'] = 'City';
+
+// Test
+$property['propertyStatus'] = 'Status';
+
 $valuationLang['property'] = $property;
 
 $type = array();
@@ -138,11 +143,14 @@ $valuationMethod['category']="Approach";
 
 $valuationLang['valuationMethod']=$valuationMethod;
 
-$feactureCategory=array();
-$feactureCategory['Title']="Property Feature Category";
-$feactureCategory['createCategory']="New Category";
-$feactureCategory['categoryName']="Category Name";
-$feactureCategory['categoryCount']="Total Category";
+$featureCategory = array();
+$featureCategory['Title'] = "Property Feature Category";
+$featureCategory['createCategory'] = "New Category";
+$featureCategory['categoryName'] = "Category Name";
+$featureCategory['categoryCount'] = "Total Category";
+
+$valuationLang['featureCategory'] = $featureCategory;
+
 
 $valuationApproach=array();
 $valuationApproach['Title']="Valuation Approach";

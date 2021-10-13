@@ -89,6 +89,18 @@
                             </div>
                             <!--/row-->
 
+                                        {{-- Option Code Start --}}
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Order</label>
+                                                <input type="number" name="order" id="order" value="{{ $order }}"
+                                                    class="form-control" autocomplete="nope">
+                                            </div>
+                                        </div>
+
+                                        {{-- End Option Code Start --}}
+
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">

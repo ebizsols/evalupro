@@ -22,7 +22,7 @@
             <div class="panel-wrapper collapse in" aria-expanded="true">
                 <div class="panel-body inner-panel-padding">
                     <div class="tabbable">
-                        <ul class="nav nav-tabs wizard">
+                        <ul class="nav nav-tabs wizard" id="myTab">
 
                             <li class="active">
                                 <a href="#PropertyTypeInfo" data-toggle="tab" aria-expanded="false"
@@ -525,6 +525,27 @@
                                                     </div>
 
                                                 </div>
+
+
+                        {{-- New Code --}}
+                        <div class="col-lg-10" style="display:flex;">
+                            @foreach ($media as $image)
+                                {{-- @php  echo "<pre>"; print_r($image); exit;  @endphp --}}
+                                <form action="{{ route('valuation.admin.property.delete', $image['id']) }}"
+                                    method="GET">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{ $image['id'] }}">
+                                    <div class="thumbnail" style="max-width: 200px; max-height: 212px;">
+                                        <img
+                                            src="{{ asset('user-uploads/property-img') . '/' . $image['media_name'] }}" />
+                                        <button type="submit" style="margin-top: 10px; float:right; "
+                                            class="btn btn-danger">Delete</button>
+                                    </div>
+                                </form>
+                            @endforeach
+                        </div>
+                        {{-- New Code --}}
+
 
                                             </div>
                                             <!-- Repeater Remove Btn -->

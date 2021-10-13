@@ -4,8 +4,9 @@
     <div class="row bg-title">
         <!-- .page title -->
         <div class="col-lg-6 col-md-4 col-sm-4 col-xs-12">
-            <h4 class="page-title"><i class="{{ $pageIcon }}"></i> {{ __($pageTitle) }} #{{ $project->id }} - <span
-                        class="font-bold">{{ ucwords($project->project_name) }}</span></h4>
+            <h4 class="page-title"><i class="{{ $pageIcon }}"></i> {{ __($pageTitle) }} #{{ $project->id }} -
+                <span class="font-bold">{{ ucwords($project->project_name) }}</span>
+            </h4>
         </div>
         <!-- /.page title -->
         <!-- .breadcrumb -->
@@ -41,16 +42,17 @@
                                     <div class="white-box">
 
                                         <!-- .row -->
-                                        {!! Form::open(['id'=>'generateProjectReport','class'=>'ajax-form','method'=>'POST']) !!}
+                                        {!! Form::open(['id' => 'generateProjectReport', 'class' => 'ajax-form', 'method' => 'POST']) !!}
                                         <div class="row">
                                             <div class="col-md-12">
-
-                                                <div class="row">
+                                                {{-- Project Report Commented --}}
+                                                {{-- <div class="row">
                                                     <div class="col-md-12">
                                                         <h2>Project Report Fields</h2>
                                                     </div>
-                                                </div>
-                                                <div class="row">
+                                                </div> --}}
+                                                {{-- Title & Value Commented --}}
+                                                {{-- <div class="row">
                                                     <div class="col-md-12">
                                                         <table class="table table-striped">
                                                             <thead>
@@ -76,15 +78,16 @@
                                                             </tbody>
                                                         </table>
                                                     </div>
-                                                </div>
-                                                <div class="row">
+                                                </div> --}}
+                                                {{-- Report Button Commented --}}
+                                                {{-- <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="form-actions">
                                                             <button type="submit" id="save-form" class="btn btn-success pull-right"><i
                                                                         class="fa fa-check"></i> Generate Report</button>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </div>
                                         {!! Form::close() !!}
@@ -92,8 +95,9 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-actions">
-                                                    <a href="{{route('admin.report.tempGenerate', $id)}}" id="save-form" class="btn btn-success pull-right"><i
-                                                                class="fa fa-check"></i> Generate Report</a>
+                                                    <a href="{{ route('admin.report.tempGenerate', $id) }}" id="save-form"
+                                                       class="btn btn-success pull-left"><i class="fa fa-check"></i>
+                                                        Generate Report</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -121,18 +125,18 @@
     <script src="{{ asset('plugins/bower_components/bootstrap-select/bootstrap-select.min.js') }}"></script>
     <script src="{{ asset('plugins/bower_components/custom-select/custom-select.min.js') }}"></script>
     <script src="{{ asset('plugins/bower_components/bootstrap-select/bootstrap-select.min.js') }}"></script>
-    <script src="{{ asset('js/FormFieldsRepeater/repeater.js')}}"></script>
+    <script src="{{ asset('js/FormFieldsRepeater/repeater.js') }}"></script>
 
     <script data-name="basic">
-        (function () {
+        (function() {
 
         })()
     </script>
     <script>
-        $('#save-form').click(function () {
+        $('#save-form').click(function() {
 
             $.easyAjax({
-                url: '{{route($generateProjectReportRoute, $id)}}',
+                url: '{{ route($generateProjectReportRoute, $id) }}',
                 container: '#generateProjectReport',
                 type: "POST",
                 redirect: true,
@@ -140,14 +144,5 @@
                 data: $('#generateProjectReport').serialize()
             })
         });
-
     </script>
 @endpush
-
-
-
-
-
-
-
-

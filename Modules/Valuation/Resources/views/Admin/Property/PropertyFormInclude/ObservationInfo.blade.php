@@ -10,7 +10,7 @@
             <div class="panel-wrapper collapse in" aria-expanded="true">
                 <div class="panel-body inner-panel-padding">
                     <div class="tabbable">
-                        <ul class="nav nav-tabs wizard">
+                        <ul class="nav nav-tabs wizard" id="myTab">
                             <li class="active"><a class="nav-link nav-item"
                                                   href="#EnvironmentalMattersTab"
                                                   data-toggle="tab"

@@ -4,7 +4,7 @@
     <div class="row bg-title">
         <!-- .page title -->
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-            <h4 class="page-title"><i class="{{ $pageIcon }}"></i> {{ __($pageTitle) }}</h4>
+            <h4 class="page-title"><i class="{{ $pageIcon }}"></i> @lang('valuation::valuation.featureCategory.Title')</h4>
         </div>
         <!-- /.page title -->
         <!-- .breadcrumb -->
@@ -37,7 +37,7 @@
         <div class="col-md-12">
 
             <div class="panel panel-inverse">
-                <div class="panel-heading">{{ __($title) }}</div>
+                <div class="panel-heading">@lang('valuation::valuation.featureCategory.createCategory')</div>
 
                 <div class="panel-wrapper collapse in" aria-expanded="true">
                     <div class="panel-body">

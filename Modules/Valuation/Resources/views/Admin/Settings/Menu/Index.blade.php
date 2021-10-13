@@ -55,6 +55,7 @@
                             <th>@lang('valuation::app.id')</th>
                             <th>@lang('valuation::valuation.menu.title')</th>
                             <th>@lang('valuation::valuation.menu.menuParent')</th>
+                            <th>@lang('valuation::valuation.menu.orderBy')</th>
                             <th>@lang('valuation::app.status')</th>
                             <th>@lang('valuation::app.action')</th>
                         </tr>
@@ -168,10 +169,24 @@
                     {data: 'DT_RowIndex', orderable: false, searchable: false},
                     {data: 'name', name: 'name'},
                     {data: 'parent', name: 'parent'},
+                    {data: 'order', name: 'order'},
                     {data: 'status', name: 'status'},
                     {data: 'action', name: 'action'}
                 ]
             })
+        }
+
+        function orderForm(id){
+            //let menuUpatedOrder = $("#menuOrder-"+id).val();
+            $.easyAjax({
+                url: '{{ route($updateMenuOrderRoute) }}',
+                container: '#menuOrderForm-'+id,
+                type: "POST",
+                redirect: true,
+                data: $('#menuOrderForm-'+id).serialize()
+            })
+
+            return false;
         }
     </script>
 @endpush

@@ -1,450 +1,661 @@
 <html lang="en">
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>New</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous" />
 
-    <title>Valuation Report #{{ (is_null($project->id)) ? $project->id : $project->id }}</title>
     <style>
-        /* Please don't remove this code it is useful in case of add new language in dompdf */
-
-        /* @font-face {
-            font-family: Hind;
-            font-style: normal;
-            font-weight: normal;
-            src: url({{ asset('fonts/hind-regular.ttf') }}) format('truetype');
-        } */
-
-        /* For hindi language  */
-
-        /* * {
-           font-family: Hind, DejaVu Sans, sans-serif;
-        } */
-
-        /* For japanese language */
-
-        @font-face {
-            font-family: 'THSarabun';
-            font-style: normal;
-            font-weight: normal;
-            src: url("{{ asset('fonts/TH_Sarabun.ttf') }}") format('truetype');
-        }
-        @font-face {
-            font-family: 'THSarabun';
-            font-style: normal;
-            font-weight: bold;
-            src: url("{{ asset('fonts/TH_SarabunBold.ttf') }}") format('truetype');
-        }
-        @font-face {
-            font-family: 'THSarabun';
-            font-style: italic;
-            font-weight: bold;
-            src: url("{{ asset('fonts/TH_SarabunBoldItalic.ttf') }}") format('truetype');
-        }
-        @font-face {
-            font-family: 'THSarabun';
-            font-style: italic;
-            font-weight: bold;
-            src: url("{{ asset('fonts/TH_SarabunItalic.ttf') }}") format('truetype');
-        }
-
-        @php
-            $font = '';
-            /*if($company->locale == 'ja') {
-                $font = 'ipag';
-            } else if($company->locale == 'hi') {
-                $font = 'hindi';
-            } else if($company->locale == 'th') {
-                $font = 'THSarabun';
-            } else {
-                $font = 'noto-sans';
-            }*/
-        @endphp
-
-        * {
-            font-family: {{$font}}, DejaVu Sans , sans-serif;
-        }
-        .clearfix:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-
-        a {
-            color: #0087C3;
-            text-decoration: none;
-        }
-
-        body {
-            position: relative;
+        .container .main_pic img {
             width: 100%;
-            height: auto;
-            margin: 0 auto;
-            color: #555555;
-            background: #FFFFFF;
-            font-size: 14px;
-            font-family: Verdana, Arial, Helvetica, sans-serif;
         }
 
-        h2 {
-            font-weight:normal;
+
+        .container .list {
+            list-style: none;
+            text-align: left;
         }
 
-        header {
-            padding: 10px 0;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #AAAAAA;
-        }
-
-        #logo {
-            float: right;
-            margin-top: 11px;
-        }
-
-        #logo img {
-            height: 55px;
-            margin-bottom: 15px;
-        }
-
-        #company {
-
-        }
-
-        #details {
-            margin-bottom: 50px;
-        }
-
-        #client {
-            padding-left: 6px;
-            float: left;
-        }
-
-        #client .to {
-            color: #777777;
-        }
-
-        h2.name, div.name {
-            font-size: 1.2em;
-            font-weight: normal;
-            margin: 0;
-        }
-
-        #invoice {
-
-        }
-
-        #invoice h1 {
-            color: #0087C3;
-            font-size: 2.4em;
-            line-height: 1em;
-            font-weight: normal;
-            margin: 0 0 10px 0;
-        }
-
-        #invoice .date {
-            font-size: 1.1em;
-            color: #777777;
-        }
-
-        table {
-            width: 100%;
-            border-spacing: 0;
-            margin-bottom: 20px;
-        }
-
-        table th,
-        table td {
-            padding: 5px 10px 7px 10px;
-            background: #EEEEEE;
-            text-align: center;
-            border-bottom: 1px solid #FFFFFF;
+        table,
+        tr,
+        th,
+        td {
+            border: 1px solid black;
         }
 
         table th {
-            white-space: nowrap;
-            font-weight: normal;
+            color: rgb(60, 146, 175);
         }
 
-        table td {
-            text-align: right;
+        .heading {
+            font-size: 30px;
         }
 
-        table td.desc h3, table td.qty h3 {
-            color: #57B223;
-            font-size: 1.2em;
-            font-weight: normal;
-            margin: 0 0 0 0;
+        .heading2 {
+            font-size: 20px;
         }
 
-        table .no {
-            color: #FFFFFF;
-            font-size: 1.6em;
-            background: #57B223;
-            width: 5%;
+        /* Today's CSS  */
+        .container .pictures img {
+            width: 50%;
+            /* object-fit: contain; */
+            margin: 20px 20px;
         }
 
-        table .desc {
-            text-align: left;
+        .imagee .mini_img {
+            width: 25%;
+            border: none;
+            margin-top: 20px;
+            margin-left: 20px;
         }
 
-        table .unit {
-            background: #DDDDDD;
+        .imagee {
+            border: none;
         }
 
-
-        table .total {
-            background: #57B223;
-            color: #FFFFFF;
-        }
-
-        table td.unit,
-        table td.qty,
-        table td.total
-        {
-            font-size: 1em;
-            text-align: center;
-        }
-
-        table td.unit{
+        .med-imagee .medium_img {
             width: 40%;
-        }
-
-        table td.desc{
-            width: 20%;
-        }
-
-        table td.qty{
-            width: 8%;
-        }
-
-        .status {
-            margin-top: 15px;
-            padding: 1px 8px 5px;
-            font-size: 1.3em;
-            width: 80px;
-            color: #fff;
-            float: right;
-            text-align: center;
-            display: inline-block;
-        }
-
-        .status.unpaid {
-            background-color: #E7505A;
-        }
-        .status.paid {
-            background-color: #26C281;
-        }
-        .status.cancelled {
-            background-color: #95A5A6;
-        }
-        .status.error {
-            background-color: #F4D03F;
-        }
-
-        table tr.tax .desc {
-            text-align: right;
-            color: #1BA39C;
-        }
-        table tr.discount .desc {
-            text-align: right;
-            color: #E43A45;
-        }
-        table tr.subtotal .desc {
-            text-align: right;
-            color: #1d0707;
-        }
-        table tbody tr:last-child td {
             border: none;
+            margin-top: 28px;
         }
 
-        table tfoot td {
-            padding: 10px 10px 20px 10px;
-            background: #FFFFFF;
-            border-bottom: none;
-            font-size: 1.2em;
-            white-space: nowrap;
-            border-bottom: 1px solid #AAAAAA;
-        }
-
-        table tfoot tr:first-child td {
-            border-top: none;
-        }
-
-        table tfoot tr td:first-child {
+        .big-image .large_image {
+            width: 70%;
             border: none;
+            margin-top: 20px;
         }
-
-        #thanks {
-            font-size: 2em;
-            margin-bottom: 50px;
-        }
-
-        #notices {
-            padding-left: 6px;
-            border-left: 6px solid #0087C3;
-        }
-
-        #notices .notice {
-            font-size: 1.2em;
-        }
-
-        footer {
-            color: #777777;
-            width: 100%;
-            height: 30px;
-            position: absolute;
-            bottom: 0;
-            border-top: 1px solid #AAAAAA;
-            padding: 8px 0;
-            text-align: center;
-        }
-
-        table.billing td {
-            background-color: #fff;
-        }
-
-        table td div#invoiced_to {
-            text-align: left;
-        }
-
-        #notes{
-            color: #767676;
-            font-size: 11px;
-        }
-
-        .item-summary{
-            font-size: 12px
-        }
-
-        .mb-3{
-            margin-bottom: 1rem;
-        }
-        .logo {
-            text-align: right;
-        }
-        .logo img {
-            max-width: 150px;
-        }
-
 
     </style>
 </head>
+
 <body>
-
-<header class="clearfix">
-
-    <table cellpadding="0" cellspacing="0" class="billing">
-        <tr>
-            <td>
-                <div id="invoiced_to">
-                    @if($estimate->client && !is_null($estimate->client->client))
-                        <small>@lang("app.client"):</small>
-                        <h2 class="name">{{ $estimate->client->client[0]->company_name }}</h2>
-                        <div>{!! nl2br($estimate->client->client[0]->address) !!}</div>
-                    @endif
-                </div>
-            </td>
-            <td>
-                <div id="company">
-                    <div class="logo">
-                        <img src="{{ invoice_setting()->logo_url }}" alt="home" class="dark-logo" />
-                    </div>
-                    <small>@lang("modules.invoices.generatedBy"):</small>
-                    <h2 class="name">{{ ucwords($global->company_name) }}</h2>
-                    @if(!is_null($settings))
-                        <div>{!! nl2br($global->address) !!}</div>
-                        <div>P: {{ $global->company_phone }}</div>
-                    @endif
-                </div>
-            </td>
-        </tr>
-    </table>
-</header>
 <main>
-    <div id="details" class="clearfix">
-
-        <div id="invoice">
-            <h1>{{ (is_null($estimate->estimate_number)) ? '#'.$estimate->id : $estimate->estimate_number }}</h1>
-            <div class="date">@lang("modules.estimates.validTill"): {{ $estimate->valid_till->format($global->date_format) }}</div>
-            <div class="">@lang('app.status'): {{ __('app.'.$estimate->status) }}</div>
+    <!-- Heading -->
+    <div class="container">
+        <div class="row mt-2 d-flex flex-row heading">
+            <div class="col-lg-12 fw-bold text-center">VALUATION REPORT</div>
+            <div class="col-lg-12 text-info fw-bold text-center">LAND</div>
         </div>
-
     </div>
-    <table border="0" cellspacing="0" cellpadding="0">
-        <thead>
-        <tr>
-            <th class="no">#</th>
-            <th class="desc">@lang("modules.invoices.item")</th>
-            <th class="qty">@lang("modules.invoices.qty")</th>
-            <th class="qty">@lang("modules.invoices.unitPrice") ({!! htmlentities($estimate->currency->currency_code)  !!})</th>
-            <th class="unit">@lang("modules.invoices.price") ({!! htmlentities($estimate->currency->currency_code)  !!})</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php $count = 0; ?>
-        @foreach($estimate->items as $item)
-            @if($item->type == 'item')
-                <tr style="page-break-inside: avoid;">
-                    <td class="no">{{ ++$count }}</td>
-                    <td class="desc"><h3>{{ ucfirst($item->item_name) }}</h3>
-                        @if(!is_null($item->item_summary))
-                            <p class="item-summary">{{ $item->item_summary }}</p>
-                        @endif
-                    </td>
-                    <td class="qty"><h3>{{ $item->quantity }}</h3></td>
-                    <td class="qty"><h3>{{ number_format((float)$item->unit_price, 2, '.', '') }}</h3></td>
-                    <td class="unit">{{ number_format((float)$item->amount, 2, '.', '') }}</td>
-                </tr>
-            @endif
-        @endforeach
-        <tr style="page-break-inside: avoid;" class="subtotal">
-            <td class="no">&nbsp;</td>
-            <td class="qty">&nbsp;</td>
-            <td class="qty">&nbsp;</td>
-            <td class="desc">@lang("modules.invoices.subTotal")</td>
-            <td class="unit">{{ number_format((float)$estimate->sub_total, 2, '.', '') }}</td>
-        </tr>
-        @if($discount != 0 && $discount != '')
-            <tr style="page-break-inside: avoid;" class="discount">
-                <td class="no">&nbsp;</td>
-                <td class="qty">&nbsp;</td>
-                <td class="qty">&nbsp;</td>
-                <td class="desc">@lang("modules.invoices.discount")</td>
-                <td class="unit">-{{ number_format((float)$discount, 2, '.', '') }}</td>
-            </tr>
-        @endif
-        @foreach($taxes as $key=>$tax)
-            <tr style="page-break-inside: avoid;" class="tax">
-                <td class="no">&nbsp;</td>
-                <td class="qty">&nbsp;</td>
-                <td class="qty">&nbsp;</td>
-                <td class="desc">{{ strtoupper($key) }}</td>
-                <td class="unit">{{ number_format((float)$tax, 2, '.', '') }}</td>
-            </tr>
-        @endforeach
-        </tbody>
-        <tfoot>
-        <tr dontbreak="true">
-            <td colspan="4">@lang("modules.invoices.total")</td>
-            <td style="text-align: center">{{ number_format((float)$estimate->total, 2, '.', '') }}</td>
-        </tr>
-        </tfoot>
-    </table>
-    <p>&nbsp;</p>
-    <hr>
-    <p id="notes">
-        @if(!is_null($estimate->note))
-            {!! nl2br($estimate->note) !!}<br>
-        @endif
-        @if(!is_null($invoiceSetting->estimate_terms))
-            {!! nl2br($invoiceSetting->estimate_terms) !!}
-        @endif
-    </p>
 
-    @if($estimate->sign)
-        <div style="text-align: right;">
-            <h2 class="name" style="margin-bottom: 20px;">@lang('modules.estimates.signature') (@lang('app.customers'))</h2>
-            <img src="{{ $estimate->sign->signature }}" style="width: 250px;">
+    <!-- Main Image -->
+    <div class="container">
+        <div class="row main_pic">
+            <div class="col-md-12 d-flex justify-content-center align-items-center">
+                <img src="https://ms.ilaan.com/mediaresources/propertyimage/162561/366x240/975f9d47-a711-4eb2-9bc3-497c03099e65_366_240.jpg"
+                     alt="Property" />
+            </div>
         </div>
-    @endif
+    </div>
+
+    <!-- Collection Of Table -->
+    <div class="container">
+        <div class="row mt-0 mb-1">
+            <div class="col-lg-12 mx-auto">
+                {{-- Table 1 Basic Data --}}
+                <table class="table table-bordered text-left">
+                    <thead></thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">Client's Name</th>
+                        <td>
+                            {{ $clientName }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Instruction Date</th>
+                        <td>
+                            10th February 2021 (Instructed By: Mr. Ebrahim Mohammed)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Subject Property</th>
+                        <td>Vacant Land</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Inspection Date</th>
+                        <td>10th February 2021</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Valuation Date</th>
+                        <td>11th February 2021</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Report Date</th>
+                        <td>{{ $date }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Valuer Name & Details</th>
+                        <td>
+                            Ali Adnan Hasan Mahmood <br />
+                            Corporate Valuation Officer <br />
+                            RERA Certified Valuer <br />
+                            License No. V202011/0079
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- Table 2 Purpose Of Valuation -->
+                <table class="table table-bordered text-left imagee">
+                    <thead></thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">Purpose of Valutation</th>
+                        <td>{{ $purposeOfValuation }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Basis of Valuation</th>
+                        <td>{{ $basisOfValuation }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Valuation Approach</th>
+                        <td>{{ $approachInfo }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Inspection Date</th>
+                        <td>10th February 2021</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Valuation Method</th>
+                        <td>Comparable Approach</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Report Currency</th>
+                        <td>Bahraini Dinars (BHD)</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Sources of Information</th>
+                        <td>
+                            1. Copy of Title Deed No. 216760 included in Appendix No.
+                            1
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Title Deed Details</th>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <ul class="fw-light text-justify">
+                                <li>Land Size (IPMS-1)</li>
+                                <li>Title Deed No.</li>
+                                <li>Case No.</li>
+                                <li>Plot No.</li>
+                                <li>No. of Access Roads</li>
+                                <li>Land Shape</li>
+                                <li>Land Category</li>
+                                <li>Land Classification</li>
+                                <li>Area Name</li>
+                            </ul>
+                        </th>
+                        <td>
+                            <ul class="list">
+                                <li>2,330.40 m2 (25’084.40 sq. ft)</li>
+                                <li>216760</li>
+                                <li>2020/17630</li>
+                                <li>07030845</li>
+                                <li>1 access roads</li>
+                                <li>Rectangle</li>
+                                <li>Investment</li>
+                                <li>Special Project - SP</li>
+                                <li>Janabiya - Bahrain</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <!-- {{-- Today's Code --}} -->
+                    <tr>
+                        <th scope="row">Tenure & Property Legal Status</th>
+                        <td>
+                            As per the title deed attached issued by SLRB, this Freehold
+                            property is registered under the name Nabeel Nooraddin
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                {{-- Table 3 Images --}}
+                <table class="table imagee table-borderless">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <img class="mini_img"
+                                 src="https://cdn.education.com/files/490001_491000/490405/file_490405.JPG"
+                                 alt="pic_1" />
+                        </td>
+                        <td>
+                            <img class="mini_img"
+                                 src="https://cdn.education.com/files/490001_491000/490405/file_490405.JPG"
+                                 alt="pic_1" />
+                        </td>
+                        <td>
+                            <img class="mini_img"
+                                 src="https://cdn.education.com/files/490001_491000/490405/file_490405.JPG"
+                                 alt="pic_1" />
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                {{-- Table 4 Empty Tables --}}
+                <table class="table table-bordered text-center">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title Deed First Page</th>
+                        <th scope="col">Actual Land Map</th>
+                        <th scope="col">Actual Land Aerial Map</th>
+                        <th scope="col">Property Ownership Page</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">4</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">5</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                {{-- Table 5 Property Description --}}
+                <div class="row">
+                    <div class="col-lg-12 fw-bold text-center heading">Property Description</div>
+                </div>
+                <table class="table table-bordered text-center med-imagee">
+                    <tbody>
+                    <tr>
+                        <th scope="row">Property Location</th>
+                        <td>
+                            This Vacant land is located in the west of Janabiya, North
+                            of District One, along Sh. Isa bin Salman highway, south
+                            of Kingdom mall.
+                        </td>
+                    </tr>
+                    {{-- Resolve This --}}
+                    <tr>
+                        <th scope="row">
+                            <img class="medium_img"
+                                 src="https://cdn.education.com/files/490001_491000/490405/file_490405.JPG"
+                                 alt="" />
+                        </th>
+                        <td>
+                            <img class="medium_img"
+                                 src="https://www.researchgate.net/profile/Abdullah-Akay-3/publication/289127694/figure/fig5/AS:668709601439757@1536444201342/The-map-of-land-use-types-The-land-capability-classification-of-the-study-area-was.png"
+                                 alt="" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Current Occupation & Tenancies</th>
+                        <td>
+                            At the date of inspection, the property was vacant with no
+                            construction of any kind.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Assumptions</th>
+                        <td>
+                            <ol>
+                                <li>
+                                    We have assumed that the property has a good and
+                                    marketable title with no restrictions or limitations.
+                                </li>
+                                <li>
+                                    We have assumed that there are no outstanding taxes,
+                                    rates, community, or property management service
+                                    charges associated with the property.
+                                </li>
+                                <li>
+                                    We have assumed that IPMS-1 is the basis of
+                                    measurements of property in the Kingdom of Bahrain.
+                                </li>
+                                <li>
+                                    If any of the information or assumptions on which this
+                                    valuation is based area subsequently found to be
+                                    incorrect, or any additional information is provided
+                                    differently than that stated in this report, we then
+                                    reserve the right to amend the report including our
+                                    opinion of value.
+                                </li>
+                            </ol>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Special Assumptions</th>
+                        <td>None</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                {{-- Table 6 Propery Valuation --}}
+                <div class="row">
+                    <div class="col-lg-12 fw-bold text-center heading">Property Valuation</div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 fw-bold text-center heading2">Table of Comparables</div>
+                </div>
+                <table class="table table-bordered text-center big-image">
+                    <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Matrix</th>
+                        <th scope="col">Subject Property</th>
+                        <th scope="col">Comparable No.1</th>
+                        <th scope="col">Comparable No.2</th>
+                        <th scope="col">Comparable No.3</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Property Type</td>
+                        <td>Investment Land</td>
+                        <td>Investment Land</td>
+                        <td>Investment Land</td>
+                        <td>Investment Land</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Property Description</td>
+                        <td>Vacant Land</td>
+                        <td>Vacant Land</td>
+                        <td>Vacant Land</td>
+                        <td>Vacant Land</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Area Name</td>
+                        <td>Janabiya</td>
+                        <td>Janabiya</td>
+                        <td>Janabiya</td>
+                        <td>Janabiya</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">4</th>
+                        <td>Land Size (IPMS-1) m2</td>
+                        <td>2330</td>
+                        <td>2330</td>
+                        <td>2330</td>
+                        <td>2330</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">5</th>
+                        <td>No of Access Road</td>
+                        <td>1 (Asphalted)</td>
+                        <td>1 (Asphalted)</td>
+                        <td>1 (Asphalted)</td>
+                        <td>1 (Asphalted)</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">6</th>
+                        <td>Land Shape & Structure</td>
+                        <td>Rectanglular</td>
+                        <td>Rectanglular</td>
+                        <td>Rectanglular</td>
+                        <td>Rectanglular</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">7</th>
+                        <td>Classification</td>
+                        <td>Special Project - SP</td>
+                        <td>Special Project - SP</td>
+                        <td>Special Project - SP</td>
+                        <td>Special Project - SP</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">8</th>
+                        <td>Location</td>
+                        <td>Good</td>
+                        <td>Good</td>
+                        <td>Good</td>
+                        <td>Good</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">9</th>
+                        <td>Accessibility</td>
+                        <td>Easy</td>
+                        <td>Easy</td>
+                        <td>Easy</td>
+                        <td>Easy</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">10</th>
+                        <td>Property Lump Sum in BD</td>
+                        <td></td>
+                        <td>961,010.00</td>
+                        <td>961,010.00</td>
+                        <td>961,010.00</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">11</th>
+                        <td>Source of Comparable</td>
+                        <td></td>
+                        <td>Estate Agent</td>
+                        <td>Estate Agent</td>
+                        <td>Estate Agent</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">12</th>
+                        <td>Status of Comparable</td>
+                        <td></td>
+                        <td>On the Market, for sale</td>
+                        <td>On the Market, for sale</td>
+                        <td>On the Market, for sale</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">13</th>
+                        <td>Date of Comparable</td>
+                        <td></td>
+                        <td>Somewhat Recent</td>
+                        <td>Somewhat Recent</td>
+                        <td>Somewhat Recent</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row"></th>
+                        <td colspan="5">
+                            <img class="large_image"
+                                 src="https://cdn.corporatefinanceinstitute.com/assets/00120-DCF-Model.png"
+                                 alt="Property">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">14</th>
+                        <td colspan="2">Subject Property Market Value</td>
+                        <td colspan="3">
+                            Eight Hundred Fifty-Four Thousand Bahraini Dinars (Rounded to
+                            nearest Thousand)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">15</th>
+                        <td colspan="2">About the Comparable</td>
+                        <td colspan="3">...</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">16</th>
+                        <td colspan="2">Reliance on the Report</td>
+                        <td colspan="3">...</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">17</th>
+                        <td colspan="2">Optinion of Value</td>
+                        <td colspan="3">...</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">18</th>
+                        <td colspan="2">Services & Utilities</td>
+                        <td colspan="3">...</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">19</th>
+                        <td colspan="2">Planning Permission & Consents</td>
+                        <td colspan="3">...</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">20</th>
+                        <td colspan="2">Site & Ground Conditions</td>
+                        <td colspan="3">...</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">21</th>
+                        <td colspan="2">Environmental Issues</td>
+                        <td colspan="3">...</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">22</th>
+                        <td colspan="2">Compliance with Standards</td>
+                        <td colspan="3">...</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">23</th>
+                        <td colspan="2">Capacity of Valuer</td>
+                        <td colspan="3">...</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">24</th>
+                        <td colspan="2">Conflicts of Interest</td>
+                        <td colspan="3">...</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">25</th>
+                        <td colspan="2">Limitation of Liability</td>
+                        <td colspan="3">...</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">26</th>
+                        <td colspan="2">Confidentiality & Publication</td>
+                        <td colspan="3">...</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">27</th>
+                        <td colspan="2">Monitoring & Reliance</td>
+                        <td colspan="3">...</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">28</th>
+                        <td colspan="2">Property Market Movements</td>
+                        <td colspan="3">...</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">29</th>
+                        <td colspan="2">Disclosure</td>
+                        <td colspan="3">...</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">30</th>
+                        <td colspan="2">Valuer Declaration & Signature</td>
+                        <td colspan="3">...</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row"></th>
+                        <td colspan="4">
+                            We trust that this valuation report fulfils the requirement of
+                            the client instruction.
+                        </td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <th></th>
+                        <td colspan="4">Yours faithfully,</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td colspan="2">
+                            Ali Adnan Mahmood <br />
+                            Corporate Valuation Officer <br />
+                            RERA Certified Valuer
+                        </td>
+                        <td colspan="2">
+                            Ali Adnan Mahmood <br />
+                            Corporate Valuation Officer <br />
+                            RERA Certified Valuer
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td colspan="4">Attachments</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td colspan="3">Appendix No.1</td>
+                        <td colspan="2">
+                            <ol>
+                                <li>Copy of the Title Deed</li>
+                            </ol>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
+</script>
 </body>
+
 </html>

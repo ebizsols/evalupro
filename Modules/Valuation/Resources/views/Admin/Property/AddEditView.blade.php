@@ -88,7 +88,7 @@
 
 
                         <div class="tabbable">
-                            <ul class="nav nav-tabs wizard">
+                            <ul class="nav nav-tabs wizard" id="myTab">
                                 <li class="active"><a class="nav-link nav-item" href="#PropertyInfo" data-toggle="tab"
                                                       aria-controls="PropertyInfo" aria-expanded="false">Property info</a></li>
 <!--                                <li><a class="nav-link nav-item" href="#LandInfo" data-toggle="tab"
@@ -208,8 +208,7 @@
         })()
     </script>
     <script>
-        $('#save-form').click(function () {
-
+        $('#save-form').click(function(event) {
             let propertyTitle = $("#propertyTitle");
 
             if (propertyTitle.val() == '') {
@@ -223,19 +222,36 @@
                 type: "POST",
                 redirect: true,
                 file: true,
-                data: $('#saveUpdateProperty').serialize()
+                data: $('#saveUpdateProperty').serialize(),
             })
         });
-//        function loadUnitFromXref()
-//        {
-//           $.ajax({
-//               url:'{{route($getUnitRoute, $id)}}',
-//               type:'get',
-//               success:function(response)
-//                {
-//                    console.log(response);
-//                }
-//           })
-//        }
+    </script>
+    {{-- New --}}
+    <script>
+        $("ul.nav-tabs > li > a").on("shown.bs.tab", function(e) {
+            var id = $(e.target).attr("href").substr(1);
+            window.location.hash = id;
+        });
+
+        // on load of the page: switch to the currently selected tab
+        var hash = window.location.hash;
+        console.log("hash", hash);
+
+        if (hash) {
+            var target = $(`${hash}`);
+            var targetLink = $(`#myTab a[href="${hash}"]`);
+            var parentPanes = [];
+            target.parentsUntil("body").each(function() {
+                var $dom = $(this);
+                if ($dom.hasClass("tab-pane") && $dom.attr("id")) {
+                    parentPanes.push($dom.attr("id"));
+                }
+            });
+            parentPanes.reduceRight(function(pre, parentId) {
+                console.log(parentId);
+                $(`#myTab a[href="#${parentId}"]`).tab('show');
+            }, "");
+            targetLink.tab('show');
+        }
     </script>
 @endpush

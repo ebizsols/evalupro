@@ -6,6 +6,12 @@ use App\Project;
 use App\Currency;
 use Modules\Valuation\Entities\ValuationProperty;
 use App\Product;
+use App\ClientDetails;
+use App\ProductCategory;
+use App\ProductSubCategory;
+
+use Carbon\Carbon;
+
 
 class ManageProjectReportController extends AdminBaseController
 {
@@ -61,6 +67,72 @@ class ManageProjectReportController extends AdminBaseController
 
     public function tempGenerateProjectReport($id)
     {
+        // Client Name
+        $projectObj = new Project();
+        $projectInfo = $projectObj::find($id);
+
+        $propertyId = $projectInfo['property_id'];
+
+        $propertyInfo = ValuationProperty::find($propertyId)->toArray();
+
+        $companyId = $propertyInfo['company_id'];
+
+        $clientDetails = ClientDetails::find($companyId)->toArray();
+        $clientName = (isset($clientDetails['name'])) ? $clientDetails['name'] : 'Not found';
+        // End Client Name
+
+        // Date Time
+        $date = Carbon::now("GMT+5")->toDateTimeString();
+
+        // Purpose of Valuation
+        $productCategory = ProductCategory::find($companyId)->toArray();
+        $purposeOfValuation = (isset($productCategory['category_name'])) ? $productCategory['category_name'] : "Not found";
+        //End Purpose of Valuation
+
+        // Basis of Valuation
+        $productSubCategory = ProductSubCategory::find($companyId)->toArray();
+        $basisOfValuation = (isset($productSubCategory['category_name'])) ? $productSubCategory['category_name'] : "Not found";
+
+        // End Basis of Valuation
+        // Valuation Approach
+        $approachInfo = $projectObj::find($id)->getMeta('approaches');
+        // End Valuation Approach
+
+
+        // final Array
+        $viewData = array();
+        $viewData['clientName'] = $clientName;
+        $viewData['date'] = $date;
+        $viewData['purposeOfValuation'] = $purposeOfValuation;
+        $viewData['basisOfValuation'] = $basisOfValuation;
+        $viewData['approachInfo'] = $approachInfo;
+
+        $pdf = app('dompdf.wrapper');
+        $pdf->loadView('admin.projects.report.ValuationReportPDF', $viewData);
+        $filename = 'ValuationReport';
+
+        $pdfOption = [
+            'pdf' => $pdf,
+            'fileName' => $filename
+        ];
+        //$pdfOption = $this->domPdfObjectForDownload($id);
+        $pdf = $pdfOption['pdf'];
+        $filename = $pdfOption['fileName'];
+
+        return $pdf->download($filename . '.pdf');
+        echo "in";
+        exit;
+
+        $viewData = array();
+
+        $pdf = app('dompdf.wrapper');
+        $pdf->loadView('admin.projects.report.ValuationReportPDF', [
+            'viewData' => '',
+        ]);
+        $filename = 'ValuationReport-';
+
+        return $pdf->download($filename . '.pdf');
+
         $project = Project::findorFail($id);
         $propertyId = isset($project->property_id)?$project->property_id:0;
         $productId = isset($project->product_id)?$project->product_id:0;

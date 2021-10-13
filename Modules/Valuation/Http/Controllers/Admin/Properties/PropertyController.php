@@ -183,7 +183,7 @@ class PropertyController extends ValuationAdminBaseController
         $this->featureCategorList = $featureCategory->getAllForCompany();
         $ValuationGeneralSettingFeature = new ValuationGeneralSetting();
         $googleApi = $ValuationGeneralSettingFeature->where('meta_key','=','googleApi')->get();
-        $this->googleApi = $googleApi[0]['meta_value'];
+        $this->googleApi = (isset($googleApi[0]['meta_value'])) ? $googleApi[0]['meta_value'] : 0;
         $staffList = User::allEmployees();
 
         $staff = array();
@@ -263,12 +263,14 @@ class PropertyController extends ValuationAdminBaseController
         $this->RecencyTransection = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::RecencyTransectionText)->get();
         $this->LandShape = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::LandshapeText)->get();
         $this->LocationClassification = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::LocationClassificationText)->get();
-        $this->BedRooms = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::NoOfBedroomText)->get();
-        $this->BathRoom = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::NoOfBathoomsText)->get();
-        $this->FinishingQuality = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::FinishingQualityText)->get();
-        $this->Floorlevel = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::FloorlevelText)->get();
-        $this->WeitageView = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::ViewText)->get();
-        $this->Maintenance = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::MaintenanceText)->get();
+
+        $this->BedRooms = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::NoOfBedroomText)->first();
+        $this->BathRoom = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::NoOfBathoomsText)->first();
+        $this->FinishingQuality = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::FinishingQualityText)->first();
+        $this->Floorlevel = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::FloorlevelText)->first();
+        $this->WeitageView = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::ViewText)->first();
+        $this->Maintenance = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::MaintenanceText)->first();
+
         $this->Amenities = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::AmenitiesText)->get();
         $this->defaultMeasurementUnit = $this->data['measurementUnit'];
 
@@ -388,9 +390,20 @@ class PropertyController extends ValuationAdminBaseController
         $this->propertyInfo = isset($propertyData->propertyInfo) ? $propertyData->propertyInfo : '';
         $this->description = isset($propertyData->description) ? $propertyData->description : '';
 
+        $media = new ValuationPropertyMedia();
 
+        $this->media = $media->where('property_id', $id)->get()->toArray();
         return view($this->viewFolderPath . 'AddEditView', $this->data);
     }
+
+    // New Code
+    public function delete($id)
+    {
+        $delete = ValuationPropertyMedia::find($id);
+        $delete->destroy($id);
+        return back();
+    }
+    // New Code
 
     public function saveUpdateData(Request $request)
     {
@@ -484,6 +497,7 @@ class PropertyController extends ValuationAdminBaseController
 
         if ($request->hasFile('image')) {
             foreach ($request->image as $key => $img) {
+                $propertyImg = array();
                 $propertyImg = new ValuationPropertyMedia;
                 $imgName = Files::upload($img, 'property-img', 300);
                 $propertyImg->property_id = $propertyId;
@@ -1213,21 +1227,45 @@ class PropertyController extends ValuationAdminBaseController
         $unitStructureType = isset($request->unitStructureType) ? $request->unitStructureType : array();
         $unitStructureUnitId = isset($request->unitStructureUnitId) ? $request->unitStructureUnitId : array();
         $structureUnitDescription = isset($request->structureUnitDescription) ? $request->structureUnitDescription : array();
-        $oldPropertyId = isset($request->propertyIdOld) ? $request->propertyIdOld : 0;
+        $propertyIdOld = isset($request->propertyIdOld) ? $request->propertyIdOld : 0;
+
+        $newUnitArray = array();
         if (!empty($unitStructureType)) {
             foreach ($unitStructureType as $unitkey => $unitObj) {
                 $property = new ValuationProperty();
-                $xref = new ValuationPropertyXref();
                 $property->title = $unitStructureUnitId[$unitkey];
-                $property->status = 'Active';
                 $property->type_id = $unitStructureType[$unitkey];
+                // $property->description = $structureUnitDescription[$unitkey];
+                $property->company_id = $data['companyId'];
+                $property->status = 'Active';
                 $property->save();
                 $propertyIdNew = $property->id;
-                $xref->property_id = $oldPropertyId;
+
+                $xref = new ValuationPropertyXref();
+                $xref->property_id = $propertyIdOld;
                 $xref->unit_id = $propertyIdNew;
                 $xref->save();
+
+                $tempArray = array();
+                $tempArray['unitId'] = $unitStructureUnitId[$unitkey];
+                $tempArray['unitType'] = $unitStructureType[$unitkey];
+                $tempArray['unitDescription'] = $structureUnitDescription[$unitkey];
+
+                $newUnitArray[] = $tempArray;
             }
-            return Reply::redirect(route($this->addEditViewRoute, $oldPropertyId), __('Units Save Successfully'));
+
+            // update property meta name 'StructureUnit'
+            $propertyObj = new ValuationProperty();
+            $propertyData = $propertyObj->find($propertyIdOld);
+            $StructureUnit = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::StructureUnit, array()))->toArray() : array();
+
+            $margeArray = array_merge($StructureUnit, $newUnitArray);
+
+            $unitData = json_encode($margeArray);
+            $updatePropertyMeta = array();
+            $updatePropertyMeta[ValuationProperty::StructureUnit] = $unitData;
+            $propertyData->setMeta($updatePropertyMeta);
+            return Reply::redirect(route($this->addEditViewRoute, $propertyIdOld), __('Units Save Successfully'));
         }
 
     }
@@ -1238,10 +1276,6 @@ class PropertyController extends ValuationAdminBaseController
 //        $unitList=$xref->getUnit();
         $property = new ValuationProperty();
         $unitList = $property->unitItem();
-        echo "<pre>";
-        print_r($unitList);
-        echo "</pre>";
-        echo "i am here ";
     }
 
     /**

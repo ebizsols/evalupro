@@ -4,7 +4,7 @@
             <div class="panel-wrapper collapse in" aria-expanded="true">
                 <div class="panel-body inner-panel-padding">
                     <div class="tabbable">
-                        <ul class="nav nav-tabs wizard">
+                        <ul class="nav nav-tabs wizard" id="myTab">
                             <li class="active"><a href="#UnitInfoPrimaryInfo-{{$objRef->unit_id}}" class="nav-link nav-item"
                                    data-toggle="tab"
                                    aria-controls="UnitInfoPrimaryInfo-{{$objRef->unit_id}}"
@@ -47,10 +47,11 @@
                                     @if(isset($BedRooms) && !empty($BedRooms))
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="control-label">{{$BedRooms[0]->title}}</label>
-                                            <select name="bedRoomsUnitInfo-{{$objRef->unit_id}}" class="form-control">
+                                                <label class="control-label">{{ $BedRooms->title }}</label>
+                                                <select name="bedRoomsUnitInfo-{{ $objRef->unit_id }}"
+                                                    class="form-control" required>
                                                 <option value="">--select One--</option>
-                                                @foreach($BedRooms[0]->weightageCategoryItems as $roomObj)
+                                                    @foreach ($BedRooms->weightageCategoryItems as $roomObj)
                                                 <option @if(isset($NoOfBedroomText) && !empty($NoOfBedroomText) && $NoOfBedroomText[0]==$roomObj->id) selected="selected" @endif value="{{$roomObj->id}}">{{$roomObj->title}}</option>
                                                 @endforeach
                                             </select>
@@ -60,10 +61,10 @@
                                     @if(isset($BathRoom) && !empty($BathRoom))
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="control-label">{{$BathRoom[0]->title}}</label>
+                                                <label class="control-label">{{ $BathRoom->title }}</label>
                                             <select name="bathRoomUnitInfo-{{$objRef->unit_id}}" class="form-control">
                                                 <option value="">--select One--</option>
-                                                @foreach($BathRoom[0]->weightageCategoryItems as $bathObj)
+                                                    @foreach ($BathRoom->weightageCategoryItems as $bathObj)
                                                 <option @if(isset($NoOfBathoomsText) && !empty($NoOfBathoomsText) && $NoOfBathoomsText[0]==$bathObj->id) selected="selected" @endif value="{{$bathObj->id}}">{{$bathObj->title}}</option>
                                                 @endforeach
                                             </select>
@@ -73,10 +74,10 @@
                                     @if(isset($FinishingQuality) && !empty($FinishingQuality))
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="control-label">{{$FinishingQuality[0]->title}}</label>
+                                                <label class="control-label">{{ $FinishingQuality->title }}</label>
                                             <select name="finishingQualityUnitInfo-{{$objRef->unit_id}}" class="form-control">
                                                 <option value="">--select One--</option>
-                                                @foreach($FinishingQuality[0]->weightageCategoryItems as $finishingObj)
+                                                    @foreach ($FinishingQuality->weightageCategoryItems as $finishingObj)
                                                 <option @if(isset($FinishingQualityText) && !empty($FinishingQualityText) && $FinishingQualityText[0]==$finishingObj->id) selected="selected" @endif value="{{$finishingObj->id}}">{{$finishingObj->title}}</option>
                                                 @endforeach
                                             </select>
@@ -86,10 +87,10 @@
                                     @if(isset($Maintenance) && !empty($Maintenance))
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="control-label">{{$Maintenance[0]->title}}</label>
+                                                <label class="control-label">{{ $Maintenance->title }}</label>
                                             <select name="unitInfoMaintenance-{{$objRef->unit_id}}" class="form-control">
                                                 <option value="">--select One--</option>
-                                                @foreach($Maintenance[0]->weightageCategoryItems as $maintanceObj)
+                                                    @foreach ($Maintenance->weightageCategoryItems as $maintanceObj)
                                                 <option @if(isset($MaintenanceText) && !empty($MaintenanceText) && $MaintenanceText[0]==$maintanceObj->id) selected="selected" @endif value="{{$maintanceObj->id}}">{{$maintanceObj->title}}</option>
                                                 @endforeach
                                             </select>
@@ -99,10 +100,10 @@
                                     @if(isset($Floorlevel) && !empty($Floorlevel))
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="control-label">{{$Floorlevel[0]->title}}</label>
+                                                <label class="control-label">{{ $Floorlevel->title }}</label>
                                             <select name="unitInfoFloorLevel-{{$objRef->unit_id}}" class="form-control">
                                                 <option value="">--select One--</option>
-                                                @foreach($Floorlevel[0]->weightageCategoryItems as $floorObj)
+                                                    @foreach ($Floorlevel->weightageCategoryItems as $floorObj)
                                                 <option @if(isset($FloorlevelText) && !empty($FloorlevelText) && $FloorlevelText[0]==$floorObj->id) selected="selected" @endif value="{{$floorObj->id}}">{{$floorObj->title}}</option>
                                                 @endforeach
                                             </select>
@@ -112,10 +113,10 @@
                                     @if(isset($WeitageView) && !empty($WeitageView))
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="control-label">{{$WeitageView[0]->title}}</label>
+                                                <label class="control-label">{{ $WeitageView->title }}</label>
                                             <select name="unitInfoView-{{$objRef->unit_id}}" class="form-control">
                                                 <option value="">--select One--</option>
-                                                @foreach($WeitageView[0]->weightageCategoryItems as $weightViewObj)
+                                                    @foreach ($WeitageView->weightageCategoryItems as $weightViewObj)
                                                 <option @if(isset($UnitInfoView) && !empty($UnitInfoView) && $UnitInfoView[0]==$weightViewObj->id) selected="selected" @endif value="{{$weightViewObj->id}}">{{$weightViewObj->title}}</option>
                                                 @endforeach
                                             </select>

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,6 +36,11 @@ Route::prefix('valuation')->group(function() {
             Route::get('/menu/data', 'Admin\Settings\MenuController@data')->name('valuation.admin.settings.menu.data');
             Route::get('/menu/addEditView/{id?}', 'Admin\Settings\MenuController@addEditView')->name('valuation.admin.settings.menu.addEditView');
             Route::post('/menu/saveUpdateData/{id?}', 'Admin\Settings\MenuController@saveUpdateData')->name('valuation.admin.settings.menu.saveUpdateData');
+
+            // New Route
+            Route::post('/menu/updateMenuOrder/{id?}', 'Admin\Settings\MenuController@updateMenuOrder')->name('valuation.admin.settings.menu.updateMenuOrder');
+            // End New Route
+
             Route::delete('/menu/destroy/{id?}', 'Admin\Settings\MenuController@destroy')->name('valuation.admin.settings.menu.destroy');
 
             Route::get('/country', 'Admin\Settings\CountryController@index')->name('valuation.admin.settings.country');
@@ -135,6 +142,9 @@ Route::prefix('valuation')->group(function() {
             Route::get('/', 'Admin\Properties\PropertyController@index')->name('valuation.admin.property');
             Route::get('/data', 'Admin\Properties\PropertyController@data')->name('valuation.admin.property.data');
             Route::get('/addEditView/{id?}', 'Admin\Properties\PropertyController@addEditView')->name('valuation.admin.property.addEditView');
+
+            Route::get('/delete/{id?}', 'Admin\Properties\PropertyController@delete')->name('valuation.admin.property.delete');
+
             Route::post('/saveUpdateData/{id?}', 'Admin\Properties\PropertyController@saveUpdateData')->name('valuation.admin.property.saveUpdateData');
             Route::post('/saveUnit/{id?}', 'Admin\Properties\PropertyController@saveUnit')->name('valuation.admin.property.saveUnit');
             Route::delete('/destroy/{id?}', 'Admin\Properties\PropertyController@destroy')->name('valuation.admin.property.destroy');

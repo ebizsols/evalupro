@@ -92,6 +92,7 @@
                             <th>@lang('valuation::valuation.property.title')</th>
                             <th>@lang('valuation::valuation.property.propertyType')</th>
                             <th>@lang('valuation::valuation.property.propertyCity')</th>
+                            <th>@lang('valuation::valuation.property.propertyStatus')</th>
                             <th>@lang('valuation::app.action')</th>
                         </tr>
                         </thead>
@@ -202,6 +203,7 @@
                     {data: 'title', name: 'title'},
                     {data: 'type', name: 'type'},
                     {data: 'city', name: 'city'},
+                    {data: 'status', name: 'status'},
                     {data: 'action', name: 'action'}
                 ]
             })
