@@ -92,15 +92,32 @@
                                         </div>
                                         {!! Form::close() !!}
 
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-actions">
-                                                    <a href="{{ route('admin.report.tempGenerate', $id) }}" id="save-form"
-                                                       class="btn btn-success pull-left"><i class="fa fa-check"></i>
-                                                        Generate Report</a>
+                                        <section id="section-line-3" class="show">
+                                            <div class="row">
+                                                <div class="col-xs-12" id="issues-list-panel">
+                                                    <div class="white-box">
+
+                                                        <div class="row m-b-10">
+                                                            <div class="col-xs-12">
+
+                                                                <button
+                                                                        class="btn btn-success btn-outline Pull-left" type="button" data-toggle="modal" data-target="#addRuleModel"><i
+                                                                            class="fa fa-check"></i> Generate Report
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xs-12">
+                                                                <hr>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
                                                 </div>
+
                                             </div>
-                                        </div>
+                                        </section>
 
                                     </div>
                                 </div>
@@ -117,6 +134,79 @@
 
     </div>
     <!-- .row -->
+    <div class="modal fade openModal" id="addRuleModel" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    {!! Form::open(['id'=>'generateReport', 'url' => route("admin.report.tempGenerate"),'method'=>'POST']) !!}
+                    {!! Form::hidden('project_id', $project->id) !!}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="informationOfSources">Information Of Sources</label>
+                                <select class="select2 m-b-10 select2-multiple form-control" multiple="multiple"
+                                        data-placeholder="@lang('modules.messages.chooseMember')" name="conditionRules[]">
+                                    @foreach($informationOfSources as $emp)
+                                        <option value="{{ $emp->id }}">{{ ucwords($emp->description) }} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="valuatorsLimitations">Valuators Limitations</label>
+                                <select class="select2 m-b-10 select2-multiple form-control" multiple="multiple"
+                                        data-placeholder="@lang('modules.messages.chooseMember')" name="conditionRules[]">
+                                    @foreach($valuatorsLimitations as $emp)
+                                        <option value="{{ $emp->id }}">{{ ucwords($emp->description) }} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="typeOfReport">Type Of Report</label>
+                                <select class="select2 m-b-10 select2-multiple form-control" multiple="multiple"
+                                        data-placeholder="@lang('modules.messages.chooseMember')" name="conditionRules[]">
+                                    @foreach($typeOfReport as $emp)
+                                        <option value="{{ $emp->id }}">{{ ucwords($emp->description) }} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="restrictionsOnDistribution">Restrictions On Distribution</label>
+                                <select class="select2 m-b-10 select2-multiple form-control" multiple="multiple"
+                                        data-placeholder="@lang('modules.messages.chooseMember')" name="conditionRules[]">
+                                    @foreach($restrictionsOnDistribution as $emp)
+                                        <option value="{{ $emp->id }}">{{ ucwords($emp->description) }} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" id="generateReport" class="btn btn-success"><i class="fa fa-check"></i> @lang('app.save')</button>
+                    </div>
+                    {!! Form::close() !!}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection
 

@@ -634,6 +634,8 @@ Route::group(['middleware' => 'auth'], function () {
                         // End New Route
                         Route::resource('report', 'ManageProjectReportController');
 
+                        Route::resource('valuation-appointment', 'ManageProjectValuationAppointmentController');
+
                         Route::post('valuation-method/processComparison', ['uses' => 'ManageProjectValuationMethodController@processComparison'])->name('valuation-method.processComparison');
                         Route::post('valuation-method/saveProjectBaseProperty', ['uses' => 'ManageProjectValuationMethodController@saveProjectBaseProperty'])->name('valuation-method.saveProjectBaseProperty');
                         Route::resource('valuation-method', 'ManageProjectValuationMethodController');
