@@ -102,6 +102,10 @@ Route::prefix('valuation')->group(function() {
             Route::delete('/general/destroy/{id?}','Admin\Settings\GeneralController@destroy')->name('valuation.admin.settings.general.destroy');
             Route::post('/general/saveUpdateRuleData/{id?}','Admin\Settings\GeneralController@saveUpdateRuleData')->name('valuation.admin.settings.general.saveUpdateRuleData');
             Route::delete('/general/destroyRule/{id?}','Admin\Settings\GeneralController@destroyRule')->name('valuation.admin.settings.general.destroyRule');
+            Route::post('/saveReportText','Admin\Settings\GeneralController@saveReportText')->name('Successfullysavedata');
+            Route::get('/general/data/get','Admin\Settings\GeneralController@getreportData')->name('valuation.admin.settings.general.getdata');
+            Route::delete('/destroyreportRule/{id?}','Admin\Settings\GeneralController@deletereportRule')->name('destroyreportRule');
+            Route::get('/editreportData/{id?}','Admin\Settings\GeneralController@editreportdata')->name('valuation.admin.settings.general.editreportData');
 
             //Property Feature Category
             Route::get('/category','Admin\Settings\FeatureCategoryController@index')->name('valuation.admin.settings.category');

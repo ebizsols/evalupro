@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Modules\Valuation\Entities\ValuationGeneralSetting;
 use Modules\Valuation\Entities\ValuationSowRule;
+use Modules\Valuation\Entities\ReportConditionalText;
 
 class GeneralController extends ValuationAdminBaseController
 {
@@ -20,11 +21,13 @@ class GeneralController extends ValuationAdminBaseController
 
     private $listingPageRoute = 'valuation.admin.settings.general';
     private $dataRoute = 'valuation.admin.settings.general.data';
+    private $getdataRoute = 'valuation.admin.settings.general.getdata';
     private $saveUpdateDataRoute = 'valuation.admin.settings.general.saveUpdateData';
     private $addEditViewRoute = 'valuation.admin.settings.general.addEditView';
     private $destroyRoute = 'valuation.admin.settings.general.destroy';
     private $saveUpdateRuleRoute = 'valuation.admin.settings.general.saveUpdateRuleData';
     private $editDataRoute = 'valuation.admin.settings.general.editData';
+    private $editReportDataRoute = 'valuation.admin.settings.general.editreportData';
     /**
      * @var mixed|string
      */
@@ -55,9 +58,11 @@ class GeneralController extends ValuationAdminBaseController
         $data['saveUpdateDataRoute'] = $this->saveUpdateDataRoute;
         $data['addEditViewRoute'] = $this->addEditViewRoute;
         $data['destroyRoute'] = $this->destroyRoute;
+        $data['getdataRoute'] = $this->getdataRoute;
         $data['viewFolderPath'] = $this->viewFolderPath;
         $data['saveUpdateRuleRoute']=$this->saveUpdateRuleRoute;
         $data['editDataRoute']=$this->editDataRoute;
+        $data['editReportDataRoute']=$this->editReportDataRoute;
         $data['companyId'] = isset(company()->id)?company()->id:0;
 
     }
@@ -149,7 +154,8 @@ class GeneralController extends ValuationAdminBaseController
             return Reply::error(__('valuation::messages.dataNotFound'));
         }
         ValuationSowRule::destroy($id);
-        return Reply::success(__('valuation::messages.dataDeleted'));
+        return Reply::redirect(route($this->listingPageRoute), __('valuation::messages.dataDeleted'));
+
     }
 
     public function getAjaxData()
@@ -224,6 +230,77 @@ class GeneralController extends ValuationAdminBaseController
             ->make(true);
     }
 
+    public function saveReportText(Request $request){
+        $this->__customConstruct($this->data);
+        if(isset($request->id) && $request->id>0)
+        {
+            $savedata = ReportConditionalText::find($request->id);
+        }
+        else
+        {
+            $savedata=new ReportConditionalText();
+        }
+        $savedata->company_id=isset($this->data['companyId']) ? $this->data['companyId'] : 0;
+        $savedata->type=isset($request->ruleType) ? $request->ruleType : 'Report 1';
+        $savedata->title=isset($request->title) ? $request->title : '';
+        $savedata->content=isset($request->ruleText) ? $request->ruleText : '';
+        $savedata->save();
+        return Reply::redirect(route($this->listingPageRoute), __('Save Success'));
+    }
+
+
+    public function deletereportRule($id){
+        $delete = ReportConditionalText::find($id);
+        if (empty($delete)) {
+            return Reply::error(__('valuation::messages.dataNotFound'));
+        }
+        ReportConditionalText::destroy($id);
+        return Reply::redirect(route($this->listingPageRoute), __('valuation::messages.dataDeleted'));
+    }
+
+    public function getreportData()
+    {
+        $get = new ReportConditionalText();
+        $fetch = $get->getAllForCompany();
+        return DataTables::of($fetch)
+            ->addIndexColumn()
+             ->editColumn(
+                'type',
+                function ($res) {
+                   return $res->type;
+                }
+            )
+            ->addColumn('action', function ($res) {
+                $action2 = '<div class="btn-group dropdown m-r-10">
+                <button aria-expanded="false" data-toggle="dropdown" class="btn dropdown-toggle waves-effect waves-light" type="button"><i class="ti-more"></i></button>
+                <ul role="menu" class="dropdown-menu pull-right">
+                  <li><a href="javascript:void(0)" onclick="loadEditReportData('.$res->id.')"><i class="fa fa-pencil" aria-hidden="true"></i> ' . trans('valuation::app.edit') . '</a></li>
+                  <li><a href="javascript:void(0)" id="' . $res->id . '" class="sa-params sa-params-report"><i class="fa fa-times" aria-hidden="true"></i> ' . trans('valuation::app.delete') . '</a></li>
+                     
+                 ';
+                $action2 .= '</ul> </div>';
+                return $action2;
+            })
+            ->rawColumns(array('type', 'action'))
+            ->make(true);
+    }
+
+    public function editreportdata($id = 0)
+    {
+
+        $this->__customConstruct($this->data);
+        if($id >0)
+        {
+            $editreport = ReportConditionalText::find($id);
+            $arrayreport = array();
+            $arrayreport['data'] = $editreport->toArray();
+            return Reply::successWithData('success',$arrayreport);
+        }
+        else
+        {
+
+}
+    }
 
 
 }

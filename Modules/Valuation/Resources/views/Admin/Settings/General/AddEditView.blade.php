@@ -51,6 +51,9 @@
                                 <div id="vhome32" class="tab-pane active">
                                     @include($viewFolderPath.'ConditionalRules')
                                 </div>
+                                <div id="vhome32" class="tab-pane active">
+                                    @include($viewFolderPath.'ReportConditionalText')
+                                </div>
                             </div>
                         </div>
                     </div>
