@@ -1,1 +1,0 @@
-<?php echo e($text); ?><?php /**PATH /home/evalupro/public_html/resources/views/vendor/mail/text/text.blade.php ENDPATH**/ ?>
