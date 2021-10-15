@@ -354,9 +354,26 @@
                 <select name="Maintenance" class="form-control">
                     <option value="">--</option>
                     @foreach ($Maintenance->weightageCategoryItems as $maintenance)
-                        <option @if (isset($MaintenanceWeightage) && !empty($MaintenanceWeightage) && $MaintenanceWeightage[0] == $roadType->id)
+                        <option @if (isset($MaintenanceWeightage) && !empty($MaintenanceWeightage) && $MaintenanceWeightage[0] == $maintenance->id)
                             selected="selected"
                             @endif value="{{ $maintenance->id }}">{{ $maintenance->title }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    @endif
+    {{-- Floor Level --}}
+    @if (isset($Floorlevel) && !empty($Floorlevel))
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="control-label">{{ $Floorlevel->title }}</label>
+                <select name="floorLevel" class="form-control">
+                    <option value="">--</option>
+                    @foreach ($Floorlevel->weightageCategoryItems as $floorLevel)
+                        <option @if (isset($FloorlevelWeightage) && !empty($FloorlevelWeightage) && $FloorlevelWeightage[0] == $floorLevel->id)
+                            selected="selected"
+                            @endif value="{{ $floorLevel->id }}">{{ $floorLevel->title }}
                         </option>
                     @endforeach
                 </select>

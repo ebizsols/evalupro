@@ -14,6 +14,7 @@ use App\Team;
 use App\User;
 use Illuminate\Http\Request;
 use Modules\Valuation\Entities\ValuationProperty;
+use Modules\Valuation\Entities\ValuationPropertyWeightage;
 
 class ManageProjectValuationMethodController extends AdminBaseController
 {
@@ -383,84 +384,149 @@ class ManageProjectValuationMethodController extends AdminBaseController
 
         $this->estimatedValueBase = $propertyBaseInfo->estimated_value;
         $this->sizeInSquareMeterBase = $propertyBaseInfo->sizes_in_meter_sq;
-        $this->noOfBedroomBase = $propertyBaseInfo->getMeta(ValuationProperty::NoOfBedroomText)->toArray();
-        $this->noOfBathroomBase = $propertyBaseInfo->getMeta(ValuationProperty::NoOfBathoomsText)->toArray();
-        $this->finishingQualityBase = $propertyBaseInfo->getMeta(ValuationProperty::FinishingQualityText)->toArray();
-        $this->maintenanceBase = $propertyBaseInfo->getMeta(ValuationProperty::MaintenanceText)->toArray();
-        $this->floorLevelBase = $propertyBaseInfo->getMeta(ValuationProperty::FloorlevelText)->toArray();
-        $this->amenitiesBase = $propertyBaseInfo->getMeta(ValuationProperty::AmenitiesText)->toArray();
+        $noOfBedroomBase = $propertyBaseInfo->getMeta(ValuationProperty::NoOfBedroomText)->toArray();
+        $noOfBathroomBase = $propertyBaseInfo->getMeta(ValuationProperty::NoOfBathoomsText)->toArray();
+        $finishingQualityBase = $propertyBaseInfo->getMeta(ValuationProperty::FinishingQualityText)->toArray();
+        $maintenanceBase = $propertyBaseInfo->getMeta(ValuationProperty::MaintenanceText)->toArray();
+        $floorLevelBase = $propertyBaseInfo->getMeta(ValuationProperty::FloorlevelText)->toArray();
+        $amenitiesBase = $propertyBaseInfo->getMeta(ValuationProperty::AmenitiesText)->toArray();
 
+
+        //Valuation Property Weightage BASE
+        $valuationWeightage = new ValuationPropertyWeightage();
+        $weightageIdBedroomBase = $valuationWeightage::findorFail($noOfBedroomBase[0]);
+        $weightageIdBathroomBase = $valuationWeightage::findorFail($noOfBathroomBase[0]);
+        $weightageIdFinishingBase = $valuationWeightage::findorFail($finishingQualityBase[0]);
+        $weightageIdMaintenanceBase = $valuationWeightage::findorFail($maintenanceBase[0]);
+        $weightageIdFloorLevelBase = $valuationWeightage::findorFail($floorLevelBase[0]);
+        $weightageIdAmenitiesBase = $valuationWeightage::findorFail($amenitiesBase[0]);
+
+        $this->noOfBedroomBase = $weightageIdBedroomBase['value'];
+        $this->noOfBathroomBase = $weightageIdBathroomBase['value'];
+        $this->finishingQualityBase = $weightageIdFinishingBase['value'];
+        $this->maintenanceBase = $weightageIdMaintenanceBase['value'];
+        $this->floorLevelBase = $weightageIdFloorLevelBase['value'];
+        $this->amenitiesBase = $weightageIdAmenitiesBase['value'];
+
+        // dd($this->noOfBedroomBase);
         $propertyBaseInfo->estimated_value = $this->estimatedValueBase;
         $propertyBaseInfo->aptSizeIPMS = $this->sizeInSquareMeterBase;
-        $propertyBaseInfo->bedrooms = $this->noOfBedroomBase[0];
-        $propertyBaseInfo->bathrooms = $this->noOfBathroomBase[0];
-        $propertyBaseInfo->finishingQuality = $this->finishingQualityBase[0];
-        $propertyBaseInfo->maintenance = $this->maintenanceBase[0];
-        $propertyBaseInfo->floorLevel = $this->floorLevelBase[0];
-        $propertyBaseInfo->amenities = $this->amenitiesBase[0];
+        $propertyBaseInfo->bedrooms = $this->noOfBedroomBase;
+        $propertyBaseInfo->bathrooms = $this->noOfBathroomBase;
+        $propertyBaseInfo->finishingQuality = $this->finishingQualityBase;
+        $propertyBaseInfo->maintenance = $this->maintenanceBase;
+        $propertyBaseInfo->floorLevel = $this->floorLevelBase;
+        $propertyBaseInfo->amenities = $this->amenitiesBase;
 
         // 1st Comparison
         $propertyInfoOne = ValuationProperty::findOrFail($propertyIdOne);
 
         $this->estimatedValueOne = $propertyInfoOne->estimated_value;
         $this->sizeInSquareMeterOne = $propertyInfoOne->sizes_in_meter_sq;
-        $this->noOfBedroomOne = $propertyInfoOne->getMeta(ValuationProperty::NoOfBedroomText)->toArray();
-        $this->noOfBathroomOne = $propertyInfoOne->getMeta(ValuationProperty::NoOfBathoomsText)->toArray();
-        $this->finishingQualityOne = $propertyInfoOne->getMeta(ValuationProperty::FinishingQualityText)->toArray();
-        $this->maintenanceOne = $propertyInfoOne->getMeta(ValuationProperty::MaintenanceText)->toArray();
-        $this->floorLevelOne = $propertyInfoOne->getMeta(ValuationProperty::FloorlevelText)->toArray();
-        $this->amenitiesOne = $propertyInfoOne->getMeta(ValuationProperty::AmenitiesText)->toArray();
+        $noOfBedroomOne = $propertyInfoOne->getMeta(ValuationProperty::NoOfBedroomText)->toArray();
+        $noOfBathroomOne = $propertyInfoOne->getMeta(ValuationProperty::NoOfBathoomsText)->toArray();
+        $finishingQualityOne = $propertyInfoOne->getMeta(ValuationProperty::FinishingQualityText)->toArray();
+        $maintenanceOne = $propertyInfoOne->getMeta(ValuationProperty::MaintenanceText)->toArray();
+        $floorLevelOne = $propertyInfoOne->getMeta(ValuationProperty::FloorlevelText)->toArray();
+        $amenitiesOne = $propertyInfoOne->getMeta(ValuationProperty::AmenitiesText)->toArray();
+
+        //Valuation Property Weightage ONE
+        $weightageIdBedroomOne = $valuationWeightage::findorFail($noOfBedroomOne[0]);
+        $weightageIdBathroomOne = $valuationWeightage::findorFail($noOfBathroomOne[0]);
+        $weightageIdFinishingOne = $valuationWeightage::findorFail($finishingQualityOne[0]);
+        $weightageIdMaintenanceOne = $valuationWeightage::findorFail($maintenanceOne[0]);
+        $weightageIdFloorLevelOne = $valuationWeightage::findorFail($floorLevelOne[0]);
+        $weightageIdAmenitiesOne = $valuationWeightage::findorFail($amenitiesOne[0]);
+
+        $this->noOfBedroomOne = $weightageIdBedroomOne['value'];
+        $this->noOfBathroomOne = $weightageIdBathroomOne['value'];
+        $this->finishingQualityOne = $weightageIdFinishingOne['value'];
+        $this->maintenanceOne = $weightageIdMaintenanceOne['value'];
+        $this->floorLevelOne = $weightageIdFloorLevelOne['value'];
+        $this->amenitiesOne = $weightageIdAmenitiesOne['value'];
 
         $propertyInfoOne->estimated_value = $this->estimatedValueOne;
         $propertyInfoOne->aptSizeIPMS = $this->sizeInSquareMeterOne;
-        $propertyInfoOne->bedrooms = $this->noOfBedroomOne[0];
-        $propertyInfoOne->bathrooms = $this->noOfBathroomOne[0];
-        $propertyInfoOne->finishingQuality = $this->finishingQualityOne[0];
-        $propertyInfoOne->maintenance = $this->maintenanceOne[0];
-        $propertyInfoOne->floorLevel = $this->floorLevelOne[0];
-        $propertyInfoOne->amenities = $this->amenitiesOne[0];
+        $propertyInfoOne->bedrooms = $this->noOfBedroomOne;
+        $propertyInfoOne->bathrooms = $this->noOfBathroomOne;
+        $propertyInfoOne->finishingQuality = $this->finishingQualityOne;
+        $propertyInfoOne->maintenance = $this->maintenanceOne;
+        $propertyInfoOne->floorLevel = $this->floorLevelOne;
+        $propertyInfoOne->amenities = $this->amenitiesOne;
 
         // 2nd Comparison
         $propertyInfoTwo = ValuationProperty::findOrFail($propertyIdTwo);
 
         $this->estimatedValueTwo = $propertyInfoTwo->estimated_value;
         $this->sizeInSquareMeterTwo = $propertyInfoTwo->sizes_in_meter_sq;
-        $this->noOfBedroomTwo = $propertyInfoTwo->getMeta(ValuationProperty::NoOfBedroomText)->toArray();
-        $this->noOfBathroomTwo = $propertyInfoTwo->getMeta(ValuationProperty::NoOfBathoomsText)->toArray();
-        $this->finishingQualityTwo = $propertyInfoTwo->getMeta(ValuationProperty::FinishingQualityText)->toArray();
-        $this->maintenanceTwo = $propertyInfoTwo->getMeta(ValuationProperty::MaintenanceText)->toArray();
-        $this->floorLevelTwo = $propertyInfoTwo->getMeta(ValuationProperty::FloorlevelText)->toArray();
-        $this->amenitiesTwo = $propertyInfoTwo->getMeta(ValuationProperty::AmenitiesText)->toArray();
+        $noOfBedroomTwo = $propertyInfoTwo->getMeta(ValuationProperty::NoOfBedroomText)->toArray();
+        $noOfBathroomTwo = $propertyInfoTwo->getMeta(ValuationProperty::NoOfBathoomsText)->toArray();
+        $finishingQualityTwo = $propertyInfoTwo->getMeta(ValuationProperty::FinishingQualityText)->toArray();
+        $maintenanceTwo = $propertyInfoTwo->getMeta(ValuationProperty::MaintenanceText)->toArray();
+        $floorLevelTwo = $propertyInfoTwo->getMeta(ValuationProperty::FloorlevelText)->toArray();
+        $amenitiesTwo = $propertyInfoTwo->getMeta(ValuationProperty::AmenitiesText)->toArray();
+
+
+        //Valuation Property Weightage TWO
+        $weightageIdBedroomTwo = $valuationWeightage::findorFail($noOfBedroomTwo[0]);
+        $weightageIdBathroomTwo = $valuationWeightage::findorFail($noOfBathroomTwo[0]);
+        $weightageIdFinishingTwo = $valuationWeightage::findorFail($finishingQualityTwo[0]);
+        $weightageIdMaintenanceTwo = $valuationWeightage::findorFail($maintenanceTwo[0]);
+        $weightageIdFloorLevelTwo = $valuationWeightage::findorFail($floorLevelTwo[0]);
+        $weightageIdAmenitiesTwo = $valuationWeightage::findorFail($amenitiesTwo[0]);
+
+        $this->noOfBedroomTwo = $weightageIdBedroomTwo['value'];
+        $this->noOfBathroomTwo = $weightageIdBathroomTwo['value'];
+        $this->finishingQualityTwo = $weightageIdFinishingTwo['value'];
+        $this->maintenanceTwo = $weightageIdMaintenanceTwo['value'];
+        $this->floorLevelTwo = $weightageIdFloorLevelTwo['value'];
+        $this->amenitiesTwo = $weightageIdAmenitiesTwo['value'];
 
         $propertyInfoTwo->estimated_value = $this->estimatedValueTwo;
         $propertyInfoTwo->aptSizeIPMS = $this->sizeInSquareMeterTwo;
-        $propertyInfoTwo->bedrooms = $this->noOfBedroomTwo[0];
-        $propertyInfoTwo->bathrooms = $this->noOfBathroomTwo[0];
-        $propertyInfoTwo->finishingQuality = $this->finishingQualityTwo[0];
-        $propertyInfoTwo->maintenance = $this->maintenanceTwo[0];
-        $propertyInfoTwo->floorLevel = $this->floorLevelTwo[0];
-        $propertyInfoTwo->amenities = $this->amenitiesTwo[0];
+        $propertyInfoTwo->bedrooms = $this->noOfBedroomTwo;
+        $propertyInfoTwo->bathrooms = $this->noOfBathroomTwo;
+        $propertyInfoTwo->finishingQuality = $this->finishingQualityTwo;
+        $propertyInfoTwo->maintenance = $this->maintenanceTwo;
+        $propertyInfoTwo->floorLevel = $this->floorLevelTwo;
+        $propertyInfoTwo->amenities = $this->amenitiesTwo;
 
         // 3rd Comparison
         $propertyInfoThree = ValuationProperty::findOrFail($propertyIdThree);
 
         $this->estimatedValueThree = $propertyInfoThree->estimated_value;
         $this->sizeInSquareMeterThree = $propertyInfoThree->sizes_in_meter_sq;
-        $this->noOfBedroomThree = $propertyInfoThree->getMeta(ValuationProperty::NoOfBedroomText)->toArray();
-        $this->noOfBathroomThree = $propertyInfoThree->getMeta(ValuationProperty::NoOfBathoomsText)->toArray();
-        $this->finishingQualityThree = $propertyInfoThree->getMeta(ValuationProperty::FinishingQualityText)->toArray();
-        $this->maintenanceThree = $propertyInfoThree->getMeta(ValuationProperty::MaintenanceText)->toArray();
-        $this->floorLevelThree = $propertyInfoThree->getMeta(ValuationProperty::FloorlevelText)->toArray();
-        $this->amenitiesThree = $propertyInfoThree->getMeta(ValuationProperty::AmenitiesText)->toArray();
+        $noOfBedroomThree = $propertyInfoThree->getMeta(ValuationProperty::NoOfBedroomText)->toArray();
+        $noOfBathroomThree = $propertyInfoThree->getMeta(ValuationProperty::NoOfBathoomsText)->toArray();
+        $finishingQualityThree = $propertyInfoThree->getMeta(ValuationProperty::FinishingQualityText)->toArray();
+        $maintenanceThree = $propertyInfoThree->getMeta(ValuationProperty::MaintenanceText)->toArray();
+        $floorLevelThree = $propertyInfoThree->getMeta(ValuationProperty::FloorlevelText)->toArray();
+        $amenitiesThree = $propertyInfoThree->getMeta(ValuationProperty::AmenitiesText)->toArray();
+
+
+        //Valuation Property Weightage THREE
+        $weightageIdBedroomThree = $valuationWeightage::findorFail($noOfBedroomThree[0]);
+        $weightageIdBathroomThree = $valuationWeightage::findorFail($noOfBathroomThree[0]);
+        $weightageIdFinishingThree = $valuationWeightage::findorFail($finishingQualityThree[0]);
+        $weightageIdMaintenanceThree = $valuationWeightage::findorFail($maintenanceThree[0]);
+        $weightageIdFloorLevelThree = $valuationWeightage::findorFail($floorLevelThree[0]);
+        $weightageIdAmenitiesThree = $valuationWeightage::findorFail($amenitiesThree[0]);
+
+        $this->noOfBedroomThree = $weightageIdBedroomThree['value'];
+        $this->noOfBathroomThree = $weightageIdBathroomThree['value'];
+        $this->finishingQualityThree = $weightageIdFinishingThree['value'];
+        $this->maintenanceThree = $weightageIdMaintenanceThree['value'];
+        $this->floorLevelThree = $weightageIdFloorLevelThree['value'];
+        $this->amenitiesThree = $weightageIdAmenitiesThree['value'];
 
         $propertyInfoThree->estimated_value = $this->estimatedValueThree;
         $propertyInfoThree->aptSizeIPMS = $this->sizeInSquareMeterThree;
-        $propertyInfoThree->bedrooms = $this->noOfBedroomThree[0];
-        $propertyInfoThree->bathrooms = $this->noOfBathroomThree[0];
-        $propertyInfoThree->finishingQuality = $this->finishingQualityThree[0];
-        $propertyInfoThree->maintenance = $this->maintenanceThree[0];
-        $propertyInfoThree->floorLevel = $this->floorLevelThree[0];
-        $propertyInfoThree->amenities = $this->amenitiesThree[0];
+        $propertyInfoThree->bedrooms = $this->noOfBedroomThree;
+        $propertyInfoThree->bathrooms = $this->noOfBathroomThree;
+        $propertyInfoThree->finishingQuality = $this->finishingQualityThree;
+        $propertyInfoThree->maintenance = $this->maintenanceThree;
+        $propertyInfoThree->floorLevel = $this->floorLevelThree;
+        $propertyInfoThree->amenities = $this->amenitiesThree;
         //compare Processing start
 
         //apartment comparison
@@ -519,7 +585,6 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $bathBaseMinusProThree = $baseBathroom - $bathroomsPropertyInfoThree;
         $propertyInfoThree->bathBaseMinusProThree = $bathBaseMinusProThree;
         $propertyInfoThree->bathComparison = ($bathBaseMinusProThree / $maxBathrooms) * 100;
-
         //Finishing Quality
         $finishingQualityBase = $propertyBaseInfo->finishingQuality;
         $maintenanceBase = $propertyBaseInfo->maintenance;
@@ -543,12 +608,11 @@ class ManageProjectValuationMethodController extends AdminBaseController
 
         $finishingQualityCalBase = $finishingQualityBase + $maintenanceBase;
         $propertyBaseInfo->finishingQualityCalBase = $finishingQualityCalBase;
-        
-        
+
+
         $finishingQualityCalProOne = $finishingQualityPropertyInfoOne + $maintenancePropertyInfoOne;
         $propertyInfoOne->finishingQualityCalOne = $finishingQualityCalProOne;
         $propertyInfoOne->finishingQualityComparison = ($finishingQualityCalBase - $finishingQualityCalProOne) / 100;
-        dd($propertyInfoOne->finishingQualityComparison);
 
         $finishingQualityCalProTwo = $finishingQualityPropertyInfoTwo + $maintenancePropertyInfoTwo;
         $propertyInfoTwo->finishingQualityCalTwo = $finishingQualityCalProTwo;
@@ -571,7 +635,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $amenitiesPropertyInfoThree = $propertyInfoThree->amenities;
         $propertyInfoThree->amenitiesSlectionTitle = $amenitiesPropertyInfoThree;
 
-        $amenitiesMax = 8;
+        $amenitiesMax = '8';
 
         $propertyInfoOne->amenitiesComparison = ($amenitiesBase - $amenitiesPropertyInfoOne) / $amenitiesMax;
         $propertyInfoThree->amenitiesComparison = ($amenitiesBase - $amenitiesPropertyInfoTwo) / $amenitiesMax;

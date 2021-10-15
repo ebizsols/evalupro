@@ -546,7 +546,11 @@ class PropertyController extends ValuationAdminBaseController
         $unitInfoMaintenanceWeightageArray = array();
         $unitInfoMaintenanceWeightageArray[] = $unitInfoMaintenanceWeightage;
 
+        // Floor Level
+        $unitInfoFloorLevelWeightage = isset($request->floorLevel) ? $request->floorLevel : array();
         $unitInfoFloorLevelWeightageArray = array();
+        $unitInfoFloorLevelWeightageArray[] = $unitInfoFloorLevelWeightage;
+
         $unitInfoViewWeightageArray = array();
 
         $landClassificationWeightage = isset($request->LandClassification) ? $request->LandClassification : 0;
