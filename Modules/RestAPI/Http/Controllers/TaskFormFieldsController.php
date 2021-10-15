@@ -5,15 +5,16 @@ namespace Modules\RestAPI\Http\Controllers;
 use App\Http\Controllers\Classes\TaskLinker;
 use Froiden\RestAPI\ApiResponse;
 use Modules\RestAPI\Entities\SubTask;
+use Modules\RestAPI\Entities\Task;
 use Modules\RestAPI\Http\Requests\TaskFormFields\IndexRequest;
 use Modules\RestAPI\Http\Requests\TaskFormFields\CreateRequest;
 use Modules\RestAPI\Http\Requests\TaskFormFields\ShowRequest;
 use Modules\RestAPI\Http\Requests\TaskFormFields\UpdateRequest;
 use Modules\RestAPI\Http\Requests\TaskFormFields\DeleteRequest;
 use Illuminate\Http\Request;
-use App\Project;
-use App\Task;
-use Modules\Valuation\Entities\ValuationProperty;
+use App\ValuationInspection;
+use App\ValuationInspectionField;
+
 
 
 class TaskFormFieldsController extends ApiBaseController
@@ -183,23 +184,59 @@ class TaskFormFieldsController extends ApiBaseController
     {
 
         $taskID = request()->route('task_id');
-
         $content = $request->getContent();
         $formFieldsData = json_decode($content, true);
 
-        $formFields = $formFieldsData['data']['taskFormField'];
-        $subTasks = array();
+        $formFields = isset($formFieldsData['data']['taskFormField'])?$formFieldsData['data']['taskFormField']:array();
 
-        foreach ($formFields as $formField) {
-            $filedIdentifier = $formField['fieldProperties']['link_field_with']['functionIdentifier'];
-            $updatedFormFieldData = $formField;
-            $subTasks[] = array('formFieldKey' => $filedIdentifier, 'updatedFormFieldData' => $updatedFormFieldData);
+        if(empty($formFieldsData['data']['taskFormField'])){
+            return ApiResponse::make('Data not found');
         }
 
-        $taskLinker = new TaskLinker();
-        $returnAraay = $taskLinker->index($subTasks, $taskID);
+        //get projectId
+        $taskId = isset($formFields['0']['taskId'])?$formFields['0']['taskId']:0;
+        $taskModel = new Task();
+        $taskData = $taskModel->where('id', $taskId)->first();
+        $projectData = isset($taskData->project)?$taskData->project: new \stdClass();
+        $projectId = isset($projectData->id)?$projectData->id:0;
 
-        return ApiResponse::make('Data has been submitted successfully');
+        //save data in inspection
+        $valuationInspectionModel = new ValuationInspection();
+        $valuationInspectionModel->project_id = $projectId;
+        $valuationInspectionModel->valuator_id = 1; // will change later
+        $valuationInspectionModel->status = 'Active';
+        $valuationInspectionModel->save();
+        $valuationInspectionId = $valuationInspectionModel->id?$valuationInspectionModel->id:0;
+        if($valuationInspectionId > 0){
 
+            //save inspection Field data
+            foreach ($formFields as $formField) {
+                $fieldTitle = isset($formField['title'])?$formField['title']:'-';
+                $fieldValue = isset($formField['fieldProperties']['value'])?$formField['fieldProperties']['value']:'-';
+
+                $valuationInspectionFieldsModel = new ValuationInspectionField();
+                $valuationInspectionFieldsModel->valuation_inspection_id = $valuationInspectionId;
+                $valuationInspectionFieldsModel->field_title = $fieldTitle;
+                $valuationInspectionFieldsModel->field_value = $fieldValue;
+                $valuationInspectionFieldsModel->field_data = json_encode($formField);
+                $valuationInspectionFieldsModel->save();
+            }
+
+            //save data in fields
+            $subTasks = array();
+            foreach ($formFields as $formField) {
+
+                $filedIdentifier = $formField['fieldProperties']['link_field_with']['functionIdentifier'];
+                $updatedFormFieldData = $formField;
+                $subTasks[] = array('formFieldKey' => $filedIdentifier, 'updatedFormFieldData' => $updatedFormFieldData);
+            }
+
+            $taskLinker = new TaskLinker();
+            $taskLinker->index($subTasks, $taskID);
+
+            return ApiResponse::make('Data has been submitted successfully');
+        }
+
+        return ApiResponse::make('Date not save');
     }
 }

@@ -638,6 +638,11 @@ Route::group(['middleware' => 'auth'], function () {
                         Route::POST('valuation-appointment/store', 'ManageProjectValuationAppointmentController@store')->name('valuation-appointment.store');
                         Route::resource('valuation-appointment', 'ManageProjectValuationAppointmentController');
 
+                        Route::get('valuation-inspection/data', 'ManageProjectValuationInspectionController@data')->name('valuation-inspection.data');
+                        Route::POST('valuation-inspection/store', 'ManageProjectValuationInspectionController@store')->name('valuation-inspection.store');
+                        Route::resource('valuation-inspection', 'ManageProjectValuationInspectionController');
+
+
                         Route::post('valuation-method/processComparison', ['uses' => 'ManageProjectValuationMethodController@processComparison'])->name('valuation-method.processComparison');
                         Route::post('valuation-method/saveProjectBaseProperty', ['uses' => 'ManageProjectValuationMethodController@saveProjectBaseProperty'])->name('valuation-method.saveProjectBaseProperty');
                         Route::resource('valuation-method', 'ManageProjectValuationMethodController');

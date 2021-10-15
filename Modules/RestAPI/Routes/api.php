@@ -59,6 +59,7 @@ ApiRoute::group(['namespace' => 'Modules\RestAPI\Http\Controllers','middleware' 
     //ApiRoute::get('taskFormFields/sendDummyData/{id?}', 'TaskFormFieldsController@sendDummyData');
     //ApiRoute::resource('taskFormFields', 'TaskFormFieldsController');
     ApiRoute::resource('/task/{task_id}/taskFormFields', 'TaskFormFieldsController');
+    ApiRoute::post('/task/{task_id}/saveTaskFormFields',['uses' => 'TaskFormFieldsController@saveSubTask']);
 
     ApiRoute::resource('/task/{task_id}/subtask', 'SubTaskController');
     ApiRoute::resource('task', 'TaskController');
