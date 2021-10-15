@@ -7,11 +7,13 @@ use App\EmployeeTeam;
 use App\Helper\Reply;
 use App\Http\Requests\ProjectMembers\SaveGroupMembers;
 use App\Http\Requests\ProjectMembers\StoreProjectMembers;
+use Yajra\DataTables\Facades\DataTables;
 use App\Notifications\NewProjectMember;
 use App\Project;
 use App\ProjectMember;
 use App\Team;
 use App\User;
+use App\ProjectAppointment;
 use Illuminate\Http\Request;
 use Modules\Valuation\Entities\ValuationProperty;
 
@@ -19,6 +21,7 @@ class ManageProjectValuationAppointmentController extends AdminBaseController
 {
 
     private $dataRoute = 'admin.valuation-appointment.data';
+    private $showPageRoute = 'admin.valuation-appointment.show';
 
     public function __construct()
     {
@@ -31,7 +34,9 @@ class ManageProjectValuationAppointmentController extends AdminBaseController
     {
         //assign routes for views
         $data['dataRoute'] = $this->dataRoute;
+        $data['projectId'] = isset(company()->id)?company()->id:0;
     }
+
 
 
     /**
@@ -40,6 +45,7 @@ class ManageProjectValuationAppointmentController extends AdminBaseController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
+  
     public function show($id)
     {
         $this->__customConstruct($this->data);
@@ -66,66 +72,72 @@ class ManageProjectValuationAppointmentController extends AdminBaseController
     }
     public function store(Request $request)
     {
-//        echo "<pre>"; print_r("var"); exit;
+        $this->__customConstruct($this->data);
+        if(isset($request->id) && $request->id>0)
+        {
+            $store = ProjectAppointment::find($request->id);
+        }
+        else
+        {
+            $store=new ProjectAppointment();
+        }
 
+        $store->project_id=isset($this->data['projectId']) ? $this->data['projectId'] : 0;
+        $store->appointment_day=isset($request->appointment_day) ? $request->appointment_day : 0 ;
+        $store->status=isset($request->status) ? $request->status : 'Inactive' ;
+        $store->note=isset($request->description) ? $request->description : '';
+        $store->save();
+        return Reply::redirect(route($this->showPageRoute, $request->projectId) , __('Save Success'));
+    }
+
+    public function updateStatus(Request $request)
+    {
+        $this->__customConstruct($this->data);
+
+        $status = $request->status;
+        $ProjectAppointmentData = ProjectAppointment::find( $request->appointmentId);
+        if(emptyt($ProjectAppointmentData)){
+            return __('messages.noRecordFound');
+        }
+        $ProjectAppointment->status  =  $status;
+        $ProjectAppointment->save();
+        $projectId = $update->project_id;    
+        return Reply::redirect(route($this->showPageRoute, $projectId) , __('Save Success'));
+        
     }
 
     public function data()
     {
-
-        echo "<pre>"; print_r("var data"); exit;
-        $propertyObj = new ValuationProperty();
-        $properties = $propertyObj->getAllForCompany();
-
-        return DataTables::of($properties)
+        $projectAppointments = new ProjectAppointment;        
+        $appointments = $projectAppointments->get();
+        return DataTables::of($appointments)
             ->addIndexColumn()
             ->editColumn(
-                'id',
+                'dateTime',
                 function ($row) {
-                    return $row->id;
+                    return $row->appointment_day;
+                }
+            )
+            ->editColumn(
+                'status',
+                function ($row) {
+                    return $row->status;
                 }
             )
             ->addColumn('action', function ($row) {
-
-                $action = '<div class="btn-group dropdown m-r-10">
-                <button aria-expanded="false" data-toggle="dropdown" class="btn dropdown-toggle waves-effect waves-light" type="button"><i class="ti-more"></i></button>
-                <ul role="menu" class="dropdown-menu pull-right">
-                  <li><a href="' . route($this->addEditViewRoute, $row->id) . '"><i class="fa fa-pencil" aria-hidden="true"></i> ' . trans('valuation::app.edit') . '</a></li>
-                  <li><a href="javascript:void(0)" id="' . $row->id . '" class="sa-params"><i class="fa fa-times" aria-hidden="true"></i> ' . trans('valuation::app.delete') . '</a></li>
-                      <li><a href="' . route($this->propertyDetailRoute, $row->id) . '"><i class="fa fa-eye" aria-hidden="true"></i> ' . trans('valuation::valuation.property.detailProperty') . '</a></li>
-                 ';
-
-                $action .= '</ul> </div>';
-
+                    $action = '
+                        <select class="form-control" name="status" onchange="return changeAppointmentStatus('. $row->id.', this)">
+                            <option value="active"> Active</option>
+                            <option value="inactive"> Inactive</option>
+                            <option value="cancel">Cancel</option>
+                        </select>
+                    ' ;
                 return $action;
-
             })
-            ->editColumn(
-                'title',
-                function ($row) {
-                    return ucfirst($row->title);
-                }
-            )
-            ->editColumn(
-                'type',
-                function ($row) {
-                    if ($row->type_id > 0) {
-                        $typeProperty = ValuationPropertyType::find($row->type_id);
-                        return isset($typeProperty) ? ucfirst($typeProperty->title) : '';
-                    }
-                }
-            )
-            ->editColumn(
-                'city',
-                function ($row) {
-                    if ($row->city_id > 0) {
-                        $cityProperty = ValuationCity::find($row->city_id);
-                        return isset($cityProperty) ? ucfirst($cityProperty->name) : '';
-                    }
-                }
-            )
-            ->rawColumns(array('title', 'action'))
+            ->rawColumns(array('dateTime','status', 'action'))
             ->make(true);
+
+            
     }
 
 }

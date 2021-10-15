@@ -636,6 +636,7 @@ Route::group(['middleware' => 'auth'], function () {
 
                         Route::get('valuation-appointment/data', 'ManageProjectValuationAppointmentController@data')->name('valuation-appointment.data');
                         Route::POST('valuation-appointment/store', 'ManageProjectValuationAppointmentController@store')->name('valuation-appointment.store');
+                        Route::POST('valuation-appointment/updateStatus', 'ManageProjectValuationAppointmentController@updateStatus')->name('valuation-appointment.updateStatus');
                         Route::resource('valuation-appointment', 'ManageProjectValuationAppointmentController');
 
                         Route::get('valuation-inspection/data', 'ManageProjectValuationInspectionController@data')->name('valuation-inspection.data');

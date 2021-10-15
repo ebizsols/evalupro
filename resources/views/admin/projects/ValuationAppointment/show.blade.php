@@ -66,8 +66,8 @@
                                         <div class="col-xs-6">
                                             <div class="form-group">
                                                 <label class="control-label required">Note</label>
-                                                <input type="text" id="heading" name="title"
-                                                       class="form-control">
+                                                <input type="text" id="heading" name="description"
+                                                class="form-control">
                                             </div>
                                         </div>
 
@@ -87,12 +87,13 @@
                                     <table class="table table-bordered table-hover toggle-circle default footable-loaded footable"
                                            id="appointmentList">
                                         <thead>
-                                        <tr>
-                                            <th>Sr.</th>
-                                            <th>DateTime</th>
-                                            <th>Status</th>
-                                            <th>@lang('valuation::app.action')</th>
-                                        </tr>
+                                            <tr>
+                                                <!-- <th>paj jao saray</th> -->
+                                                <th>Sr.</th>
+                                                <th>DateTime</th>
+                                                <th>Status</th>
+                                                <th>@lang('valuation::app.action')</th>
+                                            </tr>
                                         </thead>
                                     </table>
                                 </div>
@@ -132,21 +133,36 @@
         $('ul.showProjectTabs .valuationAppointment').addClass('tab-current');
         var table;
 
-        $('#createAppointment').click(function () {
+        $('#createAppointment').on('submit',function () {
             $.easyAjax({
-                url: '{{route('admin.valuation-appointment.store')}}',
+                url: "{{route('admin.valuation-appointment.store')}}",
                 container: '#createAppointment',
                 type: "POST",
                 redirect: true,
                 data: $('#createAppointment').serialize(),
-
             })
         });
 
-        $(function () {
-            loadTable();
+         $(function () {
+             loadTable();
 
-        });
+         });
+
+        function changeAppointmentStatus(appointmentId, selectObj) {
+            
+            var url = "{{ route('admin.valuation-appointment.updateStatus')}}";
+                
+                        var token = "{{ csrf_token() }}";
+
+                        $.easyAjax({
+                            type: 'POST',
+                            url: url,
+                            redirect: true,
+                            data: {'_token': token, appointmentId:appointmentId, status:$(selectObj).val()},
+                            success: function (response) {
+                            }
+                        });
+            }
 
         function loadTable() {
             var startDate = $('#start-date').val();
