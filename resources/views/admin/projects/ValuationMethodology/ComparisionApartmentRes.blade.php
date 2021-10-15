@@ -15,7 +15,7 @@
         <td>1</td>
         <td>Property Price</td>
         <td>{{$currency}}</td>
-        <td></td>
+        <td>{{$propertyBaseInfo->estimated_value}}</td>
         <td>{{$propertyInfoOne->estimated_value}}</td>
         <td>{{$propertyInfoTwo->estimated_value}}</td>
         <td>{{$propertyInfoThree->estimated_value}}</td>
@@ -30,10 +30,10 @@
                     <td>{{$propertyBaseInfo->aptSizeIPMS}}</td>
                 </tr>
                 <tr>
-                    <td></td>
+                    <td>Dummy</td>
                 </tr>
                 <tr>
-                    <td></td>
+                    <td>Dummy</td>
                 </tr>
             </table>
         </td>
@@ -79,7 +79,7 @@
     </tr>
 
     <tr>
-        <td></td>
+        <td>3</td>
         <td>No. of Bedrooms</td>
         <td>{{$bedroomsWeightagePerText}}</td>
         <td>
@@ -88,10 +88,10 @@
                     <td>{{$propertyBaseInfo->bedrooms}}</td>
                 </tr>
                 <tr>
-                    <td></td>
+                    <td>Dummy</td>
                 </tr>
                 <tr>
-                    <td></td>
+                    <td>Dummy</td>
                 </tr>
             </table>
         </td>
@@ -146,10 +146,10 @@
                     <td>{{$propertyBaseInfo->bathrooms}}</td>
                 </tr>
                 <tr>
-                    <td></td>
+                    <td>Dummy</td>
                 </tr>
                 <tr>
-                    <td></td>
+                    <td>Dummy</td>
                 </tr>
             </table>
         </td>
@@ -172,7 +172,7 @@
                     <td>{{$propertyInfoTwo->bathrooms}}</td>
                 </tr>
                 <tr>
-                    <td>{{$propertyInfoTwo->bathBaseMinusProOne}}</td>
+                    <td>{{$propertyInfoTwo->bathBaseMinusProTwo}}</td>
                 </tr>
                 <tr>
                     <td>{{$propertyInfoTwo->bathComparison}}</td>
@@ -185,7 +185,7 @@
                     <td>{{$propertyInfoThree->bathrooms}}</td>
                 </tr>
                 <tr>
-                    <td>{{$propertyInfoThree->bathBaseMinusProOne}}</td>
+                    <td>{{$propertyInfoThree->bathBaseMinusProThree}}</td>
                 </tr>
                 <tr>
                     <td>{{$propertyInfoThree->bathComparison}}</td>
@@ -210,7 +210,7 @@
                     <td>{{$propertyBaseInfo->finishingQualityCalBase}}</td>
                 </tr>
                 <tr>
-                    <td></td>
+                    <td>Dummy</td>
                 </tr>
             </table>
         </td>
@@ -223,7 +223,7 @@
                     <td>{{$propertyInfoOne->maintenanceSelectionTitle}}</td>
                 </tr>
                 <tr>
-                    <td>{{$propertyInfoOne->finishingQualityCalBase}}</td>
+                    <td>{{$propertyInfoOne->finishingQualityCalOne}}</td>
                 </tr>
                 <tr>
                     <td>{{$propertyInfoOne->finishingQualityComparison}}</td>
@@ -239,7 +239,7 @@
                     <td>{{$propertyInfoTwo->maintenanceSelectionTitle}}</td>
                 </tr>
                 <tr>
-                    <td>{{$propertyInfoTwo->finishingQualityCalBase}}</td>
+                    <td>{{$propertyInfoTwo->finishingQualityCalTwo}}</td>
                 </tr>
                 <tr>
                     <td>{{$propertyInfoTwo->finishingQualityComparison}}</td>
@@ -255,7 +255,7 @@
                     <td>{{$propertyInfoThree->maintenanceSelectionTitle}}</td>
                 </tr>
                 <tr>
-                    <td>{{$propertyInfoThree->finishingQualityCalBase}}</td>
+                    <td>{{$propertyInfoThree->finishingQualityCalThree}}</td>
                 </tr>
                 <tr>
                     <td>{{$propertyInfoThree->finishingQualityComparison}}</td>
@@ -278,7 +278,7 @@
                 </tr>
 
                 <tr>
-                    <td></td>
+                    <td>Dummy</td>
                 </tr>
             </table>
         </td>
@@ -330,7 +330,7 @@
         <td>7</td>
         <td>Weighted Factor Adjustment</td>
         <td>%</td>
-        <td></td>
+        <td>Dummy</td>
         <td>{{$propertyInfoOne->weightedFacAdj}}</td>
         <td>{{$propertyInfoTwo->weightedFacAdj}}</td>
         <td>{{$propertyInfoThree->weightedFacAdj}}</td>
@@ -340,7 +340,7 @@
         <td>8</td>
         <td>Amount Adjustment to Original Price</td>
         <td>{{$currency}}</td>
-        <td></td>
+        <td>Dummy</td>
         <td>{{$propertyInfoOne->amountAdjOriPrice}}</td>
         <td>{{$propertyInfoTwo->amountAdjOriPrice}}</td>
         <td>{{$propertyInfoThree->amountAdjOriPrice}}</td>
@@ -351,7 +351,7 @@
         <td>9</td>
         <td>Weighted Factor Average Price</td>
         <td>{{$currency}}</td>
-        <td></td>
+        <td>Dummy</td>
         <td>{{$propertyInfoOne->weightedFactAvgPrice}}</td>
         <td>{{$propertyInfoTwo->weightedFactAvgPrice}}</td>
         <td>{{$propertyInfoThree->weightedFactAvgPrice}}</td>
@@ -362,7 +362,7 @@
         <td>10</td>
         <td>Comparable Overall Weighted Adjustment </td>
         <td>100%</td>
-        <td></td>
+        <td>Dummy</td>
         <td>{{$propertyInfoOne->comparableOverallWeightAdj}}</td>
         <td>{{$propertyInfoTwo->comparableOverallWeightAdj}}</td>
         <td>{{$propertyInfoThree->comparableOverallWeightAdj}}</td>
@@ -371,8 +371,8 @@
     <tr>
         <td>11</td>
         <td>Total Weighted Adjusted Price </td>
-        <td></td>
-        <td></td>
+        <td>Dummy</td>
+        <td>Dummy</td>
         <td>{{$propertyInfoOne->totalWeightAdjPrice}}</td>
         <td>{{$propertyInfoTwo->totalWeightAdjPrice}}</td>
         <td>{{$propertyInfoThree->totalWeightAdjPrice}}</td>
@@ -394,7 +394,7 @@
     }
 
     .compareResTable .cBlue {
-        color: blue;
+        color: slateblue;
     }
 
     .compareResTable .bold {
@@ -404,5 +404,7 @@
     {
         font-size: 15px;
         font-weight: 400;
+        text-align: center;
+        vertical-align: middle;
     }
 </style>

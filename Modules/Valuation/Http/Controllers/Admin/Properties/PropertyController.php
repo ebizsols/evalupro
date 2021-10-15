@@ -55,7 +55,6 @@ class PropertyController extends ValuationAdminBaseController
         $this->pageTitle = 'valuation::valuation.property.title';
 
         $this->pageIcon = 'icon-speedometer';
-
     }
 
     public function __customConstruct(&$data)
@@ -137,6 +136,7 @@ class PropertyController extends ValuationAdminBaseController
 
     public function index()
     {
+        // dd('Hi There !');
         $this->__customConstruct($this->data);
 
         $properties = new ValuationProperty();
@@ -148,6 +148,20 @@ class PropertyController extends ValuationAdminBaseController
 
     public function addEditView($id = 0)
     {
+
+
+        // $BedRooms = array();
+
+        // if(!empty($BedRooms)){
+        //     echo "in if"; 
+        //     print_r($BedRooms);
+        // }
+        // else{
+        //     echo "in else";
+        //     print_r($BedRooms);
+        // }
+
+        // exit;
         $this->__customConstruct($this->data);
 
         $this->title = 'valuation::valuation.property.createProperty';
@@ -182,7 +196,7 @@ class PropertyController extends ValuationAdminBaseController
         $featureCategory = new ValuationPropertyFeatureCategory();
         $this->featureCategorList = $featureCategory->getAllForCompany();
         $ValuationGeneralSettingFeature = new ValuationGeneralSetting();
-        $googleApi = $ValuationGeneralSettingFeature->where('meta_key','=','googleApi')->get();
+        $googleApi = $ValuationGeneralSettingFeature->where('meta_key', '=', 'googleApi')->get();
         $this->googleApi = (isset($googleApi[0]['meta_value'])) ? $googleApi[0]['meta_value'] : 0;
         $staffList = User::allEmployees();
 
@@ -204,65 +218,66 @@ class PropertyController extends ValuationAdminBaseController
         if ($id > 0) {
             $getAllUnit = $ValuationPropertyXref->getAllUnit($id);
             $this->unitRefToProperty = $getAllUnit;
+            // dd($getAllUnit);
             if (!empty($getAllUnit)) {
-//                foreach($getAllUnit as $unitMeta)
-//                {
-//                    $unitKey=$unitMeta->unit_id;
-//                    $unitType=ValuationProperty::UnitType.'-'.$unitKey;
-//                    $NoOfBedroomText=ValuationProperty::NoOfBedroomText.'-'.$unitKey;
-//                    $NoOfBathoomsText=ValuationProperty::NoOfBathoomsText.'-'.$unitKey;
-//                    $FinishingQualityText=ValuationProperty::FinishingQualityText.'-'.$unitKey;
-//                    $MaintenanceText=ValuationProperty::MaintenanceText.'-'.$unitKey;
-//                    $FloorlevelText=ValuationProperty::FloorlevelText.'-'.$unitKey;
-//                    $UnitInfoView=ValuationProperty::UnitInfoView.'-'.$unitKey;
-//                    $UnitInfoCondition=ValuationProperty::UnitInfoCondition.'-'.$unitKey;
-//                    $UnitInfoStyling=ValuationProperty::UnitInfoStyling.'-'.$unitKey;
-//                    $UnitInfoStatus=ValuationProperty::UnitInfoStatus.'-'.$unitKey;
-//                    $UnitInfoInteriorStatus=ValuationProperty::UnitInfoInteriorStatus.'-'.$unitKey;
-//                    $RentalIncomeUnitInfo=ValuationProperty::RentalIncomeUnitInfo.'-'.$unitKey;
-//                    $DepictedValueUnitInfo=ValuationProperty::DepictedValueUnitInfo.'-'.$unitKey;
-//                    $EstimatedValueUnitInfo=ValuationProperty::EstimatedValueUnitInfo.'-'.$unitKey;
-//                    $ResidualValueUnitInfo=ValuationProperty::ResidualValueUnitInfo.'-'.$unitKey;
-//                    $IncomeBaseValueUnitInfo=ValuationProperty::IncomeBaseValueUnitInfo.'-'.$unitKey;
-//                    $UnitInfoAcquisitionCost=ValuationProperty::UnitInfoAcquisitionCost.'-'.$unitKey;
-//                    $UnitInfoAddOnCost=ValuationProperty::UnitInfoAddOnCost.'-'.$unitKey;
-//                    $UnitInfoIncome=ValuationProperty::UnitInfoIncome.'-'.$unitKey;
-//                    $CostOfConstructionValueUnitInfo=ValuationProperty::CostOfConstructionValueUnitInfo.'-'.$unitKey;
-//                    $this->$unitType=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::UnitType.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$NoOfBedroomText=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::NoOfBedroomText.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$NoOfBathoomsText=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::NoOfBathoomsText.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$FinishingQualityText=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::FinishingQualityText.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$MaintenanceText=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::MaintenanceText.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$FloorlevelText=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::FloorlevelText.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$UnitInfoView=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::UnitInfoView.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$UnitInfoCondition=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::UnitInfoCondition.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$UnitInfoStyling=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::UnitInfoStyling.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$UnitInfoStatus=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::UnitInfoStatus.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$UnitInfoInteriorStatus=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::UnitInfoInteriorStatus.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$RentalIncomeUnitInfo=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::RentalIncomeUnitInfo.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$DepictedValueUnitInfo=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::DepictedValueUnitInfo.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$EstimatedValueUnitInfo=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::EstimatedValueUnitInfo.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$ResidualValueUnitInfo=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::ResidualValueUnitInfo.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$CostOfConstructionValueUnitInfo=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::CostOfConstructionValueUnitInfo.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$IncomeBaseValueUnitInfo=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::IncomeBaseValueUnitInfo.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$UnitInfoAcquisitionCost=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::UnitInfoAcquisitionCost.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$UnitInfoAddOnCost=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::UnitInfoAddOnCost.'-'.$unitKey , array()))->toArray():array();
-//                    $this->$UnitInfoIncome=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::UnitInfoIncome.'-'.$unitKey , array()))->toArray():array();
-//                }
+                //                foreach($getAllUnit as $unitMeta)
+                //                {
+                //                    $unitKey=$unitMeta->unit_id;
+                //                    $unitType=ValuationProperty::UnitType.'-'.$unitKey;
+                //                    $NoOfBedroomText=ValuationProperty::NoOfBedroomText.'-'.$unitKey;
+                //                    $NoOfBathoomsText=ValuationProperty::NoOfBathoomsText.'-'.$unitKey;
+                //                    $FinishingQualityText=ValuationProperty::FinishingQualityText.'-'.$unitKey;
+                //                    $MaintenanceText=ValuationProperty::MaintenanceText.'-'.$unitKey;
+                //                    $FloorlevelText=ValuationProperty::FloorlevelText.'-'.$unitKey;
+                //                    $UnitInfoView=ValuationProperty::UnitInfoView.'-'.$unitKey;
+                //                    $UnitInfoCondition=ValuationProperty::UnitInfoCondition.'-'.$unitKey;
+                //                    $UnitInfoStyling=ValuationProperty::UnitInfoStyling.'-'.$unitKey;
+                //                    $UnitInfoStatus=ValuationProperty::UnitInfoStatus.'-'.$unitKey;
+                //                    $UnitInfoInteriorStatus=ValuationProperty::UnitInfoInteriorStatus.'-'.$unitKey;
+                //                    $RentalIncomeUnitInfo=ValuationProperty::RentalIncomeUnitInfo.'-'.$unitKey;
+                //                    $DepictedValueUnitInfo=ValuationProperty::DepictedValueUnitInfo.'-'.$unitKey;
+                //                    $EstimatedValueUnitInfo=ValuationProperty::EstimatedValueUnitInfo.'-'.$unitKey;
+                //                    $ResidualValueUnitInfo=ValuationProperty::ResidualValueUnitInfo.'-'.$unitKey;
+                //                    $IncomeBaseValueUnitInfo=ValuationProperty::IncomeBaseValueUnitInfo.'-'.$unitKey;
+                //                    $UnitInfoAcquisitionCost=ValuationProperty::UnitInfoAcquisitionCost.'-'.$unitKey;
+                //                    $UnitInfoAddOnCost=ValuationProperty::UnitInfoAddOnCost.'-'.$unitKey;
+                //                    $UnitInfoIncome=ValuationProperty::UnitInfoIncome.'-'.$unitKey;
+                //                    $CostOfConstructionValueUnitInfo=ValuationProperty::CostOfConstructionValueUnitInfo.'-'.$unitKey;
+                //                    $this->$unitType=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::UnitType.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$NoOfBedroomText=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::NoOfBedroomText.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$NoOfBathoomsText=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::NoOfBathoomsText.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$FinishingQualityText=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::FinishingQualityText.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$MaintenanceText=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::MaintenanceText.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$FloorlevelText=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::FloorlevelText.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$UnitInfoView=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::UnitInfoView.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$UnitInfoCondition=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::UnitInfoCondition.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$UnitInfoStyling=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::UnitInfoStyling.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$UnitInfoStatus=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::UnitInfoStatus.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$UnitInfoInteriorStatus=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::UnitInfoInteriorStatus.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$RentalIncomeUnitInfo=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::RentalIncomeUnitInfo.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$DepictedValueUnitInfo=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::DepictedValueUnitInfo.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$EstimatedValueUnitInfo=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::EstimatedValueUnitInfo.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$ResidualValueUnitInfo=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::ResidualValueUnitInfo.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$CostOfConstructionValueUnitInfo=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::CostOfConstructionValueUnitInfo.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$IncomeBaseValueUnitInfo=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::IncomeBaseValueUnitInfo.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$UnitInfoAcquisitionCost=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::UnitInfoAcquisitionCost.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$UnitInfoAddOnCost=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::UnitInfoAddOnCost.'-'.$unitKey , array()))->toArray():array();
+                //                    $this->$UnitInfoIncome=($propertyData != null)?optional($propertyData->getMeta(ValuationProperty::UnitInfoIncome.'-'.$unitKey , array()))->toArray():array();
+                //                }
             }
         }
-       //*************************************************************
-//all options to show on property
+        //*************************************************************
+        //all options to show on property
         //*********************************
         $categoryObj = new ValuationPropertyWeightageCategory();
-        $this->Accessibility = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::AccessibilityText)->get();
-        $this->AccessibilityType = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::AccessibilityTypeText)->get();
-        $this->LandClassification = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::LandClassificationTypeText)->get();
-        $this->RoadAccessNo = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::NoOfAccessRoadsText)->get();
-        $this->RoadAccessType = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::AccessRoadTypeText)->get();
-        $this->RecencyTransection = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::RecencyTransectionText)->get();
-        $this->LandShape = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::LandshapeText)->get();
-        $this->LocationClassification = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::LocationClassificationText)->get();
+        $this->Accessibility = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::AccessibilityText)->first();
+        $this->AccessibilityType = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::AccessibilityTypeText)->first();
+        $this->LandClassification = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::LandClassificationTypeText)->first();
+        $this->RoadAccessNo = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::NoOfAccessRoadsText)->first();
+        $this->RoadAccessType = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::AccessRoadTypeText)->first();
+        $this->RecencyTransection = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::RecencyTransectionText)->first();
+        $this->LandShape = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::LandshapeText)->first();
+        $this->LocationClassification = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::LocationClassificationText)->first();
 
         $this->BedRooms = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::NoOfBedroomText)->first();
         $this->BathRoom = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::NoOfBathoomsText)->first();
@@ -271,7 +286,7 @@ class PropertyController extends ValuationAdminBaseController
         $this->WeitageView = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::ViewText)->first();
         $this->Maintenance = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::MaintenanceText)->first();
 
-        $this->Amenities = (object)$categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::AmenitiesText)->get();
+        $this->Amenities = $categoryObj->where('conditional_text', '=', ValuationPropertyWeightageCategory::AmenitiesText)->first();
         $this->defaultMeasurementUnit = $this->data['measurementUnit'];
 
 
@@ -287,7 +302,7 @@ class PropertyController extends ValuationAdminBaseController
         $this->propertyTitle = isset($propertyData->title) ? $propertyData->title : '';
         $this->locality = isset($propertyData->locality) ? $propertyData->locality : '';
         $this->road = isset($propertyData->road) ? $propertyData->road : '';
-//        $this->coordinates = isset($propertyData->coordinates) ? $propertyData->coordinates : '';
+        //        $this->coordinates = isset($propertyData->coordinates) ? $propertyData->coordinates : '';
         $this->latitude = isset($propertyData->latitude) ? $propertyData->latitude : '0';
         $this->longitude = isset($propertyData->longitude) ? $propertyData->longitude : '0';
         $this->plotNum = isset($propertyData->plot_num) ? $propertyData->plot_num : 0;
@@ -316,14 +331,14 @@ class PropertyController extends ValuationAdminBaseController
         $this->landPrice = isset($propertyData->land_price) ? $propertyData->land_price : 0;
         $this->constructionPrice = isset($propertyData->construction_price) ? $propertyData->construction_price : 0;
         $this->renovationPrice = isset($propertyData->renovation_price) ? $propertyData->renovation_price : 0;
-        $this->rentalIncome = isset($propertyData->rental_income) ? $propertyData->rental_income : 0;///
+        $this->rentalIncome = isset($propertyData->rental_income) ? $propertyData->rental_income : 0; ///
         $this->rentalStructureIncome = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::RentalIncomeStructure, array()))->toArray() : array();
         $this->estimatedValueStructure = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::EstimatedValueStructure, array()))->toArray() : array();
         $this->residual_value_for_Structure = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::ResidualValueForStructure, array()))->toArray() : array();
         $this->depicted_value_for_Structure = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::DepictedValueForStructure, array()))->toArray() : array();
         $this->cost_construction_for_Structure = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::CostOfConstructionValueForStructure, array()))->toArray() : array();
         $this->incomebasevalue_for_Structure = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::IncomeBaseValueForStructure, array()))->toArray() : array();
-//        $this->estimatedValue = isset($propertyData->estimated_value) ? $propertyData->estimated_value : 0;
+        //        $this->estimatedValue = isset($propertyData->estimated_value) ? $propertyData->estimated_value : 0;
         $this->estimatedValue = isset($propertyData->estimated_value) ? $propertyData->estimated_value : 0;
         $this->status = isset($propertyData->status) ? $propertyData->status : 'Draft';
         $this->dimensionsMeta = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::DimensionsMetaKey, array()))->toArray() : array();
@@ -333,7 +348,9 @@ class PropertyController extends ValuationAdminBaseController
         $this->financialAddonCost = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::FinancialAddOnCost, array()))->toArray() : array();
         $this->StructureUnit = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::StructureUnit, array()))->toArray() : array();
         $this->OwnerShip = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::OwnerShip, array()))->toArray() : array();
+
         $this->ref_id = isset($propertyData->ref_id) ? $propertyData->ref_id : '';
+
         $this->PropertyEnvirementalMatters = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::PropertyEnvirementalMatters, array()))->toArray() : array();
         $this->PropertyAssumption = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::PropertyAssumption, array()))->toArray() : array();
         $this->PropertyRelventInformation = ($propertyData != null) ? optional($propertyData->getMeta(ValuationProperty::PropertyRelventInformation, array()))->toArray() : array();
@@ -409,7 +426,8 @@ class PropertyController extends ValuationAdminBaseController
     {
         $data = array();
         $this->__customConstruct($data);
-        $postFeatures = isset($_POST['feature'])?$_POST['feature']:array();
+
+        $postFeatures = isset($_POST['feature']) ? $_POST['feature'] : array();
         $propertyFeatureEncode = $this->featureMetaData($postFeatures);
         if (ValuationProperty::find($request->id)) {
             $property = ValuationProperty::find($request->id);
@@ -472,14 +490,14 @@ class PropertyController extends ValuationAdminBaseController
         $property->process_status_id = isset($request->process_status_id) ? $request->process_status_id : 0;
 
 
-//        $property->coordinates = isset($request->coordinates) ? $request->coordinates : '';
+        //        $property->coordinates = isset($request->coordinates) ? $request->coordinates : '';
 
 
-//        $property->sizes_in_meter_sq = isset($request->sizeMeterSQ) ? $request->sizeMeterSQ : 0;
-//        $property->sizes_in_sq_feet = isset($request->sizeSQFeet) ? $request->sizeSQFeet : 0;
+        //        $property->sizes_in_meter_sq = isset($request->sizeMeterSQ) ? $request->sizeMeterSQ : 0;
+        //        $property->sizes_in_sq_feet = isset($request->sizeSQFeet) ? $request->sizeSQFeet : 0;
 
 
-//        $property->status = isset($request->status) ? $request->status : 0;
+        //        $property->status = isset($request->status) ? $request->status : 0;
 
         $property->role = isset($request->role) ? $request->role : 0;
         $property->no_of_units = isset($request->noOfUnits) ? $request->noOfUnits : 0;
@@ -504,12 +522,30 @@ class PropertyController extends ValuationAdminBaseController
                 $propertyImg->media_name = $imgName;
                 $propertyImg->save();
             }
-
         }
-
+        // Bedroom
+        $bedRoomsUnitInfoWeightage = isset($request->Bedrooms) ? $request->Bedrooms : array();
+        $bedRoomsUnitInfoWeightageArray = array();
+        $bedRoomsUnitInfoWeightageArray[] = $bedRoomsUnitInfoWeightage;
+        // Bathroom
+        $bathRoomUnitInfoWeightage = isset($request->Bathrooms) ? $request->Bathrooms : array();
         $bathRoomUnitInfoWeightageArray = array();
+        $bathRoomUnitInfoWeightageArray[] = $bathRoomUnitInfoWeightage;
+        // Finishing Quality
+        $finishingQualityUnitInfoWeightage = isset($request->finishingQuality) ? $request->finishingQuality : array();
         $finishingQualityUnitInfoWeightageArray = array();
+        $finishingQualityUnitInfoWeightageArray[] = $finishingQualityUnitInfoWeightage;
+
+        // Amenities
+        $aminatieForUnitInfoWeightage = isset($request->Amenities) ? $request->Amenities : array();
+        $aminatieForUnitInfoWeightageArray = array();
+        $aminatieForUnitInfoWeightageArray[] = $aminatieForUnitInfoWeightage;
+
+        // Maintencance
+        $unitInfoMaintenanceWeightage = isset($request->Maintenance) ? $request->Maintenance : array();
         $unitInfoMaintenanceWeightageArray = array();
+        $unitInfoMaintenanceWeightageArray[] = $unitInfoMaintenanceWeightage;
+
         $unitInfoFloorLevelWeightageArray = array();
         $unitInfoViewWeightageArray = array();
 
@@ -611,11 +647,11 @@ class PropertyController extends ValuationAdminBaseController
 
         $ValuationPropertyXref = new ValuationPropertyXref();
         $unitTypeArray = array();
-        $bedRoomsUnitInfoWeightageArray = array();
 
         if (isset($request->id) && $request->id > 0) {
             $getAllUnit = $ValuationPropertyXref->getAllUnit($request->id);
             if (!empty($getAllUnit)) {
+                // echo "<pre>"; print_r($unitRefToProperty); exit;
                 foreach ($getAllUnit as $unitObj) {
                     if (!empty($unitObj->unit_id) && $unitObj->unit_id > 0) {
                         $propertyObj = ValuationProperty::find($unitObj->unit_id);
@@ -637,6 +673,9 @@ class PropertyController extends ValuationAdminBaseController
                         $residual_value_for_UnitInfoName = 'residual_value_for_UnitInfo-' . $key;
                         $cost_construction_for_UnitInfoName = 'cost_construction_for_UnitInfo-' . $key;
                         $incomebasevalue_for_UnitInfoName = 'incomebasevalue_for_UnitInfo-' . $key;
+                        // New
+                        // $amenitiesUnitInfoName = 'amenities_value_for_UnitInfo-' . $key;
+
                         $unitInfofloorName = 'unitInfofloor-' . $key;
 
                         $unitType = isset($request->$unitTypeName) ? $request->$unitTypeName : '';
@@ -770,7 +809,6 @@ class PropertyController extends ValuationAdminBaseController
                                 if (!empty($incomeDateUnitInfo[$key]) && !empty($typeUnitInfo[$key]) && !empty($incomeDescriptionUnitInfo[$key]) && !empty($incomePriceUnitInfo[$key])) {
                                     $incomeDataArrayUnitInfo[] = array('date' => $incomeDateUnitInfo[$key], 'trnsectionType' => $typeUnitInfo[$key], 'description' => $incomeDescriptionUnitInfo[$key], 'price' => $incomePriceUnitInfo[$key], 'currencyCode' => $incomeCurrencyCodeUnitInfo[$key]);
                                 }
-
                             }
                         }
                         $incomeJsonDataUnitInfo = json_encode($incomeDataArrayUnitInfo);
@@ -797,26 +835,30 @@ class PropertyController extends ValuationAdminBaseController
                         $updatePropertyMetaUnit[ValuationProperty::UnitInfoAcquisitionCost . '-' . $key] = $acqTransectionUnitInfoData;
                         $updatePropertyMetaUnit[ValuationProperty::UnitInfoAddOnCost . '-' . $key] = $addonTransectionDataUnitInfo;
                         $updatePropertyMetaUnit[ValuationProperty::UnitInfoIncome . '-' . $key] = $incomeJsonDataUnitInfo;
+                        $updatePropertyMetaUnit[ValuationProperty::UnitInfoIncome . '-' . $key] = $incomeJsonDataUnitInfo;
+
+                        $updatePropertyMetaUnit[ValuationProperty::AmenitiesText . '-' . $key] = json_encode($aminatieForUnitInfoWeightageArray);
+
+
 
                         $logUnit = array('propertyInfo' => $propertyObj, 'meta' => $updatePropertyMetaUnit);
                         $updatePropertyMetaUnit[ValuationProperty::PropertyLog] = json_encode($logUnit);
                         $propertyObj->setMeta($updatePropertyMetaUnit);
 
 
-//                    $logArrayUnit();
-//
-//                    $propertyObj->setMeta($logArrayUnit);
+                        //                    $logArrayUnit();
+                        //
+                        //                    $propertyObj->setMeta($logArrayUnit);
                     }
                 }
             }
-
         }
 
 
-//        $dimensions = isset($request->dimensions)?$request->dimensions:array();
-//        $dimensionsEncode = json_encode($dimensions);
-//        $addOnCosts = isset($request->addOnCosts)?$request->addOnCosts:array();
-//        $addOnCostsEncode = json_encode($addOnCosts);
+        //        $dimensions = isset($request->dimensions)?$request->dimensions:array();
+        //        $dimensionsEncode = json_encode($dimensions);
+        //        $addOnCosts = isset($request->addOnCosts)?$request->addOnCosts:array();
+        //        $addOnCostsEncode = json_encode($addOnCosts);
         //FinancialInfoAcquisitionCost
         $aqu_Date = isset($request->aqu_Date) ? $request->aqu_Date : array();
         $aqu_transection_type = isset($request->aqu_transection_type) ? $request->aqu_transection_type : array();
@@ -875,7 +917,6 @@ class PropertyController extends ValuationAdminBaseController
                 if (!empty($addOn_cost_Date[$key]) && !empty($addoncost_transection_type[$key]) && !empty($addoncost_description[$key]) && !empty($addoncostPrice[$key])) {
                     $addonCostDataArray[] = array('date' => $addOn_cost_Date[$key], 'trnsectionType' => $addoncost_transection_type[$key], 'description' => $addoncost_description[$key], 'price' => $addoncostPrice[$key], 'currencyCode' => $addonCurrencyCode[$key]);
                 }
-
             }
         }
         $addonTransectionData = json_encode($addonCostDataArray);
@@ -891,7 +932,6 @@ class PropertyController extends ValuationAdminBaseController
                 if (!empty($addOn_cost_Date_property_info[$key]) && !empty($addoncost_transection_type_property_info[$key]) && !empty($addoncost_description_property_info[$key]) && !empty($addoncostPrice_property_info[$key])) {
                     $addonCostDataArray_property_info[] = array('date' => $addOn_cost_Date_property_info[$key], 'trnsectionType' => $addoncost_transection_type_property_info[$key], 'description' => $addoncost_description_property_info[$key], 'price' => $addoncostPrice_property_info[$key], 'currencyCode' => $addonCurrencyCode_property_info[$key]);
                 }
-
             }
         }
         $addonTransectionData_property_info = json_encode($addonCostDataArray_property_info);
@@ -908,7 +948,6 @@ class PropertyController extends ValuationAdminBaseController
                 if (!empty($income_date_property_info[$key]) && !empty($type_property_info[$key]) && !empty($income_description_property_info[$key]) && !empty($incomePrice_property_info[$key])) {
                     $incomeDataArray_property_info[] = array('date' => $income_date_property_info[$key], 'trnsectionType' => $type_property_info[$key], 'description' => $income_description_property_info[$key], 'price' => $incomePrice_property_info[$key], 'currencyCode' => $incomeCurrencyCode__property_info[$key]);
                 }
-
             }
         }
         $incomejsonData_property_info = json_encode($incomeDataArray_property_info);
@@ -925,7 +964,6 @@ class PropertyController extends ValuationAdminBaseController
                 if (!empty($income_date_structure_info[$key]) && !empty($type_structure_info[$key]) && !empty($income_description_structure_info[$key]) && !empty($incomePrice_structure_info[$key])) {
                     $incomeDataArray_structure_info[] = array('date' => $income_date_structure_info[$key], 'trnsectionType' => $type_structure_info[$key], 'description' => $income_description_structure_info[$key], 'price' => $incomePrice_structure_info[$key], 'currencyCode' => $incomeCurrencyCode_structure_info[$key]);
                 }
-
             }
         }
         $incomejsonData_structure_info = json_encode($incomeDataArray_structure_info);
@@ -1037,17 +1075,17 @@ class PropertyController extends ValuationAdminBaseController
         // add and update property Meta
         $updatePropertyMeta = array();
         $updatePropertyMeta[ValuationProperty::DimensionsMetaKey] = $dimisisionJsonData;
-//        $updatePropertyMeta[ValuationProperty::AddOnCostMetaKey] = $addOnCostsEncode;
+        //        $updatePropertyMeta[ValuationProperty::AddOnCostMetaKey] = $addOnCostsEncode;
         $updatePropertyMeta[ValuationProperty::FinancialAcquisitionCost] = $acqtransectionData;
-//        $updatePropertyMeta[ValuationProperty::UnitInfoAcquisitionCost] = $acqtransection_unit_infoData;
+        //        $updatePropertyMeta[ValuationProperty::UnitInfoAcquisitionCost] = $acqtransection_unit_infoData;
         $updatePropertyMeta[ValuationProperty::AcquisitionCostPropertyInfo] = $acqtransectionData_properyInfoTab;
         $updatePropertyMeta[ValuationProperty::FinancialBuildUpCost] = $buildUpTransectionData;
         $updatePropertyMeta[ValuationProperty::FinancialAddOnCost] = $addonTransectionData;
         $updatePropertyMeta[ValuationProperty::PropertyInfoAddOnCost] = $addonTransectionData_property_info;
-//        $updatePropertyMeta[ValuationProperty::UnitInfoAddOnCost] = $addonTransectionData_unit_info;
+        //        $updatePropertyMeta[ValuationProperty::UnitInfoAddOnCost] = $addonTransectionData_unit_info;
         $updatePropertyMeta[ValuationProperty::PropertyInfoIncome] = $incomejsonData_property_info;
         $updatePropertyMeta[ValuationProperty::StructureInfoIncome] = $incomejsonData_structure_info;
-//        $updatePropertyMeta[ValuationProperty::UnitInfoIncome] = $incomejsonData_Unit_info;
+        //        $updatePropertyMeta[ValuationProperty::UnitInfoIncome] = $incomejsonData_Unit_info;
         $updatePropertyMeta[ValuationProperty::StructureUnit] = $structureUnitJsonData;
         $updatePropertyMeta[ValuationProperty::OwnerShip] = $ownerShipJsonData;
         $updatePropertyMeta[ValuationProperty::PropertyFeatureMetaKey] = $propertyFeatureEncode;
@@ -1067,7 +1105,8 @@ class PropertyController extends ValuationAdminBaseController
         $updatePropertyMeta[ValuationProperty::CostOfConstructionValueForPropertyInfo] = json_encode($cost_construction_for_property_infoWeightageArray);
         $updatePropertyMeta[ValuationProperty::IncomeBaseValueForPropertyInfo] = json_encode($incomebasevalue_for_property_infoWeightageArray);
         $updatePropertyMeta[ValuationProperty::LandshapeText] = json_encode($landInfoLandShapeWeightageArray);
-        $updatePropertyMeta[ValuationProperty::AmenitiesText] = json_encode($aminatieForStructureInfoWeightageArray);
+        // $updatePropertyMeta[ValuationProperty::AmenitiesText] = json_encode($aminatieForStructureInfoWeightageArray);
+        $updatePropertyMeta[ValuationProperty::AmenitiesText] = json_encode($aminatieForUnitInfoWeightageArray);
         $updatePropertyMeta[ValuationProperty::RentalIncomeStructure] = json_encode($rentalIncomeStructureWeightageArray);
         $updatePropertyMeta[ValuationProperty::EstimatedValueStructure] = json_encode($estimatedValueStructureWeightageArray);
         $updatePropertyMeta[ValuationProperty::ResidualValueForStructure] = json_encode($residual_value_for_StructureWeightageArray);
@@ -1086,33 +1125,33 @@ class PropertyController extends ValuationAdminBaseController
         $updatePropertyMeta[ValuationProperty::ViewText] = json_encode($unitInfoViewWeightageArray);
         $updatePropertyMeta[ValuationProperty::RentalIncomePropertyInfo] = json_encode($rentalIncomePropertyInfoArray);
         $updatePropertyMeta[ValuationProperty::EstimatedValuePropertyInfo] = json_encode($estimatedValuePropertyInfoArray);
-//        $updatePropertyMeta[ValuationProperty::UnitInfoView] = json_encode($unitInfoViewWeightageArray);
-//        $updatePropertyMeta[ValuationProperty::UnitInfoCondition] = json_encode($unitInfoConditionArray);
-//        $updatePropertyMeta[ValuationProperty::UnitInfoStyling] = json_encode($unitInfoStylingArray);
-//        $updatePropertyMeta[ValuationProperty::UnitInfoStatus] = json_encode($unitInfoStatusArray);
-//        $updatePropertyMeta[ValuationProperty::UnitInfoInteriorStatus] = json_encode($unitInfoInteriorStatusArray);
-//        $updatePropertyMeta[ValuationProperty::RentalIncomeUnitInfo] = json_encode($rentalIncomeUnitInfoArray);
-//        $updatePropertyMeta[ValuationProperty::EstimatedValueUnitInfo] = json_encode($estimatedValueUnitInfoArray);
-//        $updatePropertyMeta[ValuationProperty::ResidualValueUnitInfo] = json_encode($residual_value_for_UnitInfoArray);
-//        $updatePropertyMeta[ValuationProperty::DepictedValueUnitInfo] = json_encode($depicted_value_for_UnitInfoArray);
-//        $updatePropertyMeta[ValuationProperty::CostOfConstructionValueUnitInfo] = json_encode($cost_construction_for_UnitInfoArray);
-//        $updatePropertyMeta[ValuationProperty::IncomeBaseValueUnitInfo] = json_encode($incomebasevalue_for_UnitInfoArray);
+        //        $updatePropertyMeta[ValuationProperty::UnitInfoView] = json_encode($unitInfoViewWeightageArray);
+        //        $updatePropertyMeta[ValuationProperty::UnitInfoCondition] = json_encode($unitInfoConditionArray);
+        //        $updatePropertyMeta[ValuationProperty::UnitInfoStyling] = json_encode($unitInfoStylingArray);
+        //        $updatePropertyMeta[ValuationProperty::UnitInfoStatus] = json_encode($unitInfoStatusArray);
+        //        $updatePropertyMeta[ValuationProperty::UnitInfoInteriorStatus] = json_encode($unitInfoInteriorStatusArray);
+        //        $updatePropertyMeta[ValuationProperty::RentalIncomeUnitInfo] = json_encode($rentalIncomeUnitInfoArray);
+        //        $updatePropertyMeta[ValuationProperty::EstimatedValueUnitInfo] = json_encode($estimatedValueUnitInfoArray);
+        //        $updatePropertyMeta[ValuationProperty::ResidualValueUnitInfo] = json_encode($residual_value_for_UnitInfoArray);
+        //        $updatePropertyMeta[ValuationProperty::DepictedValueUnitInfo] = json_encode($depicted_value_for_UnitInfoArray);
+        //        $updatePropertyMeta[ValuationProperty::CostOfConstructionValueUnitInfo] = json_encode($cost_construction_for_UnitInfoArray);
+        //        $updatePropertyMeta[ValuationProperty::IncomeBaseValueUnitInfo] = json_encode($incomebasevalue_for_UnitInfoArray);
 
         $log = array('propertyInfo' => $property, 'meta' => $updatePropertyMeta);
         $updatePropertyMeta[ValuationProperty::PropertyLog] = json_encode($log);
         $property->setMeta($updatePropertyMeta);
 
 
-//		$logArray();
-//
-//		$property->setMeta($logArray);
+        //		$logArray();
+        //
+        //		$property->setMeta($logArray);
 
         if ($request->id) {
             return Reply::redirect(route($this->addEditViewRoute, $request->id), __('Updated Success'));
         } else {
             return Reply::redirect(route($this->listingPageRoute), __('Save Success'));
         }
-//        return Reply::redirect(route($this->listingPageRoute), __('Save Success'));
+        //        return Reply::redirect(route($this->listingPageRoute), __('Save Success'));
     }
 
     /**
@@ -1129,7 +1168,7 @@ class PropertyController extends ValuationAdminBaseController
             if (isset($feature['id'])) {
                 $featureData = ValuationPropertyFeature::find($feature['id']);
                 $data[$feature['id']] = $featureData->toArray();
-                $data[$feature['id']] ['value'] = $feature['value'];
+                $data[$feature['id']]['value'] = $feature['value'];
             }
         }
         return json_encode($data);
@@ -1182,7 +1221,6 @@ class PropertyController extends ValuationAdminBaseController
                 $action .= '</ul> </div>';
 
                 return $action;
-
             })
             ->editColumn(
                 'title',
@@ -1224,6 +1262,7 @@ class PropertyController extends ValuationAdminBaseController
     public function saveUnit(Request $request)
     {
         $this->__customConstruct($data);
+
         $unitStructureType = isset($request->unitStructureType) ? $request->unitStructureType : array();
         $unitStructureUnitId = isset($request->unitStructureUnitId) ? $request->unitStructureUnitId : array();
         $structureUnitDescription = isset($request->structureUnitDescription) ? $request->structureUnitDescription : array();
@@ -1232,6 +1271,7 @@ class PropertyController extends ValuationAdminBaseController
         $newUnitArray = array();
         if (!empty($unitStructureType)) {
             foreach ($unitStructureType as $unitkey => $unitObj) {
+
                 $property = new ValuationProperty();
                 $property->title = $unitStructureUnitId[$unitkey];
                 $property->type_id = $unitStructureType[$unitkey];
@@ -1239,6 +1279,7 @@ class PropertyController extends ValuationAdminBaseController
                 $property->company_id = $data['companyId'];
                 $property->status = 'Active';
                 $property->save();
+
                 $propertyIdNew = $property->id;
 
                 $xref = new ValuationPropertyXref();
@@ -1267,13 +1308,12 @@ class PropertyController extends ValuationAdminBaseController
             $propertyData->setMeta($updatePropertyMeta);
             return Reply::redirect(route($this->addEditViewRoute, $propertyIdOld), __('Units Save Successfully'));
         }
-
     }
 
     public function getUnit($id = 0)
     {
-//        $xref=new ValuationPropertyXref();
-//        $unitList=$xref->getUnit();
+        //        $xref=new ValuationPropertyXref();
+        //        $unitList=$xref->getUnit();
         $property = new ValuationProperty();
         $unitList = $property->unitItem();
     }
@@ -1293,12 +1333,10 @@ class PropertyController extends ValuationAdminBaseController
         $this->__customConstruct($this->data);
         $properties = new ValuationProperty();
         $properties->company_id = isset($this->data['companyId']) ? $this->data['companyId'] : 0;
-        $properties->title = isset($request->propertyTitle)?$request->propertyTitle:'Temp';
+        $properties->title = isset($request->propertyTitle) ? $request->propertyTitle : 'Temp';
         $properties->status = 'Draft';
         $properties->save();
         $propertyId = $properties->id;
-        return Reply::successWithData('Property Added successfully', array('title'=>$properties->title, 'id'=>$propertyId));
-
+        return Reply::successWithData('Property Added successfully', array('title' => $properties->title, 'id' => $propertyId));
     }
-
 }
