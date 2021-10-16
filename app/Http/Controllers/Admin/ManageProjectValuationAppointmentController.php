@@ -73,20 +73,24 @@ class ManageProjectValuationAppointmentController extends AdminBaseController
     public function store(Request $request)
     {
         $this->__customConstruct($this->data);
-        if(isset($request->id) && $request->id>0)
-        {
-            $store = ProjectAppointment::find($request->id);
-        }
-        else
-        {
-            $store=new ProjectAppointment();
-        }
+
+        $store=new ProjectAppointment();
 
         $store->project_id=isset($this->data['projectId']) ? $this->data['projectId'] : 0;
-        $store->appointment_day=isset($request->appointment_day) ? $request->appointment_day : 0 ;
-        $store->status=isset($request->status) ? $request->status : 'Inactive' ;
+        $store->appointment_date_time=isset($request->appointment_date_time) ? $request->appointment_date_time : 0 ;
+        $store->status=isset($request->status) ? $request->status : 'Active' ;
         $store->note=isset($request->description) ? $request->description : '';
         $store->save();
+        $projectAppointment = new ProjectAppointment();
+
+        //Inactive all other Appointment
+        $projectAppointment->updateStatusActive($store->project_id, $store->id);
+
+        //Update appointment in project
+        $project = Project::find( $store->project_id);
+        $metaData['appointment_day']=$request->appointment_date_time;
+        $project->setMeta($metaData);
+
         return Reply::redirect(route($this->showPageRoute, $request->projectId) , __('Save Success'));
     }
 
@@ -95,13 +99,30 @@ class ManageProjectValuationAppointmentController extends AdminBaseController
         $this->__customConstruct($this->data);
 
         $status = $request->status;
-        $ProjectAppointmentData = ProjectAppointment::find( $request->appointmentId);
-        if(emptyt($ProjectAppointmentData)){
-            return __('messages.noRecordFound');
+        $appointmentId = $request->appointmentId;
+        $projectAppointmentData = ProjectAppointment::find( $appointmentId);
+        if(empty($projectAppointmentData)){
+            return Reply::error('Date Not Found');
         }
-        $ProjectAppointment->status  =  $status;
-        $ProjectAppointment->save();
-        $projectId = $update->project_id;    
+        $projectId = $projectAppointmentData->project_id;
+
+        //echo "<pre>"; print_r($projectAppointmentData); exit;
+        if($status == 'Active'){
+            //Inactive all other Appointment
+            $projectAppointment = new ProjectAppointment();
+            $projectAppointment->updateStatusActive($projectId, $appointmentId);
+
+            //Update appointment in project
+            $project = Project::find( $projectId);
+            $metaData['appointment_day']=$request->appointment_date_time;
+            $project->setMeta($metaData);
+
+        }
+        else{
+            $projectAppointmentData->status  =  $status;
+            $projectAppointmentData->save();
+        }
+
         return Reply::redirect(route($this->showPageRoute, $projectId) , __('Save Success'));
         
     }
@@ -115,23 +136,21 @@ class ManageProjectValuationAppointmentController extends AdminBaseController
             ->editColumn(
                 'dateTime',
                 function ($row) {
-                    return $row->appointment_day;
-                }
-            )
-            ->editColumn(
-                'status',
-                function ($row) {
-                    return $row->status;
+                    return $row->appointment_date_time;
                 }
             )
             ->addColumn('action', function ($row) {
-                    $action = '
-                        <select class="form-control" name="status" onchange="return changeAppointmentStatus('. $row->id.', this)">
-                            <option value="active"> Active</option>
-                            <option value="inactive"> Inactive</option>
-                            <option value="cancel">Cancel</option>
-                        </select>
-                    ' ;
+                $id = $row->id;
+                $status = $row->status;
+                ob_start();
+                ?>
+                <select class="form-control" name="status" onchange="return changeAppointmentStatus('<?php echo $id?>', this)">
+                    <option value="Active" <?php echo ($status == 'Active')?'selected':''?> > Active</option>
+                    <option value="Inactive"  <?php echo ($status == 'Inactive')?'selected':''?> > Inactive</option>
+                    <option value="Cancel"  <?php echo ($status == 'Cancel')?'selected':''?> >Cancel</option>
+                </select>
+                <?php
+                $action = ob_get_clean();
                 return $action;
             })
             ->rawColumns(array('dateTime','status', 'action'))

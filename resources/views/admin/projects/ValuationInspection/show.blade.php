@@ -30,17 +30,19 @@
     <link rel="stylesheet"
           href="{{ asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
     <style>
-        .dataTables_filter label{
-            float:right !important;
+        .dataTables_filter label {
+            float: right !important;
         }
-        .customTable thead{
+
+        .customTable thead {
             background-color: black !important;
         }
-        .customTable thead tr th{
+
+        .customTable thead tr th {
             color: white !important;
         }
-        .customTable th, .customTable td
-        {
+
+        .customTable th, .customTable td {
             font-size: medium !important;
         }
     </style>
@@ -62,17 +64,27 @@
 
                                 <h2>Inspection Report</h2>
 
-                                <table class="table table-bordered table-striped customTable" >
+                                <table class="table table-bordered table-striped customTable">
                                     <thead>
                                     <tr>
-                                        <th>Name</th>
+                                        <th>Title</th>
                                         <th>Value</th>
                                     </tr>
                                     </thead>
-                                    <tr>
-                                        <td>field name </td>
-                                        <td>field value </td>
-                                    </tr>
+
+                                    @if(!empty($valuationInspectionFields))
+                                        @foreach($valuationInspectionFields as $valuationInspectionField)
+                                            <tr>
+                                                <td>{{$valuationInspectionField['field_title']}}</td>
+                                                <td>{{$valuationInspectionField['field_value']}}</td>
+                                            </tr>
+
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="2">Data not Exist</td>
+                                        </tr>
+                                    @endif
                                 </table>
 
 

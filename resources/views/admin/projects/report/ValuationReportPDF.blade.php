@@ -539,68 +539,18 @@
                         <td colspan="3">...</td>
                     </tr>
 
-                    <tr>
-                        <th scope="row">20</th>
-                        <td colspan="2">Site & Ground Conditions</td>
-                        <td colspan="3">...</td>
-                    </tr>
+                    @foreach ($selectedReportData as $key => $selectedReportDataIn)
 
                     <tr>
-                        <th scope="row">21</th>
-                        <td colspan="2">Environmental Issues</td>
-                        <td colspan="3">...</td>
+                        <th scope="row">{{$key+1}}</th>
+                        <td colspan="2">{{$selectedReportDataIn['title']}}</td>
+                        <td colspan="3">{{$selectedReportDataIn['content']}}</td>
                     </tr>
 
-                    <tr>
-                        <th scope="row">22</th>
-                        <td colspan="2">Compliance with Standards</td>
-                        <td colspan="3">...</td>
-                    </tr>
+                    @endforeach
 
-                    <tr>
-                        <th scope="row">23</th>
-                        <td colspan="2">Capacity of Valuer</td>
-                        <td colspan="3">...</td>
-                    </tr>
 
-                    <tr>
-                        <th scope="row">24</th>
-                        <td colspan="2">Conflicts of Interest</td>
-                        <td colspan="3">...</td>
-                    </tr>
 
-                    <tr>
-                        <th scope="row">25</th>
-                        <td colspan="2">Limitation of Liability</td>
-                        <td colspan="3">...</td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row">26</th>
-                        <td colspan="2">Confidentiality & Publication</td>
-                        <td colspan="3">...</td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row">27</th>
-                        <td colspan="2">Monitoring & Reliance</td>
-                        <td colspan="3">...</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">28</th>
-                        <td colspan="2">Property Market Movements</td>
-                        <td colspan="3">...</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">29</th>
-                        <td colspan="2">Disclosure</td>
-                        <td colspan="3">...</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">30</th>
-                        <td colspan="2">Valuer Declaration & Signature</td>
-                        <td colspan="3">...</td>
-                    </tr>
 
                     <tr>
                         <th scope="row"></th>

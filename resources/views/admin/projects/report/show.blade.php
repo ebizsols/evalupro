@@ -139,7 +139,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Modal Header</h4>
+                    <h4 class="modal-title">Report Model</h4>
                 </div>
                 <div class="modal-body">
                     {!! Form::open(['id'=>'generateReport', 'url' => route("admin.report.tempGenerate"),'method'=>'POST']) !!}
@@ -147,50 +147,11 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="informationOfSources">Information Of Sources</label>
+                                <label for="Title">Title</label>
                                 <select class="select2 m-b-10 select2-multiple form-control" multiple="multiple"
-                                        data-placeholder="@lang('modules.messages.chooseMember')" name="conditionRules[]">
-                                    @foreach($informationOfSources as $emp)
-                                        <option value="{{ $emp->id }}">{{ ucwords($emp->description) }} </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="valuatorsLimitations">Valuators Limitations</label>
-                                <select class="select2 m-b-10 select2-multiple form-control" multiple="multiple"
-                                        data-placeholder="@lang('modules.messages.chooseMember')" name="conditionRules[]">
-                                    @foreach($valuatorsLimitations as $emp)
-                                        <option value="{{ $emp->id }}">{{ ucwords($emp->description) }} </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="typeOfReport">Type Of Report</label>
-                                <select class="select2 m-b-10 select2-multiple form-control" multiple="multiple"
-                                        data-placeholder="@lang('modules.messages.chooseMember')" name="conditionRules[]">
-                                    @foreach($typeOfReport as $emp)
-                                        <option value="{{ $emp->id }}">{{ ucwords($emp->description) }} </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="restrictionsOnDistribution">Restrictions On Distribution</label>
-                                <select class="select2 m-b-10 select2-multiple form-control" multiple="multiple"
-                                        data-placeholder="@lang('modules.messages.chooseMember')" name="conditionRules[]">
-                                    @foreach($restrictionsOnDistribution as $emp)
-                                        <option value="{{ $emp->id }}">{{ ucwords($emp->description) }} </option>
+                                        data-placeholder="@lang('modules.messages.chooseMember')" name="reportText[]">
+                                    @foreach($reportConditionalText as $rct)
+                                        <option value="{{ $rct->id }}">{{ ucwords($rct->title) }} </option>
                                     @endforeach
                                 </select>
                             </div>

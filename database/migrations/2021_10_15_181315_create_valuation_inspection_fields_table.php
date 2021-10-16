@@ -19,7 +19,7 @@ class CreateValuationInspectionFieldsTable extends Migration
             $table->foreign('valuation_inspection_id')->references('id')->on('valuation_inspections')->onDelete('cascade')->onUpdate('cascade');
             $table->string('field_title')->default(null);
             $table->string('field_value')->default(null);
-            $table->string('field_data')->default(null);
+            $table->text('field_data')->default(null);
             $table->timestamps();
         });
     }

@@ -6,12 +6,13 @@ use App\Project;
 use App\Currency;
 use Modules\Valuation\Entities\ValuationProperty;
 use Modules\Valuation\Entities\ValuationSowRule;
+use Modules\Valuation\Entities\ReportConditionalText;
 use App\Product;
 use App\ClientDetails;
 use App\ProductCategory;
 use App\ProductSubCategory;
 use Illuminate\Http\Request;
-
+use MacsiDigital\OAuth2\Support\Token\DB;
 
 use Carbon\Carbon;
 
@@ -43,13 +44,14 @@ class ManageProjectReportController extends AdminBaseController
     {
         $this->generateProjectReportRoute = 'admin.report.generate';
         $this->id = $id;
-        $this->informationOfSources =   ValuationSowRule::where('rule_type', ValuationSowRule::InformationOfSources)->get();
-        $this->valuatorsLimitations =   ValuationSowRule::where('rule_type', ValuationSowRule::ValuatorsLimitations)->get();
-        $this->typeOfReport =   ValuationSowRule::where('rule_type', ValuationSowRule::TypeOfReport)->get();
-        $this->restrictionsOnDistribution =   ValuationSowRule::where('rule_type', ValuationSowRule::RestrictionsOnDistribution)->get();
+        $reportConditionalTextObj = new ReportConditionalText();
+        $this->reportConditionalText =   $reportConditionalTextObj->getAllForCompany();
+
+         //dd($reportConditionalText);
         $this->currencies = Currency::all();
             $this->project = Project::findorFail($id);
-
+        // $users = ReportConditionalText::all();
+        // return $users;
         return view('admin.projects.report.show', $this->data);
     }
 
@@ -72,19 +74,42 @@ class ManageProjectReportController extends AdminBaseController
         ];
     }
 
-    public function tempGenerateProjectReport($id)
+    public function tempGenerateProjectReport(Request $request)
     {
+
+        $reportTextIds = isset($request->reportText)?$request->reportText:array();
+
+        $selectedReportData = array();
+
+        foreach($reportTextIds as $reportTextId){
+            $reportConditionalTextObj = new ReportConditionalText();
+            $reportData = $reportConditionalTextObj->where('id',$reportTextId)->first()->toArray();
+            if(!empty($reportData)){
+                $selectedReportData[] = $reportData;
+            }
+        }
+
+        $id = $request->project_id;
+
+
+        // dd($id);
         // Client Name
         $projectObj = new Project();
         $projectInfo = $projectObj::find($id);
 
         $propertyId = $projectInfo['property_id'];
 
-        $propertyInfo = ValuationProperty::find($propertyId)->toArray();
+        $propertyInfo = ValuationProperty::find($propertyId);
+        if($propertyInfo){
+            $propertyInfo = $propertyInfo->toArray();
+        }
 
         $companyId = $propertyInfo['company_id'];
 
-        $clientDetails = ClientDetails::find($companyId)->toArray();
+        $clientDetails = ClientDetails::find($companyId);
+        if($clientDetails){
+            $clientDetails = $clientDetails->toArray();
+        }
         $clientName = (isset($clientDetails['name'])) ? $clientDetails['name'] : 'Not found';
         // End Client Name
 
@@ -92,12 +117,18 @@ class ManageProjectReportController extends AdminBaseController
         $date = Carbon::now("GMT+5")->toDateTimeString();
 
         // Purpose of Valuation
-        $productCategory = ProductCategory::find($companyId)->toArray();
+        $productCategory = ProductCategory::find($companyId);
+        if($productCategory){
+            $productCategory = $productCategory->toArray();
+        }
         $purposeOfValuation = (isset($productCategory['category_name'])) ? $productCategory['category_name'] : "Not found";
         //End Purpose of Valuation
 
         // Basis of Valuation
-        $productSubCategory = ProductSubCategory::find($companyId)->toArray();
+        $productSubCategory = ProductSubCategory::find($companyId);
+        if($productSubCategory){
+            $productSubCategory = $productSubCategory->toArray();
+        }
         $basisOfValuation = (isset($productSubCategory['category_name'])) ? $productSubCategory['category_name'] : "Not found";
 
         // End Basis of Valuation
@@ -113,6 +144,7 @@ class ManageProjectReportController extends AdminBaseController
         $viewData['purposeOfValuation'] = $purposeOfValuation;
         $viewData['basisOfValuation'] = $basisOfValuation;
         $viewData['approachInfo'] = $approachInfo;
+        $viewData['selectedReportData'] = $selectedReportData;
 
         $pdf = app('dompdf.wrapper');
         $pdf->loadView('admin.projects.report.ValuationReportPDF', $viewData);

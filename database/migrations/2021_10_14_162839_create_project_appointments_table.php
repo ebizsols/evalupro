@@ -17,8 +17,9 @@ class CreateProjectAppointmentsTable extends Migration
             $table->id();
             $table->unsignedInteger('project_id')->nullable();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('appointment_day');
-            $table->enum('status', ['Active', 'Inactive','cancel']);
+            $table->string('appointment_date_time');
+            $table->enum('status', ['Active', 'Inactive','Cancel'])->default('Active');
+            $table->enum('is_notification_send', ['0', '1'])->default('0');
             $table->longText('note')->nullable();
             $table->timestamps();
         });
