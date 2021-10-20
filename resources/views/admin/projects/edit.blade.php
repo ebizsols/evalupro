@@ -369,6 +369,23 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label required">Select Products
+                                        </label>
+
+                                        <select name="productId"
+                                                id="productId"
+                                                class="form-control productId select2"
+                                                required>
+                                            <option value="">Select Product</option>
+                                            @foreach ($products as $product)
+                                                <option value="{{$product->id}}" @if($productId == $product->id) selected="selected" @endif>{{$product->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                </div>
                             </div>
                             <!--/span-->
 
@@ -559,6 +576,13 @@
             alert('Please Select Property');
             return false;
         }
+
+        let productId = $('#productId').val();
+        if( productId == ''){
+            alert('Please Select Product');
+            return false;
+        }
+
         $.easyAjax({
             url: '{{route('admin.projects.update', [$project->id])}}',
             container: '#updateProject',
