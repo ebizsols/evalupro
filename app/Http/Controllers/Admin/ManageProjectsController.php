@@ -481,6 +481,8 @@ class ManageProjectsController extends AdminBaseController
         $this->clients = User::allClients();
         $this->categories = ProjectCategory::all();
         $this->project = Project::findOrFail($id)->withCustomFields();
+        $this->productId = isset($this->project->product_id)?$this->project->product_id:0;
+        //echo "<pre>"; print_r($this->project->product_id); exit;
         $this->fields = $this->project->getCustomFieldGroupsWithFields()->fields;
         $this->currencies = Currency::all();
         $propertyObj = new ValuationProperty();
@@ -567,7 +569,12 @@ class ManageProjectsController extends AdminBaseController
         $project->hours_allocated = $request->hours_allocated;
         $project->status = 'in progress';//$request->status;
 
+<<<<<<< HEAD
         $project->property_id = (isset($request->projectPropertyId) && $request->projectPropertyId != '') ? $request->projectPropertyId : '';
+=======
+        $project->property_id = (isset($request->projectPropertyId) && $request->projectPropertyId != '' )?$request->projectPropertyId:'';
+        $project->product_id = (isset($request->productId) && $request->productId != '' )?$request->productId:'';
+>>>>>>> d68e9f9f2c8b9933b6058d64780b2752675f7e57
 
         $project->save();
 

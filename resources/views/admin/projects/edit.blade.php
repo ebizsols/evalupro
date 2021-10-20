@@ -389,7 +389,28 @@
                                             </option>
                                         </select>
                                     </div>
+<<<<<<< HEAD
                                 </div> --}}
+=======
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label required">Select Products
+                                        </label>
+
+                                        <select name="productId"
+                                                id="productId"
+                                                class="form-control productId select2"
+                                                required>
+                                            <option value="">Select Product</option>
+                                            @foreach ($products as $product)
+                                                <option value="{{$product->id}}" @if($productId == $product->id) selected="selected" @endif>{{$product->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                </div>
+>>>>>>> d68e9f9f2c8b9933b6058d64780b2752675f7e57
                             </div>
                             <!--/span-->
 
@@ -561,6 +582,7 @@
         }
         @if ($project->deadline == null)
             $('#deadlineBox').hide();
+<<<<<<< HEAD
         @endif
         $('#without_deadline').click(function() {
             var check = $('#without_deadline').is(":checked") ? true : false;
@@ -643,6 +665,51 @@
                     "disable": false
                 });
             }
+=======
+        }
+        else{
+            $('#deadlineBox').show();
+        }
+    });
+
+    $("#deadline").datepicker({
+        autoclose: true,
+        weekStart:'{{ $global->week_start }}',
+        format: '{{ $global->date_picker_format }}',
+    });
+
+    $("#start_date").datepicker({
+        todayHighlight: true,
+        autoclose: true,
+        weekStart:'{{ $global->week_start }}',
+        format: '{{ $global->date_picker_format }}',
+    }).on('changeDate', function (selected) {
+        var minDate = new Date(selected.date.valueOf());
+        $('#deadline').datepicker('setStartDate', minDate);
+    });
+
+
+
+    $('#save-form').click(function () {
+        let projectPropertyId = $('#projectPropertyId').val();
+        if( projectPropertyId == ''){
+            alert('Please Select Property');
+            return false;
+        }
+
+        let productId = $('#productId').val();
+        if( productId == ''){
+            alert('Please Select Product');
+            return false;
+        }
+
+        $.easyAjax({
+            url: '{{route('admin.projects.update', [$project->id])}}',
+            container: '#updateProject',
+            type: "POST",
+            redirect: true,
+            data: $('#updateProject').serialize()
+>>>>>>> d68e9f9f2c8b9933b6058d64780b2752675f7e57
         })
 
         function saveRangeData(data) {
