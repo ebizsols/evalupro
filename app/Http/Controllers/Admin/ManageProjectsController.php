@@ -189,7 +189,7 @@ class ManageProjectsController extends AdminBaseController
         }
 
         $project->hours_allocated = $request->hours_allocated;
-        $project->status = $request->status;
+        // $project->status = $request->status;
 
         $project->property_id = (isset($request->projectPropertyId) && $request->projectPropertyId != '' )?$request->projectPropertyId:'';
 

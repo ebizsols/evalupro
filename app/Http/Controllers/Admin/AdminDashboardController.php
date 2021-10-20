@@ -84,7 +84,7 @@ class AdminDashboardController extends AdminBaseController
             )
             ->first();
 
-        $timeLog = intdiv($this->counts->totalHoursLogged, 60) . ' ' . __('modules.hrs'). ' ';
+        $timeLog = intdiv($this->counts->totalHoursLogged, 60) . ' ' . __('modules.hrs') . ' ';
 
         if (($this->counts->totalHoursLogged % 60) > 0) {
             $timeLog .= ($this->counts->totalHoursLogged % 60) . ' ' . __('modules.mins');
@@ -178,18 +178,18 @@ class AdminDashboardController extends AdminBaseController
         return view('admin.dashboard.index', $this->data);
     }
 
-//    public function widget(Request $request)
-//    {
-//        $data = $request->all();
-//        unset($data['_token']);
-//        DashboardWidget::where('status', 1)->update(['status' => 0]);
-//
-//        foreach ($data as $key => $widget) {
-//            DashboardWidget::where('widget_name', $key)->update(['status' => 1]);
-//        }
-//
-//        return Reply::redirect(route('admin.dashboard'), __('messages.updatedSuccessfully'));
-//    }
+    //    public function widget(Request $request)
+    //    {
+    //        $data = $request->all();
+    //        unset($data['_token']);
+    //        DashboardWidget::where('status', 1)->update(['status' => 0]);
+    //
+    //        foreach ($data as $key => $widget) {
+    //            DashboardWidget::where('widget_name', $key)->update(['status' => 1]);
+    //        }
+    //
+    //        return Reply::redirect(route('admin.dashboard'), __('messages.updatedSuccessfully'));
+    //    }
 
     public function widget(Request $request, $dashboardType)
     {
@@ -292,7 +292,7 @@ class AdminDashboardController extends AdminBaseController
                 ->limit(10)
                 ->orderBy('companies.last_login', 'desc')
                 ->get();
-//             dd($this->recentLoginActivities);
+            //             dd($this->recentLoginActivities);
             $this->latestClient = User::withoutGlobalScope('active')
                 ->join('role_user', 'role_user.user_id', '=', 'users.id')
                 ->join('roles', 'roles.id', '=', 'role_user.role_id')
@@ -1038,9 +1038,13 @@ class AdminDashboardController extends AdminBaseController
 
             $hoursLogged = ProjectTimeLog::whereBetween(DB::raw('DATE(`created_at`)'), [$this->fromDate, $this->toDate])
                 ->select(DB::raw('(select sum(project_time_logs.total_minutes) from `project_time_logs`) as totalHoursLogged'))
-                ->get()->first()->toArray();
+                ->get()->first();
 
-            $hoursLogged = isset($hoursLogged['totalHoursLogged'])?$hoursLogged['totalHoursLogged']:'0';
+            if ($hoursLogged != null) {
+                $hoursLogged = $hoursLogged->toArray();
+            }
+
+            $hoursLogged = isset($hoursLogged['totalHoursLogged']) ? $hoursLogged['totalHoursLogged'] : '0';
             $timeLog = intdiv($hoursLogged, 60) . ' ' . __('app.hrs') . ' ';
             if (($hoursLogged % 60) > 0) {
                 $timeLog .= ($hoursLogged % 60) . ' ' . __('app.mins');
@@ -1057,7 +1061,7 @@ class AdminDashboardController extends AdminBaseController
                 ->select(DB::raw('count(id) as totalProject'), 'status')
                 ->groupBy('status')
                 ->get()->toJson();
-//             dd($this->statusWiseProject);
+            //             dd($this->statusWiseProject);
 
             $this->pendingMilestone = ProjectMilestone::whereBetween(DB::raw('DATE(project_milestones.`created_at`)'), [$this->fromDate, $this->toDate])
                 ->join('projects', 'projects.id', 'project_milestones.project_id')
