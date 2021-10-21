@@ -38,6 +38,17 @@
 
 @section('content')
 
+    <style>
+        .mTop {
+            margin-top: -10px;
+        }
+
+        .mBot {
+            margin-top: -3.7px;
+        }
+
+    </style>
+
     <div class="row">
         <div class="col-xs-12">
 
@@ -56,7 +67,7 @@
                                                value="{{ $project->project_name }}">
                                     </div>
                                 </div>
-                      
+
                                 <div class="col-md-6 ">
                                     <div class="form-group">
                                         <label class="control-label">@lang('modules.projects.projectCategory') <a
@@ -76,7 +87,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                
+
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-md-6 ">
@@ -209,21 +220,8 @@
                                    value="{{ $project->completion_percent }}">
 
 
-                            <h3 class="box-title m-b-10">Contact person</h3>
-                            <div class="row">
-                                <div class="col-xs-12 col-md-6 ">
-                                    <div class="form-group">
-                                        <label class="required">Contact name</label>
-                                        <input type="text" name="contact_name" id="contact_name" value=" {{ isset($contact_name)?$contact_name: '' }}" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-md-6 ">
-                                    <div class="form-group">
-                                        <label class="required">Contact Phone</label>
-                                        <input type="tel" name="contact_phone" id="contact_phone" value=" {{ isset($contact_phone)?$contact_phone: '' }}" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
+                            {{-- <h3 class="box-title m-b-10">Contact person</h3> --}}
+
                             <h3 class="box-title m-b-10">@lang('modules.projects.clientInfo')</h3>
                             <div class="row">
                                 <div class="col-md-4 ">
@@ -243,8 +241,8 @@
                                         </select>
                                     </div>
                                 </div>
-                            
-                                <div class="col-md-4">
+
+                                <div class="col-md-4 mTop">
                                     <div class="form-group">
                                         <div class="checkbox checkbox-info">
                                             <input id="client_view_task" name="client_view_task" value="true"
@@ -253,7 +251,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-md-4" id="clientNotification">
+                                <div class="col-xs-12 col-md-4 mTop" id="clientNotification">
                                     <div class="form-group">
                                         <div class="checkbox checkbox-info  col-md-10">
                                             <input id="client_task_notification" name="client_task_notification"
@@ -280,7 +278,7 @@
 
                             {{--<h3 class="box-title m-b-30">@lang('modules.projects.budgetInfo')</h3>--}}
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4 mBot">
                                     <div class="form-group">
                                         <label class="control-label required">Select Property <a
                                                     href="javascript:;" id="addProperty"  class="btn btn-xs btn-success btn-outline"><i
@@ -342,54 +340,26 @@
                             </div>
                             <!--/span-->
 
-                        
+
+                            
+                            {{-- Contact Name --}}
                             <div class="row">
-                                {{-- Contact Name --}}
-                                <div class="row">
-                                    <div class="col-xs-12 col-md-6 ">
-                                        <div class="form-group">
-                                            <label class="required">Contact name</label>
-                                            <input type="text" name="contact_name" id="contact_name"
-                                                   value=" {{ isset($contact_name) ? $contact_name : '' }}"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-md-6 ">
-                                        <div class="form-group">
-                                            <label class="required">Contact Phone</label>
-                                            <input type="tel" name="contact_phone" id="contact_phone"
-                                                   value=" {{ isset($contact_phone) ? $contact_phone : '' }}"
-                                                   class="form-control">
-                                        </div>
+                                <div class="col-xs-12 col-md-4 ">
+                                    <div class="form-group">
+                                        <label class="required">Contact name</label>
+                                        <input type="text" name="contact_name" id="contact_name"
+                                                value=" {{ isset($contact_name) ? $contact_name : '' }}"
+                                                class="form-control">
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-xs-12 col-md-4 ">
                                     <div class="form-group">
-                                        <label class="control-label">@lang('app.project') @lang('app.status')</label>
-                                        <select name="status" id="" class="form-control">
-                                            <option
-                                                    @if($project->status == 'not started') selected @endif
-                                            value="not started">@lang('app.notStarted')
-                                            </option>
-                                            <option
-                                                    @if($project->status == 'in progress') selected @endif
-                                            value="in progress">@lang('app.inProgress')
-                                            </option>
-                                            <option
-                                                    @if($project->status == 'on hold') selected @endif
-                                            value="on hold">@lang('app.onHold')
-                                            </option>
-                                            <option
-                                                    @if($project->status == 'canceled') selected @endif
-                                            value="canceled">@lang('app.canceled')
-                                            </option>
-                                            <option
-                                                    @if($project->status == 'finished') selected @endif
-                                            value="finished">@lang('app.finished')
-                                            </option>
-                                        </select>
+                                        <label class="required">Contact Phone</label>
+                                        <input type="tel" name="contact_phone" id="contact_phone"
+                                                value=" {{ isset($contact_phone) ? $contact_phone : '' }}"
+                                                class="form-control">
                                     </div>
-                                </div>--}}
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label required">Select Products
@@ -407,7 +377,35 @@
                                     </div>
 
                                 </div>
-                            </div>
+                            </div> {{-- End Contact Phone --}}
+                            {{-- <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">@lang('app.project') @lang('app.status')</label>
+                                    <select name="status" id="" class="form-control">
+                                        <option
+                                                @if($project->status == 'not started') selected @endif
+                                        value="not started">@lang('app.notStarted')
+                                        </option>
+                                        <option
+                                                @if($project->status == 'in progress') selected @endif
+                                        value="in progress">@lang('app.inProgress')
+                                        </option>
+                                        <option
+                                                @if($project->status == 'on hold') selected @endif
+                                        value="on hold">@lang('app.onHold')
+                                        </option>
+                                        <option
+                                                @if($project->status == 'canceled') selected @endif
+                                        value="canceled">@lang('app.canceled')
+                                        </option>
+                                        <option
+                                                @if($project->status == 'finished') selected @endif
+                                        value="finished">@lang('app.finished')
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>--}}
+                                
                             <!--/span-->
 
                             <div class="row">
@@ -559,9 +557,6 @@
                 $('#clientNotification').hide();
             }
 
-    $(".select2").select2({
-        formatNoMatches: function () {
-            return "{{ __('messages.noRecordFound') }}";
         }
         @if($project->deadline == null)
         $('#deadlineBox').hide();
@@ -653,36 +648,18 @@
                 slider.update({"disable": false});
             }
         })
-    });
 
-    $('.summernote').summernote({
-        height: 200,                 // set editor height
-        minHeight: null,             // set minimum height of editor
-        maxHeight: null,             // set maximum height of editor
-        focus: false,
-        toolbar: [
-            // [groupName, [list of button]]
-            ['style', ['bold', 'italic', 'underline', 'clear']],
-            ['font', ['strikethrough']],
-            ['fontsize', ['fontsize']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['insert', ['link']],
-            ["view", ["fullscreen"]]
-        ]
-    });
+        function saveRangeData(data) {
+            var percent = data.from;
+            $('#completion_percent').val(percent);
+        }
 
-    var completion = $('#completion_percent').val();
-
-    $("#range_01").ionRangeSlider({
-        grid: true,
-        min: 0,
-        max: 100,
-        from: parseInt(completion),
-        postfix: "%",
-        onFinish: saveRangeData
-    });
-
-    var slider = $("#range_01").data("ionRangeSlider");
+        $(':reset').on('click', function(evt) {
+            evt.preventDefault()
+            $form = $(evt.target).closest('form')
+            $form[0].reset()
+            $form.find('select').select2()
+        });
 
         @if($project->calculate_task_progress == "true")
         slider.update({"disable": true});
