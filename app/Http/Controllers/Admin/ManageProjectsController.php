@@ -569,12 +569,9 @@ class ManageProjectsController extends AdminBaseController
         $project->hours_allocated = $request->hours_allocated;
         $project->status = 'in progress';//$request->status;
 
-<<<<<<< HEAD
-        $project->property_id = (isset($request->projectPropertyId) && $request->projectPropertyId != '') ? $request->projectPropertyId : '';
-=======
+        // $project->property_id = (isset($request->projectPropertyId) && $request->projectPropertyId != '') ? $request->projectPropertyId : '';
         $project->property_id = (isset($request->projectPropertyId) && $request->projectPropertyId != '' )?$request->projectPropertyId:'';
         $project->product_id = (isset($request->productId) && $request->productId != '' )?$request->productId:'';
->>>>>>> d68e9f9f2c8b9933b6058d64780b2752675f7e57
 
         $project->save();
 
