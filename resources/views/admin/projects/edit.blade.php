@@ -20,23 +20,34 @@
 @endsection
 
 @push('head-script')
-<link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="{{ asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
-<link rel="stylesheet" href="{{ asset('plugins/bower_components/summernote/dist/summernote.css') }}">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="{{ asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/bower_components/summernote/dist/summernote.css') }}">
 
-<link rel="stylesheet" href="{{ asset('plugins/bower_components/ion-rangeslider/css/ion.rangeSlider.css') }}">
-<link rel="stylesheet"
-      href="{{ asset('plugins/bower_components/ion-rangeslider/css/ion.rangeSlider.skinModern.css') }}">
-<link rel="stylesheet" href="{{ asset('plugins/bower_components/bootstrap-select/bootstrap-select.min.css') }}">
-<link rel="stylesheet" href="{{ asset('plugins/bower_components/custom-select/custom-select.css') }}">
-<style>
-    .panel-black .panel-heading a, .panel-inverse .panel-heading a {
-        color: unset!important;
-    }
-</style>
+    <link rel="stylesheet" href="{{ asset('plugins/bower_components/ion-rangeslider/css/ion.rangeSlider.css') }}">
+    <link rel="stylesheet"
+          href="{{ asset('plugins/bower_components/ion-rangeslider/css/ion.rangeSlider.skinModern.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/bower_components/bootstrap-select/bootstrap-select.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/bower_components/custom-select/custom-select.css') }}">
+    <style>
+        .panel-black .panel-heading a, .panel-inverse .panel-heading a {
+            color: unset!important;
+        }
+    </style>
 @endpush
 
 @section('content')
+
+    <style>
+        .mTop {
+            margin-top: -10px;
+        }
+
+        .mBot {
+            margin-top: -3.7px;
+        }
+
+    </style>
 
     <div class="row">
         <div class="col-xs-12">
@@ -56,11 +67,11 @@
                                                value="{{ $project->project_name }}">
                                     </div>
                                 </div>
-                      
+
                                 <div class="col-md-6 ">
                                     <div class="form-group">
                                         <label class="control-label">@lang('modules.projects.projectCategory') <a
-                                            href="javascript:;" id="addProjectCategory"><i class="ti-settings text-info"></i></a>
+                                                    href="javascript:;" id="addProjectCategory"><i class="ti-settings text-info"></i></a>
                                         </label>
                                         <select class="select2 form-control" name="category_id" id="category_id"
                                                 data-style="form-control">
@@ -76,7 +87,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                
+
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-md-6 ">
@@ -86,7 +97,9 @@
                                                 data-style="form-control">
 
                                             @forelse($approaches as $key => $value)
-                                                <option value="{{$key}}" {{(isset($approaches_value) && ($key==$approaches_value))?'selected':''}}> {{ ucwords($value) }}</option>
+                                                <option value="{{ $key }}"
+                                                        {{ isset($approaches_value) && $key == $approaches_value ? 'selected' : '' }}>
+                                                    {{ ucwords($value) }}</option>
                                             @empty
                                                 <option value=""><a href="javascript:void(0)"
                                                                     role="menuitem">@lang('messages.noRecordFound')</a>
@@ -101,7 +114,9 @@
                                         <select class="selectpicker form-control" name="methods" id="methods"
                                                 data-style="form-control">
                                             @forelse($selectMethods as $key => $value)
-                                                <option value="{{$key}}" {{(isset($methods_value) && ($key==$methods_value))?'selected':''}}@if($key==$methods_value)'selected':'' @endif> {{ ucwords($value) }}</option>
+                                                <option value="{{ $key }}"
+                                                {{ isset($methods_value) && $key == $methods_value ? 'selected' : '' }}@if ($key == $methods_value)'selected':'' @endif>
+                                                {{ ucwords($value) }}</option>
                                             @empty
                                                 <option value=""><a href="javascript:void(0)"
                                                                     role="menuitem">@lang('messages.noRecordFound')</a>
@@ -146,8 +161,7 @@
                                     <div class="form-group">
                                         <div class="checkbox checkbox-info">
                                             <input id="manual_timelog" name="manual_timelog" value="true"
-                                                @if($project->manual_timelog == "enable") checked @endif
-                                                type="checkbox">
+                                                   @if ($project->manual_timelog == 'enable') checked @endif type="checkbox">
                                             <label for="manual_timelog">@lang('modules.projects.manualTimelog')</label>
                                         </div>
                                     </div>
@@ -194,8 +208,7 @@
                                     <div class="form-group last">
                                         <div class="checkbox checkbox-info">
                                             <input id="calculate-task-progress" name="calculate_task_progress" value="true"
-                                                   @if($project->calculate_task_progress == "true") checked @endif
-                                                   type="checkbox">
+                                                   @if ($project->calculate_task_progress == 'true') checked @endif type="checkbox">
                                             <label for="calculate-task-progress">@lang('modules.projects.calculateTasksProgress')</label>
                                         </div>
                                     </div>
@@ -207,21 +220,8 @@
                                    value="{{ $project->completion_percent }}">
 
 
-                            <h3 class="box-title m-b-10">Contact person</h3>
-                            <div class="row">
-                                <div class="col-xs-12 col-md-6 ">
-                                    <div class="form-group">
-                                        <label class="required">Contact name</label>
-                                        <input type="text" name="contact_name" id="contact_name" value=" {{ isset($contact_name)?$contact_name: '' }}" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-md-6 ">
-                                    <div class="form-group">
-                                        <label class="required">Contact Phone</label>
-                                        <input type="tel" name="contact_phone" id="contact_phone" value=" {{ isset($contact_phone)?$contact_phone: '' }}" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
+                            {{-- <h3 class="box-title m-b-10">Contact person</h3> --}}
+
                             <h3 class="box-title m-b-10">@lang('modules.projects.clientInfo')</h3>
                             <div class="row">
                                 <div class="col-md-4 ">
@@ -241,22 +241,21 @@
                                         </select>
                                     </div>
                                 </div>
-                            
-                                <div class="col-md-4">
+
+                                <div class="col-md-4 mTop">
                                     <div class="form-group">
                                         <div class="checkbox checkbox-info">
-                                            <input id="client_view_task" name="client_view_task" value="true" onchange="checkTask()"
-                                                   @if($project->client_view_task == "enable") checked @endif
-                                                   type="checkbox">
+                                            <input id="client_view_task" name="client_view_task" value="true"
+                                                   onchange="checkTask()" @if ($project->client_view_task == 'enable') checked @endif type="checkbox">
                                             <label for="client_view_task">@lang('modules.projects.clientViewTask')</label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-md-4" id="clientNotification">
+                                <div class="col-xs-12 col-md-4 mTop" id="clientNotification">
                                     <div class="form-group">
                                         <div class="checkbox checkbox-info  col-md-10">
-                                            <input id="client_task_notification" name="client_task_notification" value="true"  @if($project->allow_client_notification == "enable") checked @endif
-                                                   type="checkbox">
+                                            <input id="client_task_notification" name="client_task_notification"
+                                                   value="true" @if ($project->allow_client_notification == 'enable') checked @endif type="checkbox">
                                             <label for="client_task_notification">@lang('modules.projects.clientTaskNotification')</label>
                                         </div>
                                     </div>
@@ -279,7 +278,7 @@
 
                             {{--<h3 class="box-title m-b-30">@lang('modules.projects.budgetInfo')</h3>--}}
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4 mBot">
                                     <div class="form-group">
                                         <label class="control-label required">Select Property <a
                                                     href="javascript:;" id="addProperty"  class="btn btn-xs btn-success btn-outline"><i
@@ -310,14 +309,14 @@
                                         <input type="text" class="form-control" name="project_budget" value="{{ $project->project_budget }}">
                                     </div>
                                 </div>--}}
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">@lang('modules.invoices.currency')</label>
                                         <select name="currency_id" id="" class="form-control select2">
                                             <option value="">--</option>
                                             @foreach ($currencies as $item)
                                                 <option
-                                                @if($item->id == $project->currency_id) selected @endif
+                                                        @if($item->id == $project->currency_id) selected @endif
                                                 value="{{ $item->id }}">{{ $item->currency_name }} ({{ $item->currency_code }})</option>
                                             @endforeach
                                         </select>
@@ -329,20 +328,40 @@
                                         <input type="text" name="hours_allocated" class="form-control" value="{{ $project->hours_allocated }}">
                                     </div>
                                 </div>--}}
-
+                                <div class="col-xs-12 col-md-4 ">
+                                    <div class="form-group">
+                                        <label class="">Survey Appointment</label>
+                                        <input type="datetime-local"
+                                               value=" {{ isset($appointment_day) ? $appointment_day : '' }}"
+                                               name="appointment_day" id="appointment_day" class="form-control">
+                                    </div>
+                                </div>
 
                             </div>
                             <!--/span-->
 
-                        
+
                             <div class="row">
-                                <div class="col-xs-12 col-md-4 ">
-                                    <div class="form-group">
-                                        <label class="">Valuation Date</label>
-                                        <input type="datetime-local" value=" {{ isset($appointment_day)?$appointment_day: '' }}" name="appointment_day" id="appointment_day" class="form-control">
+                                {{-- Contact Name --}}
+                                <div class="row">
+                                    <div class="col-xs-12 col-md-6 ">
+                                        <div class="form-group">
+                                            <label class="required">Contact name</label>
+                                            <input type="text" name="contact_name" id="contact_name"
+                                                   value=" {{ isset($contact_name) ? $contact_name : '' }}"
+                                                   class="form-control">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
+                                    <div class="col-xs-12 col-md-6 ">
+                                        <div class="form-group">
+                                            <label class="required">Contact Phone</label>
+                                            <input type="tel" name="contact_phone" id="contact_phone"
+                                                   value=" {{ isset($contact_phone) ? $contact_phone : '' }}"
+                                                   class="form-control">
+                                        </div>
+                                    </div>
+                                </div> {{-- End Contact Phone --}}
+                                {{-- <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">@lang('app.project') @lang('app.status')</label>
                                         <select name="status" id="" class="form-control">
@@ -368,7 +387,7 @@
                                             </option>
                                         </select>
                                     </div>
-                                </div>
+                                </div>--}}
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label required">Select Products
@@ -431,8 +450,8 @@
                                                     @endforeach
                                                 </div>
                                             @elseif($field->type == 'date')
-                                            <input type="text" class="form-control date-picker" size="16" name="custom_fields_data[{{$field->name.'_'.$field->id}}]"
-                                            value="{{ ($project->custom_fields_data['field_'.$field->id] != '') ? \Carbon\Carbon::parse($project->custom_fields_data['field_'.$field->id])->format($global->date_format) : \Carbon\Carbon::now()->format($global->date_format)}}">
+                                                <input type="text" class="form-control date-picker" size="16" name="custom_fields_data[{{$field->name.'_'.$field->id}}]"
+                                                       value="{{ ($project->custom_fields_data['field_'.$field->id] != '') ? \Carbon\Carbon::parse($project->custom_fields_data['field_'.$field->id])->format($global->date_format) : \Carbon\Carbon::now()->format($global->date_format)}}">
                                             @endif
                                             <div class="form-control-focus"> </div>
                                             <span class="help-block"></span>
@@ -505,158 +524,158 @@
 @endsection
 
 @push('footer-script')
-<script src="{{ asset('plugins/bower_components/custom-select/custom-select.min.js') }}"></script>
-<script src="{{ asset('plugins/bower_components/bootstrap-select/bootstrap-select.min.js') }}"></script>
-<script src="{{ asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
-<script src="{{ asset('plugins/bower_components/summernote/dist/summernote.min.js') }}"></script>
+    <script src="{{ asset('plugins/bower_components/custom-select/custom-select.min.js') }}"></script>
+    <script src="{{ asset('plugins/bower_components/bootstrap-select/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('plugins/bower_components/summernote/dist/summernote.min.js') }}"></script>
 
-<script src="{{ asset('plugins/bower_components/ion-rangeslider/js/ion-rangeSlider/ion.rangeSlider.min.js') }}"></script>
+    <script src="{{ asset('plugins/bower_components/ion-rangeslider/js/ion-rangeSlider/ion.rangeSlider.min.js') }}"></script>
 
-<script>
+    <script>
 
-    $(".date-picker").datepicker({
-        todayHighlight: true,
-        autoclose: true,
-        weekStart:'{{ $global->week_start }}',
-        format: '{{ $global->date_picker_format }}'
-    });
+        $(".date-picker").datepicker({
+            todayHighlight: true,
+            autoclose: true,
+            weekStart:'{{ $global->week_start }}',
+            format: '{{ $global->date_picker_format }}'
+        });
 
 
-    $(".select2").select2({
-        formatNoMatches: function () {
-            return "{{ __('messages.noRecordFound') }}";
+        $(".select2").select2({
+            formatNoMatches: function () {
+                return "{{ __('messages.noRecordFound') }}";
+            }
+        });
+        checkTask();
+        function checkTask()
+        {
+            var chVal = $('#client_view_task').is(":checked") ? true : false;
+            if(chVal == true){
+                $('#clientNotification').show();
+            }
+            else{
+                $('#clientNotification').hide();
+            }
+
         }
-    });
-    checkTask();
-    function checkTask()
-    {
-        var chVal = $('#client_view_task').is(":checked") ? true : false;
-        if(chVal == true){
-            $('#clientNotification').show();
-        }
-        else{
-            $('#clientNotification').hide();
-        }
-
-    }
-    @if($project->deadline == null)
+        @if($project->deadline == null)
         $('#deadlineBox').hide();
-    @endif
-    $('#without_deadline').click(function () {
-        var check = $('#without_deadline').is(":checked") ? true : false;
-        if(check == true){
-            $('#deadlineBox').hide();
-        }
-        else{
-            $('#deadlineBox').show();
-        }
-    });
+        @endif
+        $('#without_deadline').click(function () {
+            var check = $('#without_deadline').is(":checked") ? true : false;
+            if(check == true){
+                $('#deadlineBox').hide();
+            }
+            else{
+                $('#deadlineBox').show();
+            }
+        });
 
-    $("#deadline").datepicker({
-        autoclose: true,
-        weekStart:'{{ $global->week_start }}',
-        format: '{{ $global->date_picker_format }}',
-    });
+        $("#deadline").datepicker({
+            autoclose: true,
+            weekStart:'{{ $global->week_start }}',
+            format: '{{ $global->date_picker_format }}',
+        });
 
-    $("#start_date").datepicker({
-        todayHighlight: true,
-        autoclose: true,
-        weekStart:'{{ $global->week_start }}',
-        format: '{{ $global->date_picker_format }}',
-    }).on('changeDate', function (selected) {
-        var minDate = new Date(selected.date.valueOf());
-        $('#deadline').datepicker('setStartDate', minDate);
-    });
+        $("#start_date").datepicker({
+            todayHighlight: true,
+            autoclose: true,
+            weekStart:'{{ $global->week_start }}',
+            format: '{{ $global->date_picker_format }}',
+        }).on('changeDate', function (selected) {
+            var minDate = new Date(selected.date.valueOf());
+            $('#deadline').datepicker('setStartDate', minDate);
+        });
 
 
 
-    $('#save-form').click(function () {
-        let projectPropertyId = $('#projectPropertyId').val();
-        if( projectPropertyId == ''){
-            alert('Please Select Property');
-            return false;
-        }
+        $('#save-form').click(function () {
+            let projectPropertyId = $('#projectPropertyId').val();
+            if( projectPropertyId == ''){
+                alert('Please Select Property');
+                return false;
+            }
 
-        let productId = $('#productId').val();
-        if( productId == ''){
-            alert('Please Select Product');
-            return false;
-        }
+            let productId = $('#productId').val();
+            if( productId == ''){
+                alert('Please Select Product');
+                return false;
+            }
 
-        $.easyAjax({
-            url: '{{route('admin.projects.update', [$project->id])}}',
-            container: '#updateProject',
-            type: "POST",
-            redirect: true,
-            data: $('#updateProject').serialize()
+            $.easyAjax({
+                url: '{{route('admin.projects.update', [$project->id])}}',
+                container: '#updateProject',
+                type: "POST",
+                redirect: true,
+                data: $('#updateProject').serialize()
+            })
+        });
+
+        $('.summernote').summernote({
+            height: 200,                 // set editor height
+            minHeight: null,             // set minimum height of editor
+            maxHeight: null,             // set maximum height of editor
+            focus: false,
+            toolbar: [
+                // [groupName, [list of button]]
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough']],
+                ['fontsize', ['fontsize']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['insert', ['link']],
+                ["view", ["fullscreen"]]
+            ]
+        });
+
+        var completion = $('#completion_percent').val();
+
+        $("#range_01").ionRangeSlider({
+            grid: true,
+            min: 0,
+            max: 100,
+            from: parseInt(completion),
+            postfix: "%",
+            onFinish: saveRangeData
+        });
+
+        var slider = $("#range_01").data("ionRangeSlider");
+
+        $('#calculate-task-progress').change(function () {
+            if($(this).is(':checked')){
+                slider.update({"disable": true});
+            }
+            else{
+                slider.update({"disable": false});
+            }
         })
-    });
 
-    $('.summernote').summernote({
-        height: 200,                 // set editor height
-        minHeight: null,             // set minimum height of editor
-        maxHeight: null,             // set maximum height of editor
-        focus: false,
-        toolbar: [
-            // [groupName, [list of button]]
-            ['style', ['bold', 'italic', 'underline', 'clear']],
-            ['font', ['strikethrough']],
-            ['fontsize', ['fontsize']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['insert', ['link']],
-            ["view", ["fullscreen"]]
-        ]
-    });
-
-    var completion = $('#completion_percent').val();
-
-    $("#range_01").ionRangeSlider({
-        grid: true,
-        min: 0,
-        max: 100,
-        from: parseInt(completion),
-        postfix: "%",
-        onFinish: saveRangeData
-    });
-
-    var slider = $("#range_01").data("ionRangeSlider");
-
-    $('#calculate-task-progress').change(function () {
-        if($(this).is(':checked')){
-            slider.update({"disable": true});
+        function saveRangeData(data) {
+            var percent = data.from;
+            $('#completion_percent').val(percent);
         }
-        else{
-            slider.update({"disable": false});
-        }
-    })
 
-    function saveRangeData(data) {
-        var percent = data.from;
-        $('#completion_percent').val(percent);
-    }
+        $(':reset').on('click', function(evt) {
+            evt.preventDefault()
+            $form = $(evt.target).closest('form')
+            $form[0].reset()
+            $form.find('select').select2()
+        });
 
-    $(':reset').on('click', function(evt) {
-        evt.preventDefault()
-        $form = $(evt.target).closest('form')
-        $form[0].reset()
-        $form.find('select').select2()
-    });
-
-    @if($project->calculate_task_progress == "true")
+        @if($project->calculate_task_progress == "true")
         slider.update({"disable": true});
-    @endif
-</script>
+        @endif
+    </script>
 
-<script>
-    $('#updateProject').on('click', '#addProjectCategory', function () {
-        var url = '{{ route('admin.projectCategory.create-cat')}}';
-        $('#modelHeading').html('Manage Project Category');
-        $.ajaxModal('#projectCategoryModal', url);
-    })
-    $('#updateProject').on('click', '#addProperty', function () {
-        var url = '{{ route('valuation.admin.property.createPropertyModalView')}}';
-        $('#modelHeading').html('Add New Property');
-        $.ajaxModal('#addPropertyModal', url);
-    })
-</script>
+    <script>
+        $('#updateProject').on('click', '#addProjectCategory', function () {
+            var url = '{{ route('admin.projectCategory.create-cat')}}';
+            $('#modelHeading').html('Manage Project Category');
+            $.ajaxModal('#projectCategoryModal', url);
+        })
+        $('#updateProject').on('click', '#addProperty', function () {
+            var url = '{{ route('valuation.admin.property.createPropertyModalView')}}';
+            $('#modelHeading').html('Add New Property');
+            $.ajaxModal('#addPropertyModal', url);
+        })
+    </script>
 @endpush
