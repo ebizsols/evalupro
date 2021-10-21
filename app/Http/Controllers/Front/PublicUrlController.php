@@ -117,16 +117,18 @@ class PublicUrlController extends FrontBaseController
             $roles = !empty($employeesIn->user->roles) ? $employeesIn->user->roles : array();
             foreach ($roles as $role) {
                 $roleName = $role->name ?? '';
-                if ($roleName == 'Valuater') {
+                if ($roleName == 'Valuator') {
                     $isValuator = $employeesIn->user;
                     break;
                 }
             }
         }
-
-        $address = ($property->plot_num ?? '') . ' ' . ($propertyAddBlock->name ?? '') . ' ' . ($propertyAddCity->name ?? '') . ' ' . ($propertyAddGovern->name ?? '');
+        $address =' Plot No : ' . ($property->plot_num ?? '') . '<br/> Block No : ' . ($propertyAddBlock->name ?? '') . '<br/> City : ' . ($propertyAddCity->name ?? '') . '<br/> Governate : ' . ($propertyAddGovern->name ?? '');
         $IntendedUser = $project->getMeta('intendedUsers', null, 'array');
         $valuationDate = $project->getMeta('appointment_day', null, 'string');
+        $valuationDate = strtotime($valuationDate);
+        $valuationDate = date('Y-m-d', $valuationDate);
+
         $userNames = '';
         if($IntendedUser != null){
             $user = ValuationIntendedUser::whereIn('id', $IntendedUser)->pluck('title');
@@ -166,7 +168,7 @@ class PublicUrlController extends FrontBaseController
                 'Currency' => $project->currency->currency_name ?? '',
                 'Purpose Of Valuation' => $product->subCategory->category_name ?? '',
                 'Basis Of Valuation' => $product->category->category_name ?? '',
-                'Valuation Date' => $valuationDate ?? '',
+                'Survey Appointment Date' => $valuationDate ?? '',
             ],
             'property' => [
                 'Type' => $propertyType->title ?? '',

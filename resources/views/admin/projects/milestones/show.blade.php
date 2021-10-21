@@ -191,7 +191,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="informationOfSources">Information Of Sources</label>
-                                <select class="select2 m-b-10 select2-multiple form-control" multiple="multiple"
+                                <select class="select2 m-b-10 select2-multiple form-control" multiple="multiple" required
                                         data-placeholder="@lang('modules.messages.chooseMember')" name="conditionRules['informationOfSources'][]">
                                     @foreach($informationOfSources as $emp)
                                         <option value="{{ $emp->id }}">{{ ucwords($emp->description) }} </option>
@@ -204,7 +204,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="valuatorsLimitations">Valuators Limitations</label>
-                                <select class="select2 m-b-10 select2-multiple form-control" multiple="multiple"
+                                <select class="select2 m-b-10 select2-multiple form-control" multiple="multiple" required
                                         data-placeholder="@lang('modules.messages.chooseMember')" name="conditionRules['valuatorsLimitations'][]">
                                     @foreach($valuatorsLimitations as $emp)
                                         <option value="{{ $emp->id }}">{{ ucwords($emp->description) }} </option>
@@ -217,7 +217,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="typeOfReport">Type Of Report</label>
-                                <select class="select2 m-b-10 select2-multiple form-control" multiple="multiple"
+                                <select class="select2 m-b-10 select2-multiple form-control" multiple="multiple" required
                                         data-placeholder="@lang('modules.messages.chooseMember')" name="conditionRules['typeOfReport'][]">
                                     @foreach($typeOfReport as $emp)
                                         <option value="{{ $emp->id }}">{{ ucwords($emp->description) }} </option>
@@ -230,7 +230,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="restrictionsOnDistribution">Restrictions On Distribution</label>
-                                <select class="select2 m-b-10 select2-multiple form-control" multiple="multiple"
+                                <select class="select2 m-b-10 select2-multiple form-control" multiple="multiple" required
                                         data-placeholder="@lang('modules.messages.chooseMember')" name="conditionRules['restrictionsOnDistribution'][]">
                                     @foreach($restrictionsOnDistribution as $emp)
                                         <option value="{{ $emp->id }}">{{ ucwords($emp->description) }} </option>
@@ -301,8 +301,19 @@
 <script src="{{ asset('plugins/bower_components/multiselect/js/jquery.multi-select.js') }}"></script>
 <script src="{{ asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
 <script>
-    $('#saveUpdateConditionRules').click(function () {
 
+    // $('.ajax-form').submit(function () {
+        // $("input").attr("required", true);
+    // });
+
+    $('#saveUpdateConditionRules').click(function () {
+        var fromData = $('#saveUpdateConditionRulesForm').serializeArray();
+        
+        if(fromData.length <= 2){
+            alert('Please select Atlest one');
+            return false;
+        }
+        
         $.easyAjax({
             url: '{{route('admin.scopeOfWork.sendValues')}}',
             container: '#saveUpdateConditionRulesForm',

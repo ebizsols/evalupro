@@ -63,6 +63,7 @@ class ManageScopeOfWorksController extends AdminBaseController
      */
     public function show($request)
     {
+        // echo "Here"; exit;
         DB::beginTransaction();
         dd($request);
         $scopeOfWork = new ScopeOfWork();
@@ -83,20 +84,22 @@ class ManageScopeOfWorksController extends AdminBaseController
         $scopeOfWork->project_id = $request->project_id;
         $scopeOfWork->meta = json_encode($request->conditionRules);
         $scopeOfWork->estimate_number = ScopeOfWork::lastEstimateNumber() + 1;
-        $days = ValuationGeneralSetting::where('meta_key', 'scopeOfWorkValuerValidTill')->pluck('meta_value');
+        $days = ValuationGeneralSetting::where('meta_key', 'scopeOfWorkValuerValidTill')->first();
+        $days = isset($days->meta_value) ? $days->meta_value : 0;
+        // dd($days);
         $scopeOfWork->valid_till = date('Y-m-d', strtotime("+" . $days . " days"));
         $scopeOfWork->status = 'waiting';
         $scopeOfWork->save();
         $this->logSearchEntry($scopeOfWork->id, 'Estimate #' . $scopeOfWork->id, 'admin.estimates.edit', 'estimate');
         DB::commit();
-        return Reply::redirect(route('admin.milestones.show',$request->project_id), __('Created Successfully'));
+        return Reply::redirect(route('admin.milestones.show', $request->project_id), __('Created Successfully'));
         //return redirect()->back()->with('messages', 'IT WORKS!');
     }
 
     public function create($request, $id)
     {
-        dd($request);
-        dd($_GET);
+        // dd($request);
+        // dd($_GET);
         $this->clients = ClientDetails::all();
         $this->currencies = Currency::all();
         $this->lastEstimate = ScopeOfWork::lastEstimateNumber() + 1;
@@ -232,7 +235,6 @@ class ManageScopeOfWorksController extends AdminBaseController
 
     public function update($request, $id)
     {
-        dd($request);
         $items = $request->input('item_name');
         $itemsSummary = $request->input('item_summary');
         $cost_per_item = $request->input('cost_per_item');
@@ -309,11 +311,11 @@ class ManageScopeOfWorksController extends AdminBaseController
 
     public function destroy($id)
     {
-        $projectId = isset($_POST['projectId'])?$_POST['projectId']:0;
+        $projectId = isset($_POST['projectId']) ? $_POST['projectId'] : 0;
         $firstEstimate = ScopeOfWork::orderBy('id', 'desc')->first();
         if ($firstEstimate->id == $id) {
             ScopeOfWork::destroy($id);
-            return Reply::redirect(route('admin.milestones.show',$projectId), __('Deleted Successfully'));
+            return Reply::redirect(route('admin.milestones.show', $projectId), __('Deleted Successfully'));
         } else {
             return Reply::error(__('messages.estimateCanNotDeleted'));
         }
@@ -348,7 +350,6 @@ class ManageScopeOfWorksController extends AdminBaseController
 
     public function download($id)
     {
-
         $pdfOption = $this->domPdfObjectForDownload($id);
         $pdf = $pdfOption['pdf'];
         $filename = $pdfOption['fileName'];
@@ -369,7 +370,6 @@ class ManageScopeOfWorksController extends AdminBaseController
         }
         $scopeOfWork->save();
         return Reply::success(__('messages.estimateSend'));
-
     }
 
     public function changeStatus(Request $request, $id)
@@ -383,6 +383,7 @@ class ManageScopeOfWorksController extends AdminBaseController
 
     private function scopeOfWorkGetData($estimate)
     {
+        // echo "Here"; exit;
         $project = Project::find($estimate->project_id);
         $property = ValuationProperty::find($project->property_id);
         $product = Product::find($project->product_id);
@@ -396,7 +397,7 @@ class ManageScopeOfWorksController extends AdminBaseController
             $roles = !empty($employeesIn->user->roles) ? $employeesIn->user->roles : array();
             foreach ($roles as $role) {
                 $roleName = $role->name ?? '';
-                if ($roleName == 'Valuater') {
+                if ($roleName == 'Valuator') {
                     $isValuator = $employeesIn->user;
                     break;
                 }
@@ -424,7 +425,7 @@ class ManageScopeOfWorksController extends AdminBaseController
         $propertyInfoTitle = ValuationGeneralSetting::where('meta_key', 'propertyInfoTitle')->pluck('meta_value')[0];
         $valuationGeneralSetting = new ValuationGeneralSetting();
         $data = [
-            'titles'=>[
+            'titles' => [
                 'info' => $valuationInfoTitle ?? $valuationGeneralSetting->data['valuationInfoTitle'],
                 'property' => $propertyInfoTitle ?? $valuationGeneralSetting->data['propertyInfoTitle'],
                 'service' => $serviceInfoTitle ?? $valuationGeneralSetting->data['serviceInfoTitle'],
@@ -454,6 +455,4 @@ class ManageScopeOfWorksController extends AdminBaseController
 
         return $data;
     }
-
-
 }

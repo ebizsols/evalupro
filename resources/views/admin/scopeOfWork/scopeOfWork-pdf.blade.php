@@ -46,7 +46,7 @@
             src: url("{{ asset('fonts/TH_SarabunItalic.ttf') }}") format('truetype');
         }
 
-        @php
+        /* @php
             $font = '';
             if($company->locale == 'ja') {
                 $font = 'ipag';
@@ -57,7 +57,7 @@
             } else {
                 $font = 'noto-sans';
             }
-        @endphp
+        @endphp */
 
         * {
             font-family: {{$font}}, DejaVu Sans , sans-serif;
@@ -374,7 +374,7 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th class="text-left col-xs-6">Tittle</th>
+                    <th class="text-left col-xs-6">Title</th>
                     <th class="text-left col-xs-6">Value</th>
                 </tr>
                 </thead>
@@ -395,7 +395,7 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th class="text-left col-xs-6">Tittle</th>
+                    <th class="text-left col-xs-6">Title</th>
                     <th class="text-left col-xs-6">Value</th>
                 </tr>
                 </thead>
@@ -416,7 +416,7 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th class="text-left col-xs-6">Tittle</th>
+                    <th class="text-left col-xs-6">Title</th>
                     <th class="text-left col-xs-6">Value</th>
                 </tr>
                 </thead>
