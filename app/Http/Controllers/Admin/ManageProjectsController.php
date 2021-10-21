@@ -191,7 +191,7 @@ class ManageProjectsController extends AdminBaseController
         }
 
         $project->hours_allocated = $request->hours_allocated;
-        $project->status = 'in progress';//$request->status;
+        $project->status = 'in progress'; //$request->status;
 
         $project->property_id = (isset($request->projectPropertyId) && $request->projectPropertyId != '') ? $request->projectPropertyId : '';
 
@@ -314,6 +314,8 @@ class ManageProjectsController extends AdminBaseController
      */
     public function show($id)
     {
+        // echo "Here"; exit;
+
         $this->project = Project::findOrFail($id)->withCustomFields();
         $this->fields = $this->project->getCustomFieldGroupsWithFields()->fields;
         $this->activeTimers = ProjectTimeLog::projectActiveTimers($this->project->id);
@@ -338,6 +340,8 @@ class ManageProjectsController extends AdminBaseController
             $now = Carbon::now();
             $this->dayPassed = $this->project->start_date->diffInDays($now);
         }
+        
+
         // Balance Days
         $this->balanceDays = '--';
 
@@ -352,6 +356,7 @@ class ManageProjectsController extends AdminBaseController
             }
         }
 
+        
 
         $this->hoursLogged = $this->project->times()->sum('total_minutes');
 
@@ -382,6 +387,7 @@ class ManageProjectsController extends AdminBaseController
             $this->taskStatus = json_encode($taskStatus);
         }
 
+        
         $this->projectPendingTask = Task::projectOpenTasks($id)->count();
 
         $incomes = [];
@@ -441,6 +447,7 @@ class ManageProjectsController extends AdminBaseController
             ])
             ->toJSON();
 
+            
         //project project data
         $productId = isset($this->project->product_id) ? $this->project->product_id : 0;
         $this->product = Product::find($productId);
@@ -451,14 +458,19 @@ class ManageProjectsController extends AdminBaseController
         $this->selectedPropertyType = isset($selectedPropertyTypeObj->title) ? $selectedPropertyTypeObj->title : 'Property type not selected';
 
         $propertyId = $this->project->property_id;
-        $propertyObj = ValuationProperty::findOrFail($propertyId);
-        $this->propertyType = isset($propertyObj->type_id) ? $propertyObj->type_id : "";
-        $this->propertyType = ValuationPropertyType::findOrFail($this->propertyType);
-        $this->propertyType = $this->propertyType->title;
+        $propertyObj = ValuationProperty::find($propertyId);
+        $this->propertyType = isset($propertyObj->type_id) ? $propertyObj->type_id : 0;
+        $this->propertyType = ValuationPropertyType::find($this->propertyType);
+        $this->propertyType =  isset($this->propertyType->title) ? $this->propertyType->title: '';
 
+        
         $this->city = isset($propertyObj->city_id) ? $propertyObj->city_id : "";
-        $this->city = ValuationCity::findOrFail($this->city);
-        $this->city = $this->city->name;
+        $this->city = ValuationCity::find($this->city);
+        $this->city = isset($this->city->name) ? $this->city->name:'';
+
+        $projectMeta = Project::find($id);
+        $this->contact_name = $projectMeta->getMeta('contact_name');
+        $this->contact_phone = $projectMeta->getMeta('contact_phone');
 
         // echo "<pre>";
         // print_r($this->propertyType);
@@ -481,7 +493,7 @@ class ManageProjectsController extends AdminBaseController
         $this->clients = User::allClients();
         $this->categories = ProjectCategory::all();
         $this->project = Project::findOrFail($id)->withCustomFields();
-        $this->productId = isset($this->project->product_id)?$this->project->product_id:0;
+        $this->productId = isset($this->project->product_id) ? $this->project->product_id : 0;
         //echo "<pre>"; print_r($this->project->product_id); exit;
         $this->fields = $this->project->getCustomFieldGroupsWithFields()->fields;
         $this->currencies = Currency::all();
@@ -567,11 +579,11 @@ class ManageProjectsController extends AdminBaseController
         $project->project_budget = $request->project_budget;
         $project->currency_id = $request->currency_id;
         $project->hours_allocated = $request->hours_allocated;
-        $project->status = 'in progress';//$request->status;
+        $project->status = 'in progress'; //$request->status;
 
         // $project->property_id = (isset($request->projectPropertyId) && $request->projectPropertyId != '') ? $request->projectPropertyId : '';
-        $project->property_id = (isset($request->projectPropertyId) && $request->projectPropertyId != '' )?$request->projectPropertyId:'';
-        $project->product_id = (isset($request->productId) && $request->productId != '' )?$request->productId:'';
+        $project->property_id = (isset($request->projectPropertyId) && $request->projectPropertyId != '') ? $request->projectPropertyId : '';
+        $project->product_id = (isset($request->productId) && $request->productId != '') ? $request->productId : '';
 
         $project->save();
 

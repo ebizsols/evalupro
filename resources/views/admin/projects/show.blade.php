@@ -343,13 +343,13 @@
                                                         <div class="col-xs-6">
                                                             <label class="font-semi-bold">Contact Person</label><br>
                                                             <p>
-                                                                Contact Person Value
+                                                                {{$contact_name}}
                                                             </p>
                                                         </div>
                                                         <div class="col-xs-6">
                                                             <label class="font-semi-bold">Contact No. </label><br>
                                                             <p>
-                                                                Contact No. Value
+                                                                {{$contact_phone}}
                                                             </p>
                                                         </div>
                                                     </div>

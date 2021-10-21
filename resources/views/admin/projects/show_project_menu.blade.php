@@ -9,12 +9,12 @@
                    if($roleName == 'Valuator'){
                        $isValuator = true;
                        break;
-                   }
-               }
+                    }
+                }
            }
            if($isValuator == false){
-          echo '<div class="alert alert-danger">Kindly select valuator!</div>';
-           }
+               echo '<div class="alert alert-danger">Kindly select valuator!</div>';
+            }
     @endphp
 </div>
 <div class="white-box">
