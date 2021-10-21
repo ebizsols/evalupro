@@ -39,6 +39,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use Modules\Valuation\Entities\ValuationProperty;
 use Yajra\DataTables\Facades\DataTables;
 use App\Traits\ProjectProgress;
+use Modules\Valuation\Entities\ValuationCity;
+use Modules\Valuation\Entities\ValuationPropertyType;
 
 class ManageProjectsController extends AdminBaseController
 {
@@ -79,7 +81,7 @@ class ManageProjectsController extends AdminBaseController
         $this->categories = ProjectCategory::all();
 
         $project =  Project::find(1);
-        $updatePropertyMeta["project_meta"]=json_encode($this->allEmployees);
+        $updatePropertyMeta["project_meta"] = json_encode($this->allEmployees);
 
         $project->setMeta($updatePropertyMeta);
 
@@ -119,15 +121,15 @@ class ManageProjectsController extends AdminBaseController
 
         $propertyObj = new ValuationProperty();
         $this->properties = $propertyObj->getAllForCompany();
-        $approaches['marketApproach'] ='Market Approach' ;
+        $approaches['marketApproach'] = 'Market Approach';
         $approaches['incomeApproach'] = 'Income Approach';
-        $approaches['costApproach'] = 'Cost Approach' ;
+        $approaches['costApproach'] = 'Cost Approach';
         $this->approaches = $approaches;
-        $selectMethods['comparisonMethod'] ='The Comparison Method' ;
+        $selectMethods['comparisonMethod'] = 'The Comparison Method';
         $selectMethods['discountedCashFlowMethod'] = 'The Discounted Cash Flow Method';
-        $selectMethods['costMethod'] = 'The Cost Method' ;
-        $selectMethods['profitsMethod'] = 'The Profits Method' ;
-        $selectMethods['residualMethod'] = 'The Residual Method' ;
+        $selectMethods['costMethod'] = 'The Cost Method';
+        $selectMethods['profitsMethod'] = 'The Profits Method';
+        $selectMethods['residualMethod'] = 'The Residual Method';
         $this->selectMethods = $selectMethods;
         $project = new Project();
         $this->upload = can_upload();
@@ -189,17 +191,17 @@ class ManageProjectsController extends AdminBaseController
         }
 
         $project->hours_allocated = $request->hours_allocated;
-        // $project->status = $request->status;
+        $project->status = 'in progress';//$request->status;
 
-        $project->property_id = (isset($request->projectPropertyId) && $request->projectPropertyId != '' )?$request->projectPropertyId:'';
+        $project->property_id = (isset($request->projectPropertyId) && $request->projectPropertyId != '') ? $request->projectPropertyId : '';
 
         $project->save();
 
-        $metaData['approaches']=$request->approaches;
-        $metaData['methods']=$request->methods;
-        $metaData['contact_name']=$request->contact_name;
-        $metaData['contact_phone']=$request->contact_phone;
-        $metaData['appointment_day']=$request->appointment_day;
+        $metaData['approaches'] = $request->approaches;
+        $metaData['methods'] = $request->methods;
+        $metaData['contact_name'] = $request->contact_name;
+        $metaData['contact_phone'] = $request->contact_phone;
+        $metaData['appointment_day'] = $request->appointment_day;
         $project->setMeta($metaData);
 
 
@@ -219,26 +221,25 @@ class ManageProjectsController extends AdminBaseController
             }
 
             //adding template milestone in project milestone
-            $milestones = isset($template->milestones)?$template->milestones:array();
+            $milestones = isset($template->milestones) ? $template->milestones : array();
             $projectMilestoneNewIds = array();
-            foreach($milestones as $milestone){
+            foreach ($milestones as $milestone) {
                 $projectMilestone = new ProjectMilestone();
                 $projectMilestone->project_id = $project->id;
-                $projectMilestone->currency_id = isset($milestone->currency_id)?$milestone->currency_id:'';
-                $projectMilestone->milestone_title = isset($milestone->milestone_title)?$milestone->milestone_title:'';
-                $projectMilestone->summary = isset($milestone->milestone_title)?$milestone->summary:'';
-                $projectMilestone->cost = isset($milestone->milestone_title)?$milestone->cost:'';
-                $projectMilestone->status = isset($milestone->milestone_title)?$milestone->status:'';
+                $projectMilestone->currency_id = isset($milestone->currency_id) ? $milestone->currency_id : '';
+                $projectMilestone->milestone_title = isset($milestone->milestone_title) ? $milestone->milestone_title : '';
+                $projectMilestone->summary = isset($milestone->milestone_title) ? $milestone->summary : '';
+                $projectMilestone->cost = isset($milestone->milestone_title) ? $milestone->cost : '';
+                $projectMilestone->status = isset($milestone->milestone_title) ? $milestone->status : '';
                 $projectMilestone->save();
 
                 $projectMilestoneNewIds[$milestone->id] = $projectMilestone->id;
-
             }
 
             //adding product id in project;
             $projectTemplateProductRefObj = new ProjectTemplateProductRef();
             $projectTemplateProductRefData = $projectTemplateProductRefObj->where('project_template_id', '=', $request->template_id)->first();
-            $tempProductId = isset($projectTemplateProductRefData->product_id)?$projectTemplateProductRefData->product_id:0;
+            $tempProductId = isset($projectTemplateProductRefData->product_id) ? $projectTemplateProductRefData->product_id : 0;
 
             $project = Project::findOrFail($project->id);
             $project->product_id = $tempProductId;
@@ -248,7 +249,7 @@ class ManageProjectsController extends AdminBaseController
                 $projectTask = new Task();
 
                 $projectTask->project_id  = $project->id;
-                $projectTask->milestone_id   = isset($projectMilestoneNewIds[$task->milestone_id])?$projectMilestoneNewIds[$task->milestone_id]:'';
+                $projectTask->milestone_id   = isset($projectMilestoneNewIds[$task->milestone_id]) ? $projectMilestoneNewIds[$task->milestone_id] : '';
 
                 $projectTask->heading     = $task->heading;
                 $projectTask->task_category_id     = $task->project_template_task_category_id;
@@ -284,14 +285,14 @@ class ManageProjectsController extends AdminBaseController
         $users = $request->user_id;
 
         foreach ($users as $user) {
-//            $member = new ProjectMember();
+            //            $member = new ProjectMember();
             $member = ProjectMember::firstOrCreate([
                 'user_id' => $user,
                 'project_id' => $project->id
             ]);
-//            $member->user_id = $user;
-//            $member->project_id = $project->id;
-//            $member->save();
+            //            $member->user_id = $user;
+            //            $member->project_id = $project->id;
+            //            $member->save();
 
             $this->logProjectActivity($project->id, ucwords($member->user->name) . ' ' . __('messages.isAddedAsProjectMember'));
         }
@@ -314,7 +315,6 @@ class ManageProjectsController extends AdminBaseController
     public function show($id)
     {
         $this->project = Project::findOrFail($id)->withCustomFields();
-//        dd($this->project->category);
         $this->fields = $this->project->getCustomFieldGroupsWithFields()->fields;
         $this->activeTimers = ProjectTimeLog::projectActiveTimers($this->project->id);
         if (is_null($this->project->deadline)) {
@@ -334,10 +334,24 @@ class ManageProjectsController extends AdminBaseController
         $this->approaches_value = $this->project->getMeta('approaches');
         $this->methods_value = $this->project->getMeta('methods');
         $this->dayPassed = '--';
-        if(isset($this->project->start_date) && !empty($this->project->start_date)){
+        if (isset($this->project->start_date) && !empty($this->project->start_date)) {
             $now = Carbon::now();
             $this->dayPassed = $this->project->start_date->diffInDays($now);
         }
+        // Balance Days
+        $this->balanceDays = '--';
+
+        if ($this->project->deadline == '') {
+            $this->balanceDays = 'Empty';
+        } else {
+            if (isset($this->project->start_date) && isset($this->project->deadline) && !empty($this->project->start_date) && !empty($this->project->deadline)) {
+                $now = Carbon::now();
+                $dayPassed =  $this->project->start_date->diffInDays($now);
+                $balanceDays = $this->project->deadline->diffInDays($now);
+                $this->balanceDays = $balanceDays - $dayPassed;
+            }
+        }
+
 
         $this->hoursLogged = $this->project->times()->sum('total_minutes');
 
@@ -428,13 +442,28 @@ class ManageProjectsController extends AdminBaseController
             ->toJSON();
 
         //project project data
-        $productId = isset($this->project->product_id)?$this->project->product_id:0;
+        $productId = isset($this->project->product_id) ? $this->project->product_id : 0;
         $this->product = Product::find($productId);
-        $this->productName = isset($this->product->name)?$this->product->name:'--';
-        $this->productCategory = isset($this->product->category->category_name)?$this->product->category->category_name:'--';
-        $this->productSubCategory = isset($this->product->category->category_name)?$this->product->category->category_name:'--';
-        $selectedPropertyTypeObj = isset($this->product->getPropertyType)?$this->product->getPropertyType:null;
-        $this->selectedPropertyType = isset($selectedPropertyTypeObj->title)?$selectedPropertyTypeObj->title:'Property type not selected';
+        $this->productName = isset($this->product->name) ? $this->product->name : '--';
+        $this->productCategory = isset($this->product->category->category_name) ? $this->product->category->category_name : '--';
+        $this->productSubCategory = isset($this->product->subcategory->category_name) ? $this->product->subcategory->category_name : '--';
+        $selectedPropertyTypeObj = isset($this->product->getPropertyType) ? $this->product->getPropertyType : null;
+        $this->selectedPropertyType = isset($selectedPropertyTypeObj->title) ? $selectedPropertyTypeObj->title : 'Property type not selected';
+
+        $propertyId = $this->project->property_id;
+        $propertyObj = ValuationProperty::findOrFail($propertyId);
+        $this->propertyType = isset($propertyObj->type_id) ? $propertyObj->type_id : "";
+        $this->propertyType = ValuationPropertyType::findOrFail($this->propertyType);
+        $this->propertyType = $this->propertyType->title;
+
+        $this->city = isset($propertyObj->city_id) ? $propertyObj->city_id : "";
+        $this->city = ValuationCity::findOrFail($this->city);
+        $this->city = $this->city->name;
+
+        // echo "<pre>";
+        // print_r($this->propertyType);
+        // exit;
+
 
         return view('admin.projects.show', $this->data);
     }
@@ -457,15 +486,15 @@ class ManageProjectsController extends AdminBaseController
         $this->fields = $this->project->getCustomFieldGroupsWithFields()->fields;
         $this->currencies = Currency::all();
         $propertyObj = new ValuationProperty();
-        $approaches['marketApproach'] ='Market Approach' ;
+        $approaches['marketApproach'] = 'Market Approach';
         $approaches['incomeApproach'] = 'Income Approach';
-        $approaches['costApproach'] = 'Cost Approach' ;
+        $approaches['costApproach'] = 'Cost Approach';
         $this->approaches = $approaches;
-        $selectMethods['comparisonMethod'] ='The Comparison Method' ;
+        $selectMethods['comparisonMethod'] = 'The Comparison Method';
         $selectMethods['discountedCashFlowMethod'] = 'The Discounted Cash Flow Method';
-        $selectMethods['costMethod'] = 'The Cost Method' ;
-        $selectMethods['profitsMethod'] = 'The Profits Method' ;
-        $selectMethods['residualMethod'] = 'The Residual Method' ;
+        $selectMethods['costMethod'] = 'The Cost Method';
+        $selectMethods['profitsMethod'] = 'The Profits Method';
+        $selectMethods['residualMethod'] = 'The Residual Method';
         $projectMeta = Project::findOrFail($id);
         $this->approaches_value = $projectMeta->getMeta('approaches');
         $this->methods_value = $projectMeta->getMeta('methods');
@@ -481,7 +510,7 @@ class ManageProjectsController extends AdminBaseController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-    * @param  int $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateProject $request, $id)
@@ -538,18 +567,22 @@ class ManageProjectsController extends AdminBaseController
         $project->project_budget = $request->project_budget;
         $project->currency_id = $request->currency_id;
         $project->hours_allocated = $request->hours_allocated;
-        $project->status = $request->status;
+        $project->status = 'in progress';//$request->status;
 
+<<<<<<< HEAD
+        $project->property_id = (isset($request->projectPropertyId) && $request->projectPropertyId != '') ? $request->projectPropertyId : '';
+=======
         $project->property_id = (isset($request->projectPropertyId) && $request->projectPropertyId != '' )?$request->projectPropertyId:'';
         $project->product_id = (isset($request->productId) && $request->productId != '' )?$request->productId:'';
+>>>>>>> d68e9f9f2c8b9933b6058d64780b2752675f7e57
 
         $project->save();
 
-        $metaData['approaches']=$request->approaches;
-        $metaData['methods']=$request->methods;
-        $metaData['contact_name']=$request->contact_name;
-        $metaData['contact_phone']=$request->contact_phone;
-        $metaData['appointment_day']=$request->appointment_day;
+        $metaData['approaches'] = $request->approaches;
+        $metaData['methods'] = $request->methods;
+        $metaData['contact_name'] = $request->contact_name;
+        $metaData['contact_phone'] = $request->contact_phone;
+        $metaData['appointment_day'] = $request->appointment_day;
         $project->setMeta($metaData);
 
         // To add custom fields data
@@ -856,14 +889,13 @@ class ManageProjectsController extends AdminBaseController
         return Reply::dataOnly(['status' => 'success']);
     }
 
-    public function ajaxCreate(Request $request, $projectId=null)
+    public function ajaxCreate(Request $request, $projectId = null)
     {
         $this->pageName = 'ganttChart';
         $this->employees  = User::allEmployees();
-        if($projectId){
+        if ($projectId) {
             $this->employees = ProjectMember::byProject($projectId);
             $this->projectId = $projectId;
-
         }
         $this->projects = Project::all();
         $this->categories = TaskCategory::all();
@@ -988,11 +1020,11 @@ class ManageProjectsController extends AdminBaseController
         $templateMember  = [];
         $projectTemplate = ProjectTemplate::with('members')->findOrFail($templateId);
 
-        if($projectTemplate->members){
+        if ($projectTemplate->members) {
             $templateMember  = $projectTemplate->members->pluck('user_id')->toArray();
         }
 
-        return Reply::dataOnly(['templateData'=> $projectTemplate, 'member' => $templateMember ]);
+        return Reply::dataOnly(['templateData' => $projectTemplate, 'member' => $templateMember]);
     }
 
     /**
@@ -1001,7 +1033,7 @@ class ManageProjectsController extends AdminBaseController
     public function pinnedItem()
     {
         $this->pinnedItems = Pinned::join('projects', 'projects.id', '=', 'pinned.project_id')
-            ->where('pinned.user_id','=',user()->id)
+            ->where('pinned.user_id', '=', user()->id)
             ->select('projects.id', 'projects.project_name')
             ->get();
 
