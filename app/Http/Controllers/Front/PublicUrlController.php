@@ -39,6 +39,7 @@ use Modules\Valuation\Entities\ValuationGovernorate;
 use Modules\Valuation\Entities\ValuationIntendedUser;
 use Modules\Valuation\Entities\ValuationProperty;
 use Modules\Valuation\Entities\ValuationPropertyClassification;
+use Modules\Valuation\Entities\ValuationPropertyMedia;
 use Modules\Valuation\Entities\ValuationPropertyType;
 use Modules\Valuation\Entities\ValuationPropertyXref;
 use Modules\Valuation\Entities\ValuationSowRule;
@@ -515,6 +516,7 @@ class PublicUrlController extends FrontBaseController
         ]);
         $filename = 'estimate-' . $estimate->id;
 
+
         return [
             'pdf' => $pdf,
             'fileName' => $filename
@@ -526,7 +528,6 @@ class PublicUrlController extends FrontBaseController
         $estimate = ScopeOfWork::whereRaw('md5(id) = ?', $id)->firstOrFail();
         $company = Company::find($estimate->company_id);
         $settings = $company;
-
         $data = $this->scopeOfWorkGetData($estimate);
 
         $pdf = app('dompdf.wrapper');
@@ -560,7 +561,6 @@ class PublicUrlController extends FrontBaseController
         $pdfOption = $this->scopeOfWorkDomPdfObjectForDownload($id);
         $pdf = $pdfOption['pdf'];
         $filename = $pdfOption['fileName'];
-
         return $pdf->download($filename . '.pdf');
     }
 }

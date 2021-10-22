@@ -1,67 +1,15 @@
 <html lang="en">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-    <title>@lang('app.estimate') #{{ (is_null($estimate->estimate_number)) ? $estimate->id : $estimate->estimate_number }}</title>
+    <title>@lang('app.estimate')
+        #{{ is_null($estimate->estimate_number) ? $estimate->id : $estimate->estimate_number }}</title>
     <style>
-        /* Please don't remove this code it is useful in case of add new language in dompdf */
-
-        /* @font-face {
-            font-family: Hind;
-            font-style: normal;
-            font-weight: normal;
-            src: url({{ asset('fonts/hind-regular.ttf') }}) format('truetype');
-        } */
-
-        /* For hindi language  */
-
-        /* * {
-           font-family: Hind, DejaVu Sans, sans-serif;
-        } */
-
-        /* For japanese language */
-
-        @font-face {
-            font-family: 'THSarabun';
-            font-style: normal;
-            font-weight: normal;
-            src: url("{{ asset('fonts/TH_Sarabun.ttf') }}") format('truetype');
-        }
-        @font-face {
-            font-family: 'THSarabun';
-            font-style: normal;
-            font-weight: bold;
-            src: url("{{ asset('fonts/TH_SarabunBold.ttf') }}") format('truetype');
-        }
-        @font-face {
-            font-family: 'THSarabun';
-            font-style: italic;
-            font-weight: bold;
-            src: url("{{ asset('fonts/TH_SarabunBoldItalic.ttf') }}") format('truetype');
-        }
-        @font-face {
-            font-family: 'THSarabun';
-            font-style: italic;
-            font-weight: bold;
-            src: url("{{ asset('fonts/TH_SarabunItalic.ttf') }}") format('truetype');
-        }
-
-        /* @php
-            $font = '';
-            if($company->locale == 'ja') {
-                $font = 'ipag';
-            } else if($company->locale == 'hi') {
-                $font = 'hindi';
-            } else if($company->locale == 'th') {
-                $font = 'THSarabun';
-            } else {
-                $font = 'noto-sans';
-            }
-        @endphp */
-
         * {
-            font-family: {{$font}}, DejaVu Sans , sans-serif;
+            font-family: sans-serif;
         }
+
         .clearfix:after {
             content: "";
             display: table;
@@ -85,7 +33,7 @@
         }
 
         h2 {
-            font-weight:normal;
+            font-weight: normal;
         }
 
         header {
@@ -104,9 +52,6 @@
             margin-bottom: 15px;
         }
 
-        #company {
-
-        }
 
         #details {
             margin-bottom: 50px;
@@ -121,14 +66,11 @@
             color: #777777;
         }
 
-        h2.name, div.name {
+        h2.name,
+        div.name {
             font-size: 1.2em;
             font-weight: normal;
             margin: 0;
-        }
-
-        #invoice {
-
         }
 
         #invoice h1 {
@@ -167,7 +109,8 @@
             text-align: left;
         }
 
-        table td.desc h3, table td.qty h3 {
+        table td.desc h3,
+        table td.qty h3 {
             color: #57B223;
             font-size: 1.2em;
             font-weight: normal;
@@ -197,21 +140,20 @@
 
         table td.unit,
         table td.qty,
-        table td.total
-        {
+        table td.total {
             font-size: 1em;
             text-align: center;
         }
 
-        table td.unit{
+        table td.unit {
             width: 40%;
         }
 
-        table td.desc{
+        table td.desc {
             width: 20%;
         }
 
-        table td.qty{
+        table td.qty {
             width: 8%;
         }
 
@@ -229,12 +171,15 @@
         .status.unpaid {
             background-color: #E7505A;
         }
+
         .status.paid {
             background-color: #26C281;
         }
+
         .status.cancelled {
             background-color: #95A5A6;
         }
+
         .status.error {
             background-color: #F4D03F;
         }
@@ -243,14 +188,17 @@
             text-align: right;
             color: #1BA39C;
         }
+
         table tr.discount .desc {
             text-align: right;
             color: #E43A45;
         }
+
         table tr.subtotal .desc {
             text-align: right;
             color: #1d0707;
         }
+
         table tbody tr:last-child td {
             border: none;
         }
@@ -305,170 +253,173 @@
             text-align: left;
         }
 
-        #notes{
+        #notes {
             color: #767676;
             font-size: 11px;
         }
 
-        .item-summary{
+        .item-summary {
             font-size: 12px
         }
 
-        .mb-3{
+        .mb-3 {
             margin-bottom: 1rem;
         }
+
         .logo {
             text-align: right;
         }
+
         .logo img {
             max-width: 150px;
         }
 
-
     </style>
 </head>
+
 <body>
 
-<header class="clearfix">
 
-    <table cellpadding="0" cellspacing="0" class="billing">
-        <tr>
-            <td>
-                <div id="invoiced_to">
-                    @if($estimate->client && !is_null($estimate->client->client))
-                        <small>@lang("app.client"):</small>
-                        <h2 class="name">{{ $estimate->client->client[0]->company_name }}</h2>
-                        <div>{!! nl2br($estimate->client->client[0]->address) !!}</div>
-                    @endif
-                </div>
-            </td>
-            <td>
-                <div id="company">
-                    <div class="logo">
-                        <img src="{{ invoice_setting()->logo_url }}" alt="home" class="dark-logo" />
+    <header class="clearfix">
+        <table cellpadding="0" cellspacing="0" class="billing">
+            <tr>
+                {{-- Problematic Code --}}
+                {{-- <td>
+                    <div id="invoiced_to">
+                        @if ($estimate->client && !is_null($estimate->client->client))
+                            <small>@lang("app.client"):</small>
+                            <h2 class="name">{{ $estimate->client->client[0]->company_name }}</h2>
+                            <div>{!! nl2br($estimate->client->client[0]->address) !!}</div>
+                        @endif
                     </div>
-                    <small>@lang("modules.invoices.generatedBy"):</small>
-                    <h2 class="name">{{ ucwords($global->company_name) }}</h2>
-                    @if(!is_null($settings))
-                        <div>{!! nl2br($global->address) !!}</div>
-                        <div>P: {{ $global->company_phone }}</div>
-                    @endif
-                </div>
-            </td>
-        </tr>
-    </table>
-</header>
-<main>
-    <div id="details" class="clearfix">
+                </td> --}}
+                {{-- End Problematic Code --}}
+                <td>
+                    <div id="company">
+                        {{-- <div class="logo">
+                            <img src="{{ $global->logo }}" alt="home" class="dark-logo" />
+                        </div> --}}
+                        <small>@lang("modules.invoices.generatedBy"):</small>
+                        <h2 class="name">{{ ucwords($global->company_name) }}</h2>
+                        @if (!is_null($settings))
+                            <div>{!! nl2br($global->address) !!}</div>
+                            <div>P: {{ $global->company_phone }}</div>
+                        @endif
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </header>
+    <main>
+        <div id="details" class="clearfix">
 
-        <div id="invoice">
-            <h1>{{ (is_null($estimate->estimate_number)) ? '#'.$estimate->id : $estimate->estimate_number }}</h1>
-            <div class="date">@lang("modules.estimates.validTill"): {{ $estimate->valid_till->format($global->date_format) }}</div>
-            <div class="">@lang('app.status'): {{ __('app.'.$estimate->status) }}</div>
-        </div>
-
-    </div>
-    <div class="col-xs-12">
-        <div class="table-responsive m-t-40" style="clear: both;">
-            <h3 class="text-left"> <b>{{$allData['info']['service']}}</b></h3>
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th class="text-left col-xs-6">Title</th>
-                    <th class="text-left col-xs-6">Value</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($allData['info'] as $key => $value)
-                    <tr>
-                        <td class="text-left col-xs-6">{!! $key !!} </td>
-                        <td class="text-left col-xs-6"> {!! $value  !!} </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="col-xs-12">
-        <div class="table-responsive m-t-40" style="clear: both;">
-            <h3 class="text-left"> <b>{{$allData['titles']['property']}}</b></h3>
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th class="text-left col-xs-6">Title</th>
-                    <th class="text-left col-xs-6">Value</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($allData['property'] as $key => $value)
-                    <tr>
-                        <td class="text-left col-xs-6">{!! $key !!} </td>
-                        <td class="text-left col-xs-6"> {!! $value  !!} </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="col-xs-12">
-        <div class="table-responsive m-t-40" style="clear: both;">
-            <h3 class="text-left"> <b>{{$allData['titles']['service']}}</b></h3>
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th class="text-left col-xs-6">Title</th>
-                    <th class="text-left col-xs-6">Value</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($allData['product'] as $key => $value)
-                    <tr>
-                        <td class="text-left col-xs-6">{!! $key !!} </td>
-                        <td class="text-left col-xs-6"> {!! $value  !!} </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="col-xs-12">
-        <h3 class="text-left"><b>Conditional applied rule</b></h3>
-    @foreach($allData['conditionRules'] as $key => $value)
-            <div class="col-xs-12">
-                <label for="shipping_address">
-                    @if($key=="'valuatorsLimitations'")
-                        Valuator's Limitations :
-                    @elseif($key=="'informationOfSources'")
-                        Information of Sources :
-                    @elseif($key=="'typeOfReport'")
-                        Type Of Report :
-                    @elseif($key=="'restrictionsOnDistribution'")
-                        Restrictions On Distribution :
-                    @endif
-                </label>
-                @foreach($value as $v)
-                    <span>{{$v->description}} , </span>
-                @endforeach
+            <div id="invoice">
+                <h1>{{ is_null($estimate->estimate_number) ? '#' . $estimate->id : $estimate->estimate_number }}</h1>
+                <div class="date">@lang("modules.estimates.validTill"):
+                    {{ $estimate->valid_till->format($global->date_format) }}</div>
+                <div class="">@lang('app.status'): {{ __('app.' . $estimate->status) }}</div>
             </div>
-        @endforeach
-    </div>
+
+        </div>
+        <div class="col-xs-12">
+            <div class="table-responsive m-t-40" style="clear: both;">
+                <h3 class="text-left"> <b>{{ $allData['titles']['info'] }}</b></h3>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-left col-xs-6">Title</th>
+                            <th class="text-left col-xs-6">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($allData['info'] as $key => $value)
+                            <tr>
+                                <td class="text-left col-xs-6">{!! $key !!} </td>
+                                <td class="text-left col-xs-6"> {!! $value !!} </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div class="table-responsive m-t-40" style="clear: both;">
+                <h3 class="text-left"> <b>{{ $allData['titles']['property'] }}</b></h3>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-left col-xs-6">Title</th>
+                            <th class="text-left col-xs-6">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($allData['property'] as $key => $value)
+                            <tr>
+                                <td class="text-left col-xs-6">{!! $key !!} </td>
+                                <td class="text-left col-xs-6"> {!! $value !!} </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div class="table-responsive m-t-40" style="clear: both;">
+                <h3 class="text-left"> <b>{{ $allData['titles']['service'] }}</b></h3>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-left col-xs-6">Title</th>
+                            <th class="text-left col-xs-6">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($allData['product'] as $key => $value)
+                            <tr>
+                                <td class="text-left col-xs-6">{!! $key !!} </td>
+                                <td class="text-left col-xs-6"> {!! $value !!} </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <h3 class="text-left"><b>Conditional applied rule</b></h3>
+            @foreach ($allData['conditionRules'] as $key => $value)
+                <div class="col-xs-12">
+                    <label for="shipping_address">
+                        @if ($key == "'valuatorsLimitations'")
+                            Valuator's Limitations :
+                        @elseif($key=="'informationOfSources'")
+                            Information of Sources :
+                        @elseif($key=="'typeOfReport'")
+                            Type Of Report :
+                        @elseif($key=="'restrictionsOnDistribution'")
+                            Restrictions On Distribution :
+                        @endif
+                    </label>
+                    @foreach ($value as $v)
+                        <span>{{ $v->description }} , </span>
+                    @endforeach
+                </div>
+            @endforeach
+        </div>
         <p>&nbsp;</p>
         <hr>
         <p id="notes">
-            @if(!is_null($estimate->note))
+            @if (!is_null($estimate->note))
                 {!! nl2br($estimate->note) !!}<br>
             @endif
-{{--            @if(!is_null($invoiceSetting->estimate_terms))--}}
-{{--               {!! nl2br($invoiceSetting->estimate_terms) !!}--}}
-{{--            @endif--}}
         </p>
-
-        @if($estimate->sign)
+        @if ($estimate->sign)
             <div style="text-align: right;">
-                <h2 class="name" style="margin-bottom: 20px;">@lang('modules.estimates.signature') (@lang('app.customers'))</h2>
-                    <img src="{{ $estimate->sign->signature }}" style="width: 250px;">
+                <h2 class="name" style="margin-bottom: 20px;">@lang('modules.estimates.signature')
+                    (@lang('app.customers'))</h2>
+                <img src="{{ $estimate->sign->signature }}" style="width: 250px;">
             </div>
         @endif
-</main>
+    </main>
 </body>
+
 </html>
