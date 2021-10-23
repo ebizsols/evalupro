@@ -88,6 +88,9 @@ class ManageTasksController extends AdminBaseController
         $task->billable = $request->has('billable') && $request->billable == 'true' ? 1 : 0;
         $task->estimate_hours = $request->estimate_hours;
         $task->estimate_minutes = $request->estimate_minutes;
+        // Survey Task
+        $task->is_survey_task = $request->has('is_survey_task') && $request->is_survey_task == 'true' ? 1 : 0;
+        
 
         if ($request->milestone_id != '') {
             $task->milestone_id = $request->milestone_id;
@@ -183,6 +186,8 @@ class ManageTasksController extends AdminBaseController
         $task->billable = $request->has('billable') && $request->billable == 'true' ? 1 : 0;
         $task->estimate_hours = $request->estimate_hours;
         $task->estimate_minutes = $request->estimate_minutes;
+        // Survey Task
+        $task->is_survey_task = $request->has('is_survey_task') && $request->is_survey_task == 'true' ? 1 : 0;
 
         $taskBoardColumn = TaskboardColumn::findOrFail($request->status);
         if ($taskBoardColumn->slug == 'completed') {

@@ -80,6 +80,9 @@ class ManageProjectValuationAppointmentController extends AdminBaseController
         $store->appointment_date_time=isset($request->appointment_date_time) ? $request->appointment_date_time : 0 ;
         $store->status=isset($request->status) ? $request->status : 'Active' ;
         $store->note=isset($request->description) ? $request->description : '';
+        // isNotification Checkbox
+        $store->is_notification_send = $request->has('is_notification_send') && $request->is_notification_send == 'true' ? 1 : 0;
+
         $store->save();
         $projectAppointment = new ProjectAppointment();
 
@@ -105,6 +108,8 @@ class ManageProjectValuationAppointmentController extends AdminBaseController
             return Reply::error('Date Not Found');
         }
         $projectId = $projectAppointmentData->project_id;
+          // isNotification Checkbox
+          $projectAppointmentData->is_notification_send = $request->has('is_notification_send') && $request->is_notification_send == 'true' ? 1 : 0;
 
         //echo "<pre>"; print_r($projectAppointmentData); exit;
         if($status == 'Active'){

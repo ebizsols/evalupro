@@ -60,7 +60,7 @@
                                             <div class="row">
                                                 <div class="col-xs-6">
                                                     <div class="form-group">
-                                                        <label class="">Valuation Date</label>
+                                                        <label class="control-label required">Appointment Date</label>
                                                         <input type="datetime-local" name="appointment_date_time" id="appointment_date_time"
                                                                class="form-control">
                                                     </div>
@@ -77,9 +77,9 @@
                                                 <div class="col-xs-6">
                                                     <div class="form-group">
                                                         <div class="checkbox checkbox-info">
-                                                            <input id="private-task" name="is_private" value="true"
+                                                            <input id="is_notification_send" name="is_notification_send" value="true"
                                                                    type="checkbox">
-                                                            <label for="private-task">Send Notification <a
+                                                            <label for="is_notification_send">Send Notification <a
                                                                         class="mytooltip font-12" href="javascript:void(0)"> <i
                                                                             class="fa fa-info-circle"></i><span
                                                                             class="tooltip-content5"><span

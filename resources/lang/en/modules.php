@@ -350,6 +350,8 @@ return array(
     'onDeadlineReminder' => 'Send task reminder on the day of deadline',
     'postDeadlineReminder' => 'Send task reminder after',
     'makePrivate' => 'Make Private',
+    'surveyTask' => 'Is Survey Task',
+    'surveyTaskInfo' => 'Check this if you want to send a notification to Surveyor',
     'privateInfo' => 'Private tasks are only visible to admin, assignor and assignee.',
     'createActivity' => 'Task is created by',
     'updateActivity' => 'Task details are updated by ',

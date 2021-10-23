@@ -111,6 +111,18 @@
                         </div>
                     </div>
 
+                     {{-- New isSurvey Code --}}
+                     <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="checkbox checkbox-info">
+                                <input id="is_survey_task" name="is_survey_task" value="true" @if($task->is_survey_task && $task->is_survey_task == 1) checked @endif 
+                                       type="checkbox">
+                                <label for="is_survey_task">@lang('modules.tasks.surveyTask') <a class="mytooltip font-12" href="javascript:void(0)"> <i class="fa fa-info-circle"></i><span class="tooltip-content5"><span class="tooltip-text3"><span class="tooltip-inner2">@lang('modules.tasks.surveyTaskInfo')</span></span></span></a></label>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- End New isSurvey Code --}}
+
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label required">@lang('app.startDate')</label>

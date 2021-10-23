@@ -351,8 +351,11 @@ class ManageProjectsController extends AdminBaseController
             if (isset($this->project->start_date) && isset($this->project->deadline) && !empty($this->project->start_date) && !empty($this->project->deadline)) {
                 $now = Carbon::now();
                 $dayPassed =  $this->project->start_date->diffInDays($now);
-                $balanceDays = $this->project->deadline->diffInDays($now);
-                $this->balanceDays = $balanceDays - $dayPassed;
+                $deadline = $this->project->deadline->diffInDays($now);
+                $this->balanceDays = $deadline - $dayPassed;
+                if (  $this->balanceDays < 0 ) {
+                    $this->balanceDays = 0;
+                }
             }
         }
 
