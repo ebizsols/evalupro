@@ -178,7 +178,7 @@ class TaskFormFieldsController extends ApiBaseController
     public function updateSubTaskStatus($subTaskId)
     {
         $subTask = \App\SubTask::findOrFail($subTaskId);
-        $subTask->status = 'completed';
+        $subTask->status = 'complete';
         $subTask->save();
     }
 }
