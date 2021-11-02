@@ -424,14 +424,14 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $this->floorLevelBase = $weightageIdFloorLevelBase['value'];
         $this->amenitiesBase = $weightageIdAmenitiesBase['value'];
 
-        $propertyBaseInfo->estimated_value = $this->estimatedValueBase;
-        $propertyBaseInfo->aptSizeIPMS = $this->sizeInSquareMeterBase;
-        $propertyBaseInfo->bedrooms = $this->noOfBedroomBase;
-        $propertyBaseInfo->bathrooms = $this->noOfBathroomBase;
-        $propertyBaseInfo->finishingQuality = $this->finishingQualityBase;
-        $propertyBaseInfo->maintenance = $this->maintenanceBase;
-        $propertyBaseInfo->floorLevel = $this->floorLevelBase;
-        $propertyBaseInfo->amenities = $this->amenitiesBase;
+        $propertyBaseInfo->estimated_value = (isset($this->estimatedValueBase) && $this->estimatedValueBase != '') ? $this->estimatedValueBase:0;
+        $propertyBaseInfo->aptSizeIPMS = (isset($this->sizeInSquareMeterBase) && $this->sizeInSquareMeterBase != '') ? $this->sizeInSquareMeterBase: 0;
+        $propertyBaseInfo->bedrooms = (isset($this->noOfBedroomBase) && $this->noOfBedroomBase != '') ? $this->noOfBedroomBase: 0;
+        $propertyBaseInfo->bathrooms = (isset($this->noOfBathroomBase) && $this->noOfBathroomBase != '') ? $this->noOfBathroomBase: 0;
+        $propertyBaseInfo->finishingQuality = (isset($this->finishingQualityBase) && $this->finishingQualityBase != '') ? $this->finishingQualityBase: 0;
+        $propertyBaseInfo->maintenance = (isset($this->maintenanceBase) && $this->maintenanceBase != '') ? $this->maintenanceBase: 0;
+        $propertyBaseInfo->floorLevel = (isset($this->floorLevelBase) && $this->floorLevelBase != '') ? $this->floorLevelBase: 0;
+        $propertyBaseInfo->amenities = (isset($this->amenitiesBase) && $this->amenitiesBase != '') ? $this->amenitiesBase: 0;
 
         // 1st Comparison
         $propertyInfoOne = ValuationProperty::find($propertyIdOne);
@@ -471,14 +471,15 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $this->floorLevelOne = $weightageIdFloorLevelOne['value'];
         $this->amenitiesOne = $weightageIdAmenitiesOne['value'];
         
-        $propertyInfoOne->estimated_value = $this->estimatedValueOne;
-        $propertyInfoOne->aptSizeIPMS = $this->sizeInSquareMeterOne;
-        $propertyInfoOne->bedrooms = $this->noOfBedroomOne;
-        $propertyInfoOne->bathrooms = $this->noOfBathroomOne;
-        $propertyInfoOne->finishingQuality = $this->finishingQualityOne;
-        $propertyInfoOne->maintenance = $this->maintenanceOne;
-        $propertyInfoOne->floorLevel = $this->floorLevelOne;
-        $propertyInfoOne->amenities = $this->amenitiesOne;
+        $propertyInfoOne->estimated_value = (isset($this->estimatedValueOne) && $this->estimatedValueOne != '') ? $this->estimatedValueOne: 0;
+        $propertyInfoOne->aptSizeIPMS = (isset($this->sizeInSquareMeterOne) && $this->sizeInSquareMeterOne != '') ? $this->sizeInSquareMeterOne: 0;
+        // dd($propertyInfoOne->aptSizeIPMS);
+        $propertyInfoOne->bedrooms = (isset($this->noOfBedroomOne) && $this->noOfBedroomOne != '') ? $this->noOfBedroomOne: 0;
+        $propertyInfoOne->bathrooms = (isset($this->noOfBathroomOne) && $this->noOfBathroomOne != '') ? $this->noOfBathroomOne: 0;
+        $propertyInfoOne->finishingQuality = (isset($this->finishingQualityOne) && $this->finishingQualityOne != '') ? $this->finishingQualityOne: 0;
+        $propertyInfoOne->maintenance = (isset($this->maintenanceOne) && $this->maintenanceOne != '') ? $this->maintenanceOne: 0;
+        $propertyInfoOne->floorLevel = (isset($this->floorLevelOne) && $this->floorLevelOne != '') ? $this->floorLevelOne: 0;
+        $propertyInfoOne->amenities = (isset($this->amenitiesOne) && $this->amenitiesOne != '') ? $this->amenitiesOne: 0;
         
         // 2nd Comparison
         $propertyInfoTwo = ValuationProperty::find($propertyIdTwo);
@@ -517,14 +518,14 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $this->floorLevelTwo = $weightageIdFloorLevelTwo['value'];
         $this->amenitiesTwo = $weightageIdAmenitiesTwo['value'];
 
-        $propertyInfoTwo->estimated_value = $this->estimatedValueTwo;
-        $propertyInfoTwo->aptSizeIPMS = $this->sizeInSquareMeterTwo;
-        $propertyInfoTwo->bedrooms = $this->noOfBedroomTwo;
-        $propertyInfoTwo->bathrooms = $this->noOfBathroomTwo;
-        $propertyInfoTwo->finishingQuality = $this->finishingQualityTwo;
-        $propertyInfoTwo->maintenance = $this->maintenanceTwo;
-        $propertyInfoTwo->floorLevel = $this->floorLevelTwo;
-        $propertyInfoTwo->amenities = $this->amenitiesTwo;
+        $propertyInfoTwo->estimated_value = (isset($this->estimatedValueTwo) && $this->estimatedValueTwo != '') ? $this->estimatedValueTwo: 0;
+        $propertyInfoTwo->aptSizeIPMS = (isset($this->sizeInSquareMeterTwo) && $this->sizeInSquareMeterTwo != '') ? $this->sizeInSquareMeterTwo: 0;
+        $propertyInfoTwo->bedrooms = (isset($this->noOfBedroomTwo) && $this->noOfBedroomTwo != '') ? $this->noOfBedroomTwo: 0;
+        $propertyInfoTwo->bathrooms = (isset($this->noOfBathroomTwo) && $this->noOfBathroomTwo != '') ? $this->noOfBathroomTwo: 0;
+        $propertyInfoTwo->finishingQuality = (isset($this->finishingQualityTwo) && $this->finishingQualityTwo != '') ? $this->finishingQualityTwo: 0;
+        $propertyInfoTwo->maintenance = (isset($this->maintenanceTwo) && $this->maintenanceTwo != '') ? $this->maintenanceTwo: 0;
+        $propertyInfoTwo->floorLevel = (isset($this->floorLevelTwo) && $this->floorLevelTwo != '') ? $this->floorLevelTwo: 0;
+        $propertyInfoTwo->amenities = (isset($this->amenitiesTwo) && $this->amenitiesTwo != '') ? $this->amenitiesTwo: 0;
 
         // 3rd Comparison
         $propertyInfoThree = ValuationProperty::findOrFail($propertyIdThree);
@@ -563,14 +564,14 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $this->floorLevelThree = $weightageIdFloorLevelThree['value'];
         $this->amenitiesThree = $weightageIdAmenitiesThree['value'];
         
-        $propertyInfoThree->estimated_value = $this->estimatedValueThree;
-        $propertyInfoThree->aptSizeIPMS = $this->sizeInSquareMeterThree;
-        $propertyInfoThree->bedrooms = $this->noOfBedroomThree;
-        $propertyInfoThree->bathrooms = $this->noOfBathroomThree;
-        $propertyInfoThree->finishingQuality = $this->finishingQualityThree;
-        $propertyInfoThree->maintenance = $this->maintenanceThree;
-        $propertyInfoThree->floorLevel = $this->floorLevelThree;
-        $propertyInfoThree->amenities = $this->amenitiesThree;
+        $propertyInfoThree->estimated_value = (isset($this->estimatedValueThree) && $this->estimatedValueThree != '') ? $this->estimatedValueThree: 0;
+        $propertyInfoThree->aptSizeIPMS = (isset($this->sizeInSquareMeterThree) && $this->sizeInSquareMeterThree != '') ? $this->sizeInSquareMeterThree: 0;
+        $propertyInfoThree->bedrooms = (isset($this->noOfBedroomThree) && $this->noOfBedroomThree != '') ? $this->noOfBedroomThree: 0;
+        $propertyInfoThree->bathrooms = (isset($this->noOfBathroomThree) && $this->noOfBathroomThree != '') ? $this->noOfBathroomThree: 0;
+        $propertyInfoThree->finishingQuality = (isset($this->finishingQualityThree) && $this->finishingQualityThree != '') ? $this->finishingQualityThree: 0;
+        $propertyInfoThree->maintenance = (isset($this->maintenanceThree) && $this->maintenanceThree != '') ? $this->maintenanceThree: 0;
+        $propertyInfoThree->floorLevel = (isset($this->floorLevelThree) && $this->floorLevelThree != '') ? $this->floorLevelThree: 0;
+        $propertyInfoThree->amenities = (isset($this->amenitiesThree) && $this->amenitiesThree != '') ? $this->amenitiesThree: 0;
         
 
         //compare Processing start
