@@ -830,14 +830,13 @@
             var id = $(this).data('milestone-id');
             var url = '{{ route('admin.milestones.detail', ':id') }}';
             url = url.replace(':id', id);
-            $('#modelHeading').html('@lang('
-                app.update ') @lang('
-                modules.projects.milestones ')');
+            $('#modelHeading').html(@lang('app.update')@lang('modules.projects.milestones'));
             $.ajaxModal('#projectCategoryModal', url);
         })
 
         $('.submit-ticket').click(function() {
 
+            // alert('test');
             const status = $(this).data('status');
             const url = '{{ route('admin.projects.updateStatus', $project->id) }}';
             const token = '{{ csrf_token() }}'

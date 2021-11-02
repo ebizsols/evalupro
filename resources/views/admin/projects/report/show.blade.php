@@ -29,12 +29,132 @@
 @endpush
 
 @section('content')
+{{-- Table --}}
+<style>
+    .tCenter {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
 
+{{-- Table --}}
     <div class="row">
         <div class="col-xs-12">
             <section>
                 <div class="sttabs tabs-style-line">
                     @include('admin.projects.show_project_menu')
+                    <div class="row tCenter my-3">
+                        <div class="col-md-10">
+                            <input type="hidden" name="helper">
+                            <table class="table table-bordered table-hover table-striped table-responsive table-md text-center">
+                                <tbody>
+                                  <tr>
+                                    <th scope="row">1</th>
+                                    <td>Client's Name</td>
+                                    <td>{{ $clientName }}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">2</th>
+                                    <td>Subject Property</td>
+                                    <td>{{ $propertyType }}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">3</th>
+                                    <td>Inspection Date</td>
+                                    <td>Dummy</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">4</th>
+                                    <td>Valuation Date</td>
+                                    <td>{{ $valuationDate }}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">5</th>
+                                    <td>Report Date</td>
+                                    <td>{{ $date }}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">6</th>
+                                    <td>Valuator Name</td>
+                                    <td>{{ $roleName }}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">7</th>
+                                    <td>Purpose of Valutation</td>
+                                    <td>{{ $purposeOfValuation }}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">8</th>
+                                    <td>Basis of Valuation</td>
+                                    <td>{{ $basisOfValuation }}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">9</th>
+                                    <td>Valuation Approach</td>
+                                    <td>{{ $approachInfo }}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">10</th>
+                                    <td>Valuation Method</td>
+                                    <td>{{ $valuationMethod }}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">11</th>
+                                    <td>Land Size (IPMS-1)</td>
+                                    <td>{{ $landSizeMeterSquare }} m2 {{ $landSizeSquareFeet }} sq.ft</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">12</th>
+                                    <td>Plot No.</td>
+                                    <td>{{$plotNumber}}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">13</th>
+                                    <td>No. of Access Roads</td>
+                                    <td>{{$noOfRoads}}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">14</th>
+                                    <td>Land Shape</td>
+                                    <td>{{$landShape}}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">15</th>
+                                    <td>Land Category</td>
+                                    <td>{{$landCategory}}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">16</th>
+                                    <td>Land Classification</td>
+                                    <td>{{$landClassification}}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">17</th>
+                                    <td>Area Name</td>
+                                    <td>{{$cityName}}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">18</th>
+                                    <td>Property Location</td>
+                                    <td>{{$locality}}</td>
+                                  </tr>
+                                  {{-- Property Valuation --}}
+                                  {{-- Table of Comparable --}}
+                                  {{-- Table --}}
+                                 
+                                  {{-- Table --}}
+                                </tbody>
+                              </table>
+                              
+                              @include('admin.projects.ValuationMethodology.ComparisionApartmentRes', $comparisonContent)
+                              {{-- Include View --}}
+                              {{-- @php echo $projectMeta; exit; @endphp --}}
+                              {{-- @php $data = $projectMeta @endphp --}}
+                              {{-- End Include View --}}
+                             
+                        </div>
+                    </div>
                     <div class="content-wrap col-xs-12">
                         <section id="section-line-3" class="show">
                             <div class="row">
@@ -101,7 +221,7 @@
                                                             <div class="col-xs-12">
 
                                                                 <button
-                                                                        class="btn btn-success btn-outline Pull-left" type="button" data-toggle="modal" data-target="#addRuleModel"><i
+                                                                        class="btn btn-success btn-outline pull-right " type="button" data-toggle="modal" data-target="#addRuleModel"><i
                                                                             class="fa fa-check"></i> Generate Report
                                                                 </button>
                                                             </div>

@@ -119,6 +119,7 @@
 
                                         {!! Form::open(['id'=>'createMembers','class'=>'ajax-form','method'=>'POST']) !!}
                                         <input type="hidden" name="basePropertyId" value="{{$basePropertyId}}">
+                                        <input type="hidden" name="projectId" value="{{$projectId}}">
                                         <div class="col-md-9 b-l">
                                             <div class="panel panel-inverse">
 
@@ -307,6 +308,7 @@
 
         //    save project members
         $('#compare').click(function () {
+            
             $.easyAjax({
                 url: '{{route('admin.valuation-method.processComparison')}}',
                 container: '#createMembers',

@@ -192,6 +192,7 @@ class ManageProjectsController extends AdminBaseController
 
         $project->hours_allocated = $request->hours_allocated;
         $project->status = 'in progress'; //$request->status;
+        // $project->status = $request->status;
 
         $project->property_id = (isset($request->projectPropertyId) && $request->projectPropertyId != '') ? $request->projectPropertyId : '';
 
@@ -202,6 +203,8 @@ class ManageProjectsController extends AdminBaseController
         $metaData['contact_name'] = $request->contact_name;
         $metaData['contact_phone'] = $request->contact_phone;
         $metaData['appointment_day'] = $request->appointment_day;
+        // Methodology Log
+        // End Methodology Log
         $project->setMeta($metaData);
 
 
@@ -583,6 +586,7 @@ class ManageProjectsController extends AdminBaseController
         $project->currency_id = $request->currency_id;
         $project->hours_allocated = $request->hours_allocated;
         $project->status = 'in progress'; //$request->status;
+        // $project->status = $request->status;
 
         // $project->property_id = (isset($request->projectPropertyId) && $request->projectPropertyId != '') ? $request->projectPropertyId : '';
         $project->property_id = (isset($request->projectPropertyId) && $request->projectPropertyId != '') ? $request->projectPropertyId : '';

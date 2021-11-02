@@ -61,7 +61,9 @@ class Project extends \App\Project
 
     public function tasks()
     {
-        return $this->hasMany(Task::class, 'project_id');
+        // echo "Here"; exit;
+        return $this->hasMany(Task::class, 'project_id')
+            ->where('is_survey_task', '=', 1);
     }
 
     public function client()
@@ -111,7 +113,7 @@ class Project extends \App\Project
 
     public function getTotalEarningsAttribute()
     {
-         return Payment::where('status', 'complete')
+        return Payment::where('status', 'complete')
             ->where('project_id', $this->id)
             ->sum('amount');
     }

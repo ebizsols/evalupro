@@ -126,7 +126,7 @@
                         <td>{{ $date }}</td>
                     </tr>
                     <tr>
-                        <th scope="row">Valuer Name & Details</th>
+                        <th scope="row">Valuator Name & Details</th>
                         <td>
                             Ali Adnan Hasan Mahmood <br />
                             Corporate Valuation Officer <br />
@@ -152,10 +152,6 @@
                     <tr>
                         <th scope="row">Valuation Approach</th>
                         <td>{{ $approachInfo }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Inspection Date</th>
-                        <td>10th February 2021</td>
                     </tr>
                     <tr>
                         <th scope="row">Valuation Method</th>

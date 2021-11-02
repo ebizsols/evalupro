@@ -190,7 +190,7 @@ class ManageScopeOfWorksController extends AdminBaseController
         $scopeOfWork->discount_type = $request->discount_type;
         $scopeOfWork->status = 'waiting';
         /*dd($estimate->estimate_number);*/
-        dd($scopeOfWork);
+        // dd($scopeOfWork);
         $scopeOfWork->save();
 
         // To add custom fields data
@@ -431,13 +431,13 @@ class ManageScopeOfWorksController extends AdminBaseController
                 'service' => $serviceInfoTitle ?? $valuationGeneralSetting->data['serviceInfoTitle'],
             ],
             'info' => [
-                'Valuer' => $isValuator->name ?? '',
+                'Valuator' => $isValuator->name ?? '',
                 'Client' => $project->client->name ?? '',
                 'Intended User' => $userNames ?? '',
                 'Currency' => $project->currency->currency_name ?? '',
                 'Purpose Of Valuation' => $product->subCategory->category_name ?? '',
                 'Basis Of Valuation' => $product->category->category_name ?? '',
-                'Valuation Date' => $valuationDate ?? '',
+                'Survey Appointment Date' => $valuationDate ?? '',
             ],
             'property' => [
                 'Type' => $propertyType->title ?? '',

@@ -1,3 +1,4 @@
+
 <table class="table table-striped compareResTable">
     <thead>
         <tr>
@@ -408,4 +409,50 @@
         /* vertical-align: middle; */
     }
 
+    .saveButton {
+        margin-bottom: 50px;
+    }
+
 </style>
+
+@if(!isset($hideContent))
+<div class="row saveButton">
+    <div class="col-md-12">
+        {!! Form::open(['id' => 'generateMethodologyComparison', 'class' => 'ajax-form', 'method' => 'POST']) !!}
+        <input type="hidden" name="projectId" value="{{$projectId}}">
+        <input type="hidden" name="basePropertyId" value="{{$basePropertyId}}">
+        <input type="hidden" name="comparePropertyOne" value="{{$comparePropertyOne}}">
+        <input type="hidden" name="comparePropertyTwo" value="{{$comparePropertyTwo}}">
+        <input type="hidden" name="comparePropertyThree" value="{{$comparePropertyThree}}">
+        <input type="hidden" name="saveData" value="true">
+        {!! Form::close() !!}
+        <button 
+            id="save-comparison" class="btn btn-success btn-outline pull-right" type="submit"><i
+            class="fa fa-check"></i> Save
+        </button>
+    </div>
+</div>
+
+
+
+@push('footer-script')
+    <script src="{{ asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('plugins/bower_components/bootstrap-select/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('plugins/bower_components/custom-select/custom-select.min.js') }}"></script>
+    <script src="{{ asset('plugins/bower_components/bootstrap-select/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('js/FormFieldsRepeater/repeater.js') }}"></script>
+@endpush
+
+<script>
+    $('#save-comparison').click(function() {
+    $.easyAjax({
+        url: " {{ route('admin.valuation-method.processComparison') }} ",
+        type: "POST",
+        container: '#generateMethodologyComparison',
+        redirect: true,
+        file: true,
+        data: $('#generateMethodologyComparison').serialize(),
+        })
+        });
+</script>
+@endif

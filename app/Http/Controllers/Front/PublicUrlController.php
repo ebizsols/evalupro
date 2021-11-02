@@ -163,7 +163,7 @@ class PublicUrlController extends FrontBaseController
                 'service' => ($serviceInfoTitle != '') ? $serviceInfoTitle : $valuationGeneralSetting->data['serviceInfoTitle'],
             ],
             'info' => [
-                'Valuer' => $isValuator->name ?? '',
+                'Valuator' => $isValuator->name ?? '',
                 'Client' => $project->client->name ?? '',
                 'Intended User' => $userNames ?? '',
                 'Currency' => $project->currency->currency_name ?? '',
@@ -177,7 +177,7 @@ class PublicUrlController extends FrontBaseController
                 'Address' => $address,
             ],
             'product' => [
-                'Tittle' => $product->name ?? '',
+                'Title' => $product->name ?? '',
                 'Category' => $product->category->category_name ?? '',
                 'Sub Category' => $product->subCategory->category_name ?? '',
                 'Price' => $product->price ?? '',

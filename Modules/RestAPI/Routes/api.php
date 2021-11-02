@@ -1,7 +1,8 @@
 <?php
 
-ApiRoute::group(['namespace' => 'Modules\RestAPI\Http\Controllers'], function () {
+use Froiden\RestAPI\Facades\ApiRoute;
 
+ApiRoute::group(['namespace' => 'Modules\RestAPI\Http\Controllers'], function () {
     ApiRoute::get('app', ['as' => 'api.app', 'uses' => 'AppController@app']);
 
     // Forgot Password

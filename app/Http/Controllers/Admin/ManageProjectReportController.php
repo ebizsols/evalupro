@@ -11,11 +11,15 @@ use App\Product;
 use App\ClientDetails;
 use App\ProductCategory;
 use App\ProductSubCategory;
+use App\ProjectMember;
+use App\User;
 use Illuminate\Http\Request;
 use MacsiDigital\OAuth2\Support\Token\DB;
-
 use Carbon\Carbon;
-
+use Modules\Valuation\Entities\ValuationCity;
+use Modules\Valuation\Entities\ValuationPropertyCategorization;
+use Modules\Valuation\Entities\ValuationPropertyClassification;
+use Modules\Valuation\Entities\ValuationPropertyType;
 
 class ManageProjectReportController extends AdminBaseController
 {
@@ -40,7 +44,7 @@ class ManageProjectReportController extends AdminBaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $this->generateProjectReportRoute = 'admin.report.generate';
         $this->id = $id;
@@ -49,15 +53,99 @@ class ManageProjectReportController extends AdminBaseController
 
          //dd($reportConditionalText);
         $this->currencies = Currency::all();
-            $this->project = Project::findorFail($id);
+            $this->project = Project::find($id);
         // $users = ReportConditionalText::all();
         // return $users;
+
+        // New Code
+         $projectObj = new Project();
+         $projectInfo = $projectObj::find($id);
+         $propertyId = $projectInfo['property_id'];
+         $productId = $projectInfo->product_id;
+
+        $productData = Product::find($productId);
+        $categoryId = $productData->category_id;
+        $subCategoryId = $productData->sub_category_id;
+        $productCategory = ProductCategory::find($categoryId);
+        if($productCategory){
+            $productCategory = $productCategory->toArray();
+        }
+        $this->purposeOfValuation = (isset($productCategory['category_name'])) ? $productCategory['category_name'] : "Not found";
+
+        $productSubCategory = ProductSubCategory::find($subCategoryId);
+        if($productSubCategory){
+            $productSubCategory = $productSubCategory->toArray();
+        }
+        $this->basisOfValuation = (isset($productSubCategory['category_name'])) ? $productSubCategory['category_name'] : "Not found";
+
+        $this->approachInfo = $projectObj::find($id)->getMeta('approaches');
+         $propertyInfo = ValuationProperty::find($propertyId);
+         if($propertyInfo){
+             $propertyInfo = $propertyInfo->toArray();
+         }
+ 
+         $companyId = $propertyInfo['company_id'];
+ 
+         $clientDetails = ClientDetails::find($companyId);
+         if($clientDetails){
+             $clientDetails = $clientDetails->toArray();
+         }
+         $this->clientName = (isset($clientDetails['name'])) ? $clientDetails['name'] : 'Not found';
+         $this->date = Carbon::now("GMT+5")->toDateTimeString();
+ 
+        //  New Dynamic Data
+        $propertyData = ValuationProperty::find($propertyId);
+        $subjectProperty = $propertyData->type_id;
+        $propertyType = ValuationPropertyType::find($subjectProperty);
+        $this->propertyType = $propertyType->title;
+
+        $valuationDate = $projectInfo->created_at->toArray();
+        $this->valuationDate = $valuationDate['formatted'];
+
+        $projectId = $projectInfo->id;
+        $projectMembers = new ProjectMember;
+        $projectMembersData = $projectMembers->where('project_id',$projectId)->first();
+        $userId = $projectMembersData->user_id;
+
+        $userData = User::find($userId);
+        $this->roleName = $userData->name;
+
+        $this->valuationMethod = $projectObj::find($id)->getMeta('methods');
+
+        $this->landSizeMeterSquare = $propertyData->sizes_in_meter_sq;
+        $this->landSizeSquareFeet = $propertyData->sizes_in_sq_feet;
+        $this->plotNumber = $propertyData->plot_num;
+        $this->noOfRoads = $propertyData->no_of_roads;
+        $this->landShape = $propertyData->land_structure_type;
+        $this->locality = $propertyData->locality;
+
+
+        $categorizationId = $propertyData->categorization_id;
+        $landCategory = ValuationPropertyCategorization::find($categorizationId);
+        $this->landCategory = $landCategory->title;
+
+        $classificationId = $propertyData->classification_id;
+        $landClassification = ValuationPropertyClassification::find($classificationId);
+        $this->landClassification = $landClassification->title;
+
+        $cityId = $propertyData->city_id;
+        $cityName = ValuationCity::find($cityId);
+        $this->cityName = $cityName->name;
+
+        $comparisonContent = (array)json_decode($projectInfo->getMeta('methodologyResult'));
+        $comparisonContent['hideContent'] = true;
+        $this->comparisonContent = $comparisonContent;
+        // dd("Here");
+        //echo "<pre>"; print_r($this->comparisonContect); exit;
+
+        //  End New Dynamic Data
+       
+
         return view('admin.projects.report.show', $this->data);
     }
 
     public function processProjectReport($id)
     {
-
         $project = Project::findorFail($id);
         $viewData = array();
 
@@ -76,7 +164,6 @@ class ManageProjectReportController extends AdminBaseController
 
     public function tempGenerateProjectReport(Request $request)
     {
-
         $reportTextIds = isset($request->reportText)?$request->reportText:array();
 
         $selectedReportData = array();
