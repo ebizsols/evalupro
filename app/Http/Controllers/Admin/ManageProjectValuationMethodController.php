@@ -396,27 +396,27 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $this->estimatedValueBase = 0;
         $this->sizeInSquareMeterBase = isset($propertyBaseInfo->sizes_in_meter_sq) ? $propertyBaseInfo->sizes_in_meter_sq : 0;
         $noOfBedroomBase = $propertyBaseInfo->getMeta(ValuationProperty::NoOfBedroomText);
-        $noOfBedroomBase = (isset($noOfBedroomBase[0]) && $noOfBedroomBase[0] != '') ? $noOfBedroomBase[0]:0;
+        $noOfBedroomBase = (isset($noOfBedroomBase[0]) && $noOfBedroomBase[0] != '' && !empty($noOfBedroomBase[0])) ? $noOfBedroomBase[0]:0;
         $noOfBathroomBase = $propertyBaseInfo->getMeta(ValuationProperty::NoOfBathoomsText);
-        $noOfBathroomBase = (isset($noOfBathroomBase[0]) && $noOfBathroomBase[0] != '') ? $noOfBathroomBase[0]:0;
+        $noOfBathroomBase = (isset($noOfBathroomBase[0]) && $noOfBathroomBase[0] != '' && !empty($noOfBathroomBase[0])) ? $noOfBathroomBase[0]:0;
         $finishingQualityBase = $propertyBaseInfo->getMeta(ValuationProperty::FinishingQualityText);
-        $finishingQualityBase = (isset($finishingQualityBase[0]) && $finishingQualityBase[0] != '') ? $finishingQualityBase[0]:0;
+        $finishingQualityBase = (isset($finishingQualityBase[0]) && $finishingQualityBase[0] != '' && !empty($finishingQualityBase[0])) ? $finishingQualityBase[0]:0;
         $maintenanceBase = $propertyBaseInfo->getMeta(ValuationProperty::MaintenanceText);
-        $maintenanceBase = (isset($maintenanceBase[0]) && $maintenanceBase[0] != '') ? $maintenanceBase[0]:0;
+        $maintenanceBase = (isset($maintenanceBase[0]) && $maintenanceBase[0] != '' && !empty($maintenanceBase[0])) ? $maintenanceBase[0]:0;
         $floorLevelBase = $propertyBaseInfo->getMeta(ValuationProperty::FloorlevelText);
-        $floorLevelBase = (isset($floorLevelBase[0]) && $floorLevelBase[0] != '') ? $floorLevelBase[0]:0;
+        $floorLevelBase = (isset($floorLevelBase[0]) && $floorLevelBase[0] != '' && !empty($floorLevelBase[0])) ? $floorLevelBase[0]:0;
         $amenitiesBase = $propertyBaseInfo->getMeta(ValuationProperty::AmenitiesText);
-        $amenitiesBase = (isset($amenitiesBase[0]) && $amenitiesBase[0] != '') ? $amenitiesBase[0]:0;
+        $amenitiesBase = (isset($amenitiesBase[0]) && $amenitiesBase[0] != '' && !empty($amenitiesBase[0])) ? $amenitiesBase[0]:0;
 
         //Valuation Property Weightage BASE
         $valuationWeightage = new ValuationPropertyWeightage();
-        $weightageIdBedroomBase = $valuationWeightage::find($noOfBedroomBase[0]);
-        $weightageIdBathroomBase = $valuationWeightage::find($noOfBathroomBase[0]);
-        $weightageIdFinishingBase = $valuationWeightage::find($finishingQualityBase[0]);
-        $weightageIdMaintenanceBase = $valuationWeightage::find($maintenanceBase[0]);
-        $weightageIdFloorLevelBase = $valuationWeightage::find($floorLevelBase[0]);
-        $weightageIdAmenitiesBase = $valuationWeightage::find($amenitiesBase[0]);
-
+        $weightageIdBedroomBase = $valuationWeightage::find($noOfBedroomBase);
+        $weightageIdBathroomBase = $valuationWeightage::find($noOfBathroomBase);
+        $weightageIdFinishingBase = $valuationWeightage::find($finishingQualityBase);
+        $weightageIdMaintenanceBase = $valuationWeightage::find($maintenanceBase);
+        $weightageIdFloorLevelBase = $valuationWeightage::find($floorLevelBase);
+        $weightageIdAmenitiesBase = $valuationWeightage::find($amenitiesBase);
+    
         $this->noOfBedroomBase = $weightageIdBedroomBase['value'];
         $this->noOfBathroomBase = $weightageIdBathroomBase['value'];
         $this->finishingQualityBase = $weightageIdFinishingBase['value'];
@@ -439,31 +439,29 @@ class ManageProjectValuationMethodController extends AdminBaseController
         // $this->estimatedValueOne = isset($propertyInfoOne->estimated_value) ? $propertyInfoOne->estimated_value : 0;
         // Temporary Property Value
         $this->estimatedValueOne = $propertyInfoOne->getMeta(ValuationProperty::EstimatedValuePropertyInfo);
-        $this->estimatedValueOne = (isset($this->estimatedValueOne[0]) && $this->estimatedValueOne[0] != '') ? $this->estimatedValueOne[0]:0;
-        // Temporary Property Value
+        $this->estimatedValueOne = (isset($this->estimatedValueOne[0]) && $this->estimatedValueOne[0] != ''  && !empty($this->estimatedValueOne[0])) ? $this->estimatedValueOne[0]:0;
         $this->sizeInSquareMeterOne = isset($propertyInfoOne->sizes_in_meter_sq) ? $propertyInfoOne->sizes_in_meter_sq : 0;
         $noOfBedroomOne = $propertyInfoOne->getMeta(ValuationProperty::NoOfBedroomText);
-        $noOfBedroomOne = (isset($noOfBedroomOne[0]) && $noOfBedroomOne[0] != '') ? $noOfBedroomOne[0]:0;
+        $noOfBedroomOne = (isset($noOfBedroomOne[0]) && $noOfBedroomOne[0] != ''  && !empty($noOfBedroomOne[0])) ? $noOfBedroomOne[0]:0;
         $noOfBathroomOne = $propertyInfoOne->getMeta(ValuationProperty::NoOfBathoomsText);
-        $noOfBathroomOne = (isset($noOfBathroomOne[0]) && $noOfBathroomOne[0] != '') ? $noOfBathroomOne[0]:0;
+        $noOfBathroomOne = (isset($noOfBathroomOne[0]) && $noOfBathroomOne[0] != ''  && !empty($noOfBathroomOne[0])) ? $noOfBathroomOne[0]:0;
         $finishingQualityOne = $propertyInfoOne->getMeta(ValuationProperty::FinishingQualityText);
-        $finishingQualityOne = (isset($finishingQualityOne[0]) && $finishingQualityOne[0] != '') ? $finishingQualityOne[0]:0;
+        $finishingQualityOne = (isset($finishingQualityOne[0]) && $finishingQualityOne[0] != ''  && !empty($finishingQualityOne[0])) ? $finishingQualityOne[0]:0;
         $maintenanceOne = $propertyInfoOne->getMeta(ValuationProperty::MaintenanceText);
-        $maintenanceOne = (isset($maintenanceOne[0]) && $maintenanceOne[0] != '') ? $maintenanceOne[0]:0;
+        $maintenanceOne = (isset($maintenanceOne[0]) && $maintenanceOne[0] != ''  && !empty($maintenanceOne[0])) ? $maintenanceOne[0]:0;
         $floorLevelOne = $propertyInfoOne->getMeta(ValuationProperty::FloorlevelText);
-        $floorLevelOne = (isset($floorLevelOne[0]) && $floorLevelOne[0] != '') ? $floorLevelOne[0]:0;
+        $floorLevelOne = (isset($floorLevelOne[0]) && $floorLevelOne[0] != ''  && !empty($floorLevelOne[0])) ? $floorLevelOne[0]:0;
         $amenitiesOne = $propertyInfoOne->getMeta(ValuationProperty::AmenitiesText);
-        $amenitiesOne = (isset($amenitiesOne[0]) && $amenitiesOne[0] != '') ? $amenitiesOne[0]:0;
-        
+        $amenitiesOne = (isset($amenitiesOne[0]) && $amenitiesOne[0] != ''  && !empty($amenitiesOne[0])) ? $amenitiesOne[0]:0;
         
         //Valuation Property Weightage ONE
-        $weightageIdBedroomOne = $valuationWeightage::find($noOfBedroomOne[0]);
-        $weightageIdBathroomOne = $valuationWeightage::find($noOfBathroomOne[0]);
-        $weightageIdFinishingOne = $valuationWeightage::find($finishingQualityOne[0]);
-        $weightageIdMaintenanceOne = $valuationWeightage::find($maintenanceOne[0]);
-        $weightageIdFloorLevelOne = $valuationWeightage::find($floorLevelOne[0]);
-        $weightageIdAmenitiesOne = $valuationWeightage::find($amenitiesOne[0]);
-        
+        $weightageIdBedroomOne = $valuationWeightage::find($noOfBedroomOne);
+        $weightageIdBathroomOne = $valuationWeightage::find($noOfBathroomOne);
+        $weightageIdFinishingOne = $valuationWeightage::find($finishingQualityOne);
+        $weightageIdMaintenanceOne = $valuationWeightage::find($maintenanceOne);
+        $weightageIdFloorLevelOne = $valuationWeightage::find($floorLevelOne);
+        $weightageIdAmenitiesOne = $valuationWeightage::find($amenitiesOne);
+
         $this->noOfBedroomOne = $weightageIdBedroomOne['value'];
         $this->noOfBathroomOne = $weightageIdBathroomOne['value'];
         $this->finishingQualityOne = $weightageIdFinishingOne['value'];
@@ -473,7 +471,6 @@ class ManageProjectValuationMethodController extends AdminBaseController
         
         $propertyInfoOne->estimated_value = (isset($this->estimatedValueOne) && $this->estimatedValueOne != '') ? $this->estimatedValueOne: 0;
         $propertyInfoOne->aptSizeIPMS = (isset($this->sizeInSquareMeterOne) && $this->sizeInSquareMeterOne != '') ? $this->sizeInSquareMeterOne: 0;
-        // dd($propertyInfoOne->aptSizeIPMS);
         $propertyInfoOne->bedrooms = (isset($this->noOfBedroomOne) && $this->noOfBedroomOne != '') ? $this->noOfBedroomOne: 0;
         $propertyInfoOne->bathrooms = (isset($this->noOfBathroomOne) && $this->noOfBathroomOne != '') ? $this->noOfBathroomOne: 0;
         $propertyInfoOne->finishingQuality = (isset($this->finishingQualityOne) && $this->finishingQualityOne != '') ? $this->finishingQualityOne: 0;
@@ -487,29 +484,29 @@ class ManageProjectValuationMethodController extends AdminBaseController
         // $this->estimatedValueTwo = isset($propertyInfoTwo->estimated_value) ? $propertyInfoTwo->estimated_value : 0;
          // Temporary Property Value
          $this->estimatedValueTwo = $propertyInfoTwo->getMeta(ValuationProperty::EstimatedValuePropertyInfo);
-         $this->estimatedValueTwo = (isset($this->estimatedValueTwo[0]) && $this->estimatedValueTwo[0] != '') ? $this->estimatedValueTwo[0]:0;
+         $this->estimatedValueTwo = (isset($this->estimatedValueTwo[0]) && $this->estimatedValueTwo[0] != '' && !empty($this->estimatedValueTwo[0])) ? $this->estimatedValueTwo[0]:0;
          // Temporary Property Value
         $this->sizeInSquareMeterTwo = isset($propertyInfoTwo->sizes_in_meter_sq) ? $propertyInfoTwo->sizes_in_meter_sq : 0;
         $noOfBedroomTwo = $propertyInfoTwo->getMeta(ValuationProperty::NoOfBedroomText);
-        $noOfBedroomTwo = (isset($noOfBedroomTwo[0]) && $noOfBedroomTwo[0] != '') ? $noOfBedroomTwo[0]:0;
+        $noOfBedroomTwo = (isset($noOfBedroomTwo[0]) && $noOfBedroomTwo[0] != '' && !empty($noOfBedroomTwo[0])) ? $noOfBedroomTwo[0]:0;
         $noOfBathroomTwo = $propertyInfoTwo->getMeta(ValuationProperty::NoOfBathoomsText);
-        $noOfBathroomTwo = (isset($noOfBathroomTwo[0]) && $noOfBathroomTwo[0] != '') ? $noOfBathroomTwo[0]:0;
+        $noOfBathroomTwo = (isset($noOfBathroomTwo[0]) && $noOfBathroomTwo[0] != '' && !empty($noOfBathroomTwo[0])) ? $noOfBathroomTwo[0]:0;
         $finishingQualityTwo = $propertyInfoTwo->getMeta(ValuationProperty::FinishingQualityText);
-        $finishingQualityTwo = (isset($finishingQualityTwo[0]) && $finishingQualityTwo[0] != '') ? $finishingQualityTwo[0]:0;
+        $finishingQualityTwo = (isset($finishingQualityTwo[0]) && $finishingQualityTwo[0] != '' && !empty($finishingQualityTwo[0])) ? $finishingQualityTwo[0]:0;
         $maintenanceTwo = $propertyInfoTwo->getMeta(ValuationProperty::MaintenanceText);
-        $maintenanceTwo = (isset($maintenanceTwo[0]) && $maintenanceTwo[0] != '') ? $maintenanceTwo[0]:0;
+        $maintenanceTwo = (isset($maintenanceTwo[0]) && $maintenanceTwo[0] != '' && !empty($maintenanceTwo[0])) ? $maintenanceTwo[0]:0;
         $floorLevelTwo = $propertyInfoTwo->getMeta(ValuationProperty::FloorlevelText);
-        $floorLevelTwo = (isset($floorLevelTwo[0]) && $floorLevelTwo[0] != '') ? $floorLevelTwo[0]:0;
+        $floorLevelTwo = (isset($floorLevelTwo[0]) && $floorLevelTwo[0] != '' && !empty($floorLevelTwo[0])) ? $floorLevelTwo[0]:0;
         $amenitiesTwo = $propertyInfoTwo->getMeta(ValuationProperty::AmenitiesText);
-        $amenitiesTwo = (isset($amenitiesTwo[0]) && $amenitiesTwo[0] != '') ? $amenitiesTwo[0]:0;
+        $amenitiesTwo = (isset($amenitiesTwo[0]) && $amenitiesTwo[0] != '' && !empty($amenitiesTwo[0])) ? $amenitiesTwo[0]:0;
         
         //Valuation Property Weightage TWO
-        $weightageIdBedroomTwo = $valuationWeightage::find($noOfBedroomTwo[0]);
-        $weightageIdBathroomTwo = $valuationWeightage::find($noOfBathroomTwo[0]);
-        $weightageIdFinishingTwo = $valuationWeightage::find($finishingQualityTwo[0]);
-        $weightageIdMaintenanceTwo = $valuationWeightage::find($maintenanceTwo[0]);
-        $weightageIdFloorLevelTwo = $valuationWeightage::find($floorLevelTwo[0]);
-        $weightageIdAmenitiesTwo = $valuationWeightage::find($amenitiesTwo[0]);
+        $weightageIdBedroomTwo = $valuationWeightage::find($noOfBedroomTwo);
+        $weightageIdBathroomTwo = $valuationWeightage::find($noOfBathroomTwo);
+        $weightageIdFinishingTwo = $valuationWeightage::find($finishingQualityTwo);
+        $weightageIdMaintenanceTwo = $valuationWeightage::find($maintenanceTwo);
+        $weightageIdFloorLevelTwo = $valuationWeightage::find($floorLevelTwo);
+        $weightageIdAmenitiesTwo = $valuationWeightage::find($amenitiesTwo);
 
         $this->noOfBedroomTwo = $weightageIdBedroomTwo['value'];
         $this->noOfBathroomTwo = $weightageIdBathroomTwo['value'];
@@ -533,29 +530,29 @@ class ManageProjectValuationMethodController extends AdminBaseController
         // $this->estimatedValueThree = isset($propertyInfoThree->estimated_value) ? $propertyInfoThree->estimated_value : 0;
          // Temporary Property Value
          $this->estimatedValueThree = $propertyInfoThree->getMeta(ValuationProperty::EstimatedValuePropertyInfo);
-         $this->estimatedValueThree = (isset($this->estimatedValueThree[0]) && $this->estimatedValueThree[0] != '') ? $this->estimatedValueThree[0]:0;
+         $this->estimatedValueThree = (isset($this->estimatedValueThree[0]) && $this->estimatedValueThree[0] != '' && !empty($this->estimatedValueThree[0])) ? $this->estimatedValueThree[0]:0;
          // Temporary Property Value
         $this->sizeInSquareMeterThree = isset($propertyInfoThree->sizes_in_meter_sq) ? $propertyInfoThree->sizes_in_meter_sq : 0;
         $noOfBedroomThree = $propertyInfoThree->getMeta(ValuationProperty::NoOfBedroomText);
-        $noOfBedroomThree = (isset($noOfBedroomThree[0]) && $noOfBedroomThree[0] != '') ? $noOfBedroomThree[0]:0;
+        $noOfBedroomThree = (isset($noOfBedroomThree[0]) && $noOfBedroomThree[0] != '' && !empty($noOfBedroomThree[0])) ? $noOfBedroomThree[0]:0;
         $noOfBathroomThree = $propertyInfoThree->getMeta(ValuationProperty::NoOfBathoomsText);
-        $noOfBathroomThree = (isset($noOfBathroomThree[0]) && $noOfBathroomThree[0] != '') ? $noOfBathroomThree[0]:0;
+        $noOfBathroomThree = (isset($noOfBathroomThree[0]) && $noOfBathroomThree[0] != '' && !empty($noOfBathroomThree[0])) ? $noOfBathroomThree[0]:0;
         $finishingQualityThree = $propertyInfoThree->getMeta(ValuationProperty::FinishingQualityText);
-        $finishingQualityThree = (isset($finishingQualityThree[0]) && $finishingQualityThree[0] != '') ? $finishingQualityThree[0]:0;
+        $finishingQualityThree = (isset($finishingQualityThree[0]) && $finishingQualityThree[0] != '' && !empty($finishingQualityThree[0])) ? $finishingQualityThree[0]:0;
         $maintenanceThree = $propertyInfoThree->getMeta(ValuationProperty::MaintenanceText);
-        $maintenanceThree = (isset($maintenanceThree[0]) && $maintenanceThree[0] != '') ? $maintenanceThree[0]:0;
+        $maintenanceThree = (isset($maintenanceThree[0]) && $maintenanceThree[0] != '' && !empty($maintenanceThree[0])) ? $maintenanceThree[0]:0;
         $floorLevelThree = $propertyInfoThree->getMeta(ValuationProperty::FloorlevelText);
-        $floorLevelThree = (isset($floorLevelThree[0]) && $floorLevelThree[0] != '') ? $floorLevelThree[0]:0;
+        $floorLevelThree = (isset($floorLevelThree[0]) && $floorLevelThree[0] != '' && !empty($floorLevelThree[0])) ? $floorLevelThree[0]:0;
         $amenitiesThree = $propertyInfoThree->getMeta(ValuationProperty::AmenitiesText);
-        $amenitiesThree = (isset($amenitiesThree[0]) && $amenitiesThree[0] != '') ? $amenitiesThree[0]:0;
+        $amenitiesThree = (isset($amenitiesThree[0]) && $amenitiesThree[0] != '' && !empty($amenitiesThree[0])) ? $amenitiesThree[0]:0;
         
         // Valuation Property Weightage THREE
-        $weightageIdBedroomThree = $valuationWeightage::find($noOfBedroomThree[0]);
-        $weightageIdBathroomThree = $valuationWeightage::find($noOfBathroomThree[0]);
-        $weightageIdFinishingThree = $valuationWeightage::find($finishingQualityThree[0]);
-        $weightageIdMaintenanceThree = $valuationWeightage::find($maintenanceThree[0]);
-        $weightageIdFloorLevelThree = $valuationWeightage::find($floorLevelThree[0]);
-        $weightageIdAmenitiesThree = $valuationWeightage::find($amenitiesThree[0]);
+        $weightageIdBedroomThree = $valuationWeightage::find($noOfBedroomThree);
+        $weightageIdBathroomThree = $valuationWeightage::find($noOfBathroomThree);
+        $weightageIdFinishingThree = $valuationWeightage::find($finishingQualityThree);
+        $weightageIdMaintenanceThree = $valuationWeightage::find($maintenanceThree);
+        $weightageIdFloorLevelThree = $valuationWeightage::find($floorLevelThree);
+        $weightageIdAmenitiesThree = $valuationWeightage::find($amenitiesThree);
 
         $this->noOfBedroomThree = $weightageIdBedroomThree['value'];
         $this->noOfBathroomThree = $weightageIdBathroomThree['value'];
