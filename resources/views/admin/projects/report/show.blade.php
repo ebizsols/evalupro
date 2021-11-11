@@ -29,132 +29,392 @@
 @endpush
 
 @section('content')
-{{-- Table --}}
-<style>
-    .tCenter {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-</style>
+    {{-- Table --}}
+    <style>
+        .tCenter {
+            display: flex;
+            justify-content: center;
+            /* align-items: center; */
+            padding: 10px;
+        }
 
-{{-- Table --}}
+        .compareResTable .cBlack {
+            color: black;
+        }
+
+        .compareResTable .cBlue {
+            color: #56AAF4;
+        }
+
+        .compareResTable .bold {
+            font-weight: bold;
+        }
+
+        .compareResTable tbody tr td {
+            font-size: 14px;
+            font-weight: 400;
+            text-align: center;
+            /* vertical-align: middle; */
+        }
+
+        .heading {
+            font-size: 30px;
+        }
+
+        .main_pic img {
+            width: 100%;
+        }
+
+        .basic {
+            color: #56AAF4;
+            font-weight: 600;
+        }
+
+       .pics {
+           display: flex;
+           align-items: center;
+       }
+
+       .conclusion {
+           display : flex;
+           justify-content: center;
+       }
+    </style>
+
+    {{-- Table --}}
     <div class="row">
         <div class="col-xs-12">
             <section>
                 <div class="sttabs tabs-style-line">
                     @include('admin.projects.show_project_menu')
-                    <div class="row tCenter my-3">
-                        <div class="col-md-10">
-                            <input type="hidden" name="helper">
-                            <table class="table table-bordered table-hover table-striped table-responsive table-md text-center">
+                    {{-- Main Heading --}}
+                    <div class="row mt-2 d-flex flex-row heading">
+                        <div class="col-lg-12 text-info fw-bold text-center">{{ $propertyType }}</div>
+                        <div class="col-lg-12 fw-bold text-center">VALUATION REPORT</div>
+                    </div>
+                    {{-- Property Pic --}}
+                    <div class="row tCenter main_pic m-auto">
+                        {{-- Table1 --}}
+                        <div class="col-md-6 table1">
+                            <h3 class="basic text-center">Basic Info</h3>
+                            <table
+                                class="table table-bordered table-hover table-striped table-responsive table-md text-center compareResTable">
                                 <tbody>
-                                  <tr>
-                                    <th scope="row">1</th>
-                                    <td>Client's Name</td>
-                                    <td>{{ $clientName }}</td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">2</th>
-                                    <td>Subject Property</td>
-                                    <td>{{ $propertyType }}</td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">3</th>
-                                    <td>Inspection Date</td>
-                                    <td>Dummy</td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">4</th>
-                                    <td>Valuation Date</td>
-                                    <td>{{ $valuationDate }}</td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">5</th>
-                                    <td>Report Date</td>
-                                    <td>{{ $date }}</td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">6</th>
-                                    <td>Valuator Name</td>
-                                    <td>{{ $roleName }}</td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">7</th>
-                                    <td>Purpose of Valutation</td>
-                                    <td>{{ $purposeOfValuation }}</td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">8</th>
-                                    <td>Basis of Valuation</td>
-                                    <td>{{ $basisOfValuation }}</td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">9</th>
-                                    <td>Valuation Approach</td>
-                                    <td>{{ $approachInfo }}</td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">10</th>
-                                    <td>Valuation Method</td>
-                                    <td>{{ $valuationMethod }}</td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">11</th>
-                                    <td>Land Size (IPMS-1)</td>
-                                    <td>{{ $landSizeMeterSquare }} m2 {{ $landSizeSquareFeet }} sq.ft</td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">12</th>
-                                    <td>Plot No.</td>
-                                    <td>{{$plotNumber}}</td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">13</th>
-                                    <td>No. of Access Roads</td>
-                                    <td>{{$noOfRoads}}</td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">14</th>
-                                    <td>Land Shape</td>
-                                    <td>{{$landShape}}</td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">15</th>
-                                    <td>Land Category</td>
-                                    <td>{{$landCategory}}</td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">16</th>
-                                    <td>Land Classification</td>
-                                    <td>{{$landClassification}}</td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">17</th>
-                                    <td>Area Name</td>
-                                    <td>{{$cityName}}</td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">18</th>
-                                    <td>Property Location</td>
-                                    <td>{{$locality}}</td>
-                                  </tr>
-                                  {{-- Property Valuation --}}
-                                  {{-- Table of Comparable --}}
-                                  {{-- Table --}}
-                                 
-                                  {{-- Table --}}
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Client's Name</td>
+                                        <td>{{ $clientName }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Instruction Date</td>
+                                        <td>{{ $InstructionDate }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Subject Property</td>
+                                        <td>{{ $propertyType }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Inspection Date</td>
+                                        <td>{{ $inspectionDate }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Valuation Date</td>
+                                        <td>-----</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Report Date</td>
+                                        <td>{{ $date }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Valuator Name</td>
+                                        <td>{{ $roleName }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Purpose of Valutation</td>
+                                        <td>{{ ucfirst($purposeOfValuation) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Basis of Valuation</td>
+                                        <td>{{ $basisOfValuation }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Report Currency</td>
+                                        <td>{{ $currency }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Valuation Approach</td>
+                                        <td>{{ $approachInfo }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Valuation Method</td>
+                                        <td>{{ $valuationMethod }}</td>
+                                    </tr>
                                 </tbody>
-                              </table>
-                              
-                              @include('admin.projects.ValuationMethodology.ComparisionApartmentRes', $comparisonContent)
-                              {{-- Include View --}}
-                              {{-- @php echo $projectMeta; exit; @endphp --}}
-                              {{-- @php $data = $projectMeta @endphp --}}
-                              {{-- End Include View --}}
-                             
+                            </table>
+
+                        </div>
+                        <div class=" pics col-md-6 d-flex justify-content-center align-items-center">
+                            <img src=" {{ asset('user-uploads/property-img') . '/' . $propertyMedia }} " alt="Property" />
+                        </div>
+                        
+                    </div>
+                    <div class="row tCenter">
+                        <div class="col-md-6">
+                            <h3 class="basic text-center">Title Deed Details</h3>
+                            {{-- Table2 --}}
+                            <table
+                                class="table table-bordered table-hover table-striped table-responsive table-md text-center compareResTable">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Land Size (IPMS-1)</td>
+                                        <td>{{ $landSizeMeterSquare }} m2 {{ $landSizeSquareFeet }} sq.ft</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Title Deed No.</td>
+                                        <td>{{$titleDeedNo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Case No.</td>
+                                        <td>{{$caseNo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Plot No.</td>
+                                        <td>{{ $plotNumber }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>No. of Access Roads</td>
+                                        <td>{{ $noOfRoads }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Land Shape</td>
+                                        <td>{{ $landShape }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Land Category</td>
+                                        <td>{{ $landCategory }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Land Classification</td>
+                                        <td>{{ $landClassification }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Area Name</td>
+                                        <td>{{ $cityName }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Tenure & Legal Property Status</td>
+                                        <td>{{$legalPropertyStatus}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h3 class="basic text-center">Property Description</h3>
+                            <table
+                                class="table table-bordered table-hover table-striped table-responsive table-md text-center compareResTable">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Property Location</td>
+                                        <td>{{$locality}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Current Occupation & Tenancies</td>
+                                        <td>-----</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Assumptions</td>
+                                        <td>-----</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td>Special Assumptions</td>
+                                        <td>-----</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                    <div class="row tCenter">
+                        <div class="col-md-12">
+                            <h3 class="basic text-center">Property Valuation</h3>
+                            @include('admin.projects.ValuationMethodology.ComparisionApartmentRes', $comparisonContent)
+                        </div>
+                    </div>
+                    <div class="row tCenter">
+                        <div class="col-md-6 last">
+                            <table
+                            class="table table-bordered table-hover table-striped table-responsive table-md text-center compareResTable">
+                            <tbody>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>Subject Property Market Value</td>
+                                    <td>-----</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>About the Comparable</td>
+                                    <td>-----</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>Reliance on the Report</td>
+                                    <td>-----</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>Optinion of Value</td>
+                                    <td>-----</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>Services & Utilities</td>
+                                    <td>-----</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>Planning Permission & Consents</td>
+                                    <td>-----</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>Site & Ground Conditions</td>
+                                    <td>-----</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>Environmental Issues</td>
+                                    <td>-----</td>
+                                </tr>
+                            </tbody>
+                        </table>    
+                        </div>
+                        <div class="col-md-6 last">
+                            <table
+                            class="table table-bordered table-hover table-striped table-responsive table-md text-center compareResTable">
+                            <tbody>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>Compliance with Standards</td>
+                                    <td>-----</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>Capacity of Valuator</td>
+                                    <td>-----</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>Conflicts of Interest</td>
+                                    <td>-----</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>Limitation of Liability</td>
+                                    <td>-----</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>Confidentiality & Publication</td>
+                                    <td>-----</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>Monitoring & Reliance</td>
+                                    <td>-----</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>Property Market Movements</td>
+                                    <td>-----</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>Disclosure</td>
+                                    <td>-----</td>
+                                </tr>
+                                {{-- <tr>
+                                    <th scope="row"></th>
+                                    <td>Valuator Declaration & Signature</td>
+                                    <td>-----</td>
+                                </tr> --}}
+                            </tbody>
+                            </table>    
+                        </div>
+                    </div>
+                    {{-- Last --}}
+                    <div class="row tCenter">
+                        <div class="col-md-10 conclusion">
+                            <table
+                            class="table table-bordered table-hover table-striped table-responsive table-md text-center compareResTable">
+                            <tbody>
+                                <tr>
+                                    {{-- <th scope="row"></th> --}}
+                                    <td>
+                                        We trust that this valuation report fulfils the requirement of
+                                        the client instruction.
+                                    </td>
+                                    <td></td>
+                                </tr>
+                    
+                                <tr>
+                                    {{-- <th scope="row"></th> --}}
+                                    <td>Yours faithfully,</td>
+                                    <td></td>
+                                </tr>
+                    
+                                <tr>
+                                    {{-- <th scope="row"></th> --}}
+                                    <td>
+                                        {{ $roleName }} (Valuator)
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                    
+                                <tr>
+                                    {{-- <th scope="row"></th> --}}
+                                    <td>Attachments</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    {{-- <th scope="row"></th> --}}
+                                    <td>Appendix No.1</td>
+                                    <td>
+                                        <ul>
+                                            <li>Copy of the Title Deed</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                         </table>    
+                        </div>
+                    </div>
+                    </div>
+                    
                     <div class="content-wrap col-xs-12">
                         <section id="section-line-3" class="show">
                             <div class="row">
@@ -220,9 +480,10 @@
                                                         <div class="row m-b-10">
                                                             <div class="col-xs-12">
 
-                                                                <button
-                                                                        class="btn btn-success btn-outline pull-right " type="button" data-toggle="modal" data-target="#addRuleModel"><i
-                                                                            class="fa fa-check"></i> Generate Report
+                                                                <button class="btn btn-success btn-outline pull-right "
+                                                                    type="button" data-toggle="modal"
+                                                                    data-target="#addRuleModel"><i
+                                                                        class="fa fa-check"></i> Generate Report
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -262,15 +523,15 @@
                     <h4 class="modal-title">Report Model</h4>
                 </div>
                 <div class="modal-body">
-                    {!! Form::open(['id'=>'generateReport', 'url' => route("admin.report.tempGenerate"),'method'=>'POST']) !!}
+                    {!! Form::open(['id' => 'generateReport', 'url' => route('admin.report.tempGenerate'), 'method' => 'POST']) !!}
                     {!! Form::hidden('project_id', $project->id) !!}
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="Title">Title</label>
                                 <select class="select2 m-b-10 select2-multiple form-control" multiple="multiple"
-                                        data-placeholder="@lang('modules.messages.chooseMember')" name="reportText[]">
-                                    @foreach($reportConditionalText as $rct)
+                                    data-placeholder="@lang('modules.messages.chooseMember')" name="reportText[]">
+                                    @foreach ($reportConditionalText as $rct)
                                         <option value="{{ $rct->id }}">{{ ucwords($rct->title) }} </option>
                                     @endforeach
                                 </select>
@@ -278,7 +539,8 @@
                         </div>
                     </div>
                     <div class="form-actions">
-                        <button type="submit" id="generateReport" class="btn btn-success"><i class="fa fa-check"></i> @lang('app.save')</button>
+                        <button type="submit" id="generateReport" class="btn btn-success"><i class="fa fa-check"></i>
+                            @lang('app.save')</button>
                     </div>
                     {!! Form::close() !!}
                 </div>
@@ -316,4 +578,13 @@
             })
         });
     </script>
+
+    {{-- <script>
+        var addSerialNumber = function() {
+            $('table tr').each(function(index) {
+                $(this).find('th:nth-child(1)').html(index + 1);
+            });
+        };
+        addSerialNumber();
+    </script> --}}
 @endpush

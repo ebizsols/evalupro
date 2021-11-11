@@ -83,7 +83,9 @@ class ManageProjectsController extends AdminBaseController
         $project =  Project::find(1);
         $updatePropertyMeta["project_meta"] = json_encode($this->allEmployees);
 
-        $project->setMeta($updatePropertyMeta);
+        if (!empty($updatePropertyMeta)) {
+            $project->setMeta($updatePropertyMeta);
+        }
 
         $this->projectEarningTotal = Payment::join('projects', 'projects.id', '=', 'payments.project_id')
             ->where('payments.status', 'complete')
@@ -711,6 +713,13 @@ class ManageProjectsController extends AdminBaseController
                 }
                 return ucwords($row->client->name);
             })
+            // New Column
+            ->editColumn('project_id', function ($row) {
+                if (!is_null($row->id)) {
+                    return $row->id;
+                }
+            })
+            // End New Column
             ->editColumn('completion_percent', function ($row) {
                 if ($row->completion_percent < 50) {
                     $statusColor = 'danger';

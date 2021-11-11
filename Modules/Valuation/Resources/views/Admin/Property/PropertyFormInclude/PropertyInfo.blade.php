@@ -380,6 +380,23 @@
             </div>
         </div>
     @endif
+
+     {{-- New Code --}}                                    
+     <div class="col-md-4">
+        <div class="form-group">
+            <label class="control-label">Case #</label>
+            <input type="text" name="case_no" class="form-control" id="case_no" value="{{isset($CaseNo)?$CaseNo:'0'}}">
+        </div>
+    </div>
+    {{-- End New Code --}}
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label class="control-label">Legal Property Status</label>
+            <input type="text" name="legal_property_status" class="form-control" id="legal_property_status" value="{{isset($LegalPropertyStatus)?$LegalPropertyStatus:'0'}}">
+        </div>
+    </div>
 </div>
 
 </div>

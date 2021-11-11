@@ -1,9 +1,8 @@
-
 <table class="table table-striped compareResTable">
     <thead>
         <tr>
             <th width="5" class="bold cBlack">No</th>
-            <th width="25" class="bold cBlue">Residential Apartment Comparable Factors</th>
+            <th colspan="2" width="25" class="bold cBlue">Residential Apartment Comparable Factors</th>
             <th width="10" class="bold cBlue">Weighted Factors</th>
             <th width="15" class="bold cBlue">Subject Property</th>
             <th width="15" class="bold cBlue">Comparable No.1</th>
@@ -14,7 +13,7 @@
     <tbody>
         <tr>
             <td>1</td>
-            <td>Property Price</td>
+            <td colspan="2">Property Price</td>
             <td>{{ $currency }}</td>
             <td>{{ $propertyBaseInfo->estimated_value }}</td>
             <td>{{ $propertyInfoOne->estimated_value }}</td>
@@ -23,7 +22,7 @@
         </tr>
         <tr>
             <td>2</td>
-            <td>Apartment Size in SQM as per IPMS-1</td>
+            <td colspan="2">Apartment Size in SQM as per IPMS-1</td>
             <td>{{ $sizeWeightagePerText }}</td>
             <td>
                 <table class="table table-striped ">
@@ -81,7 +80,7 @@
 
         <tr>
             <td>3</td>
-            <td>No. of Bedrooms</td>
+            <td colspan="2">No. of Bedrooms</td>
             <td>{{ $bedroomsWeightagePerText }}</td>
             <td>
                 <table class="table table-striped ">
@@ -139,7 +138,7 @@
 
         <tr>
             <td>4</td>
-            <td>No. of Bathrooms</td>
+            <td colspan="2">No. of Bathrooms</td>
             <td>{{ $bathWeightagePerText }}</td>
             <td>
                 <table class="table table-striped ">
@@ -197,7 +196,7 @@
 
         <tr>
             <td>5</td>
-            <td>Finishing Quality</td>
+            <td colspan="2">Finishing Quality</td>
             <td>{{ $finishingQualityWeightagePerText }}</td>
             <td>
                 <table class="table table-striped ">
@@ -267,7 +266,7 @@
 
         <tr>
             <td>6</td>
-            <td>Building Amenities and Facilities</td>
+            <td colspan="2">Building Amenities and Facilities</td>
             <td>{{ $amenitiesWeightagePerText }}</td>
             <td>
                 <table class="table table-striped ">
@@ -329,7 +328,7 @@
 
         <tr>
             <td>7</td>
-            <td>Weighted Factor Adjustment</td>
+            <td colspan="2">Weighted Factor Adjustment</td>
             <td>%</td>
             <td></td>
             <td>{{ $propertyInfoOne->weightedFacAdj }}</td>
@@ -339,7 +338,7 @@
         </tr>
         <tr>
             <td>8</td>
-            <td>Amount Adjustment to Original Price</td>
+            <td colspan="2">Amount Adjustment to Original Price</td>
             <td>{{ $currency }}</td>
             <td></td>
             <td>{{ $propertyInfoOne->amountAdjOriPrice }}</td>
@@ -350,7 +349,7 @@
 
         <tr>
             <td>9</td>
-            <td>Weighted Factor Average Price</td>
+            <td colspan="2">Weighted Factor Average Price</td>
             <td>{{ $currency }}</td>
             <td></td>
             <td>{{ $propertyInfoOne->weightedFactAvgPrice }}</td>
@@ -361,7 +360,7 @@
 
         <tr>
             <td>10</td>
-            <td>Comparable Overall Weighted Adjustment </td>
+            <td colspan="2">Comparable Overall Weighted Adjustment </td>
             <td>100%</td>
             <td></td>
             <td>{{ $propertyInfoOne->comparableOverallWeightAdj }}</td>
@@ -371,7 +370,7 @@
         </tr>
         <tr>
             <td>11</td>
-            <td>Total Weighted Adjusted Price </td>
+            <td colspan="2">Total Weighted Adjusted Price </td>
             <td></td>
             <td></td>
             <td>{{ $propertyInfoOne->totalWeightAdjPrice }}</td>
@@ -381,7 +380,7 @@
         </tr>
         <tr>
             <td>12</td>
-            <td>Subject Property Weighted Market Value</td>
+            <td colspan="2">Subject Property Weighted Market Value</td>
             <td>{{ $currency }}</td>
             <td>{{ $propertyBaseInfo->weightedMrktValue }}</td>
         </tr>
@@ -391,11 +390,11 @@
 
 <style>
     .compareResTable .cBlack {
-        color: black;
+        color: #56AAF4;
     }
 
     .compareResTable .cBlue {
-        color: slateblue;
+        color: #56AAF4;
     }
 
     .compareResTable .bold {

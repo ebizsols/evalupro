@@ -309,6 +309,9 @@ class PropertyController extends ValuationAdminBaseController
         $this->landSize = isset($propertyData->land_size) ? $propertyData->land_size : '';
         $this->municipalityCutting = isset($propertyData->municipalityCutting) ? $propertyData->municipalityCutting : '';
         $this->landStructureType = isset($propertyData->land_structure_type) ? $propertyData->land_structure_type : '';
+        $this->TitleDeedNo = isset($propertyData->title_deed_no) ? $propertyData->title_deed_no : '';
+        $this->CaseNo = isset($propertyData->case_no) ? $propertyData->case_no : '';
+        $this->LegalPropertyStatus = isset($propertyData->legal_property_status) ? $propertyData->legal_property_status : '';
         $this->sizeMeterSQ = isset($propertyData->sizes_in_meter_sq) ? $propertyData->sizes_in_meter_sq : 0;
         $this->sizeSQFeet = isset($propertyData->sizes_in_sq_feet) ? $propertyData->sizes_in_sq_feet : 0;
         $this->buildupSizes = isset($propertyData->buildup_sizes) ? $propertyData->buildup_sizes : 0;
@@ -469,6 +472,10 @@ class PropertyController extends ValuationAdminBaseController
         }
         $property->municipalityCutting = isset($request->municipalityCutting) ? $request->municipalityCutting : 0;
         $property->land_structure_type = isset($request->land_structure_type) ? $request->land_structure_type : '';
+        $property->title_deed_no = isset($request->title_deed_no) ? $request->title_deed_no : 0;
+
+        $property->case_no = isset($request->case_no) ? $request->case_no : 0;
+        $property->legal_property_status = isset($request->legal_property_status) ? $request->legal_property_status : 0;
 
         $property->buildup_sizes = isset($request->buildupSizes) ? $request->buildupSizes : 0;
         $property->front_elivation = isset($request->frontElivation) ? $request->frontElivation : 0;

@@ -1207,6 +1207,7 @@ class ComposerStaticInit1542443d69642feb0bc33833c4dd9f58
         'AddCurrencyIdInGlobalSettingTable' => __DIR__ . '/../..' . '/database/migrations/2019_02_08_275235_add_currency_id_in_global_setting_table.php',
         'AddCurrencyInFreeTrail' => __DIR__ . '/../..' . '/database/migrations/2019_09_03_021925_add_currency_in_free_trail.php',
         'AddCurrencySymbolColumnInvoices' => __DIR__ . '/../..' . '/database/migrations/2017_05_11_140502_add_currency_symbol_column_invoices.php',
+        'AddCustomColumnsToValuationPropertiesTable' => __DIR__ . '/../..' . '/database/migrations/2021_11_08_073155_add_custom_columns_to_valuation_properties_table.php',
         'AddCustomFieldGroups' => __DIR__ . '/../..' . '/database/migrations/2020_11_10_114539_add_custom_field_groups.php',
         'AddCustomerIdColumnToPaymentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_09_01_090124_add_customer_id_column_to_payments_table.php',
         'AddDatePickerFormatColumnInCompaniesTable' => __DIR__ . '/../..' . '/database/migrations/2019_12_18_121031_add_date_picker_format_column_in_companies_table.php',

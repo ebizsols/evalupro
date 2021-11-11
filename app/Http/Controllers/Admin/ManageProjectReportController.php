@@ -13,12 +13,14 @@ use App\ProductCategory;
 use App\ProductSubCategory;
 use App\ProjectMember;
 use App\User;
+use App\ValuationInspection;
 use Illuminate\Http\Request;
 use MacsiDigital\OAuth2\Support\Token\DB;
 use Carbon\Carbon;
 use Modules\Valuation\Entities\ValuationCity;
 use Modules\Valuation\Entities\ValuationPropertyCategorization;
 use Modules\Valuation\Entities\ValuationPropertyClassification;
+use Modules\Valuation\Entities\ValuationPropertyMedia;
 use Modules\Valuation\Entities\ValuationPropertyType;
 
 class ManageProjectReportController extends AdminBaseController
@@ -44,7 +46,7 @@ class ManageProjectReportController extends AdminBaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request,$id)
+    public function show($id)
     {
         $this->generateProjectReportRoute = 'admin.report.generate';
         $this->id = $id;
@@ -94,47 +96,67 @@ class ManageProjectReportController extends AdminBaseController
          $this->date = Carbon::now("GMT+5")->toDateTimeString();
  
         //  New Dynamic Data
+        $projectId = isset($projectInfo->id) ? $projectInfo->id : 0;
         $propertyData = ValuationProperty::find($propertyId);
-        $subjectProperty = $propertyData->type_id;
-        $propertyType = ValuationPropertyType::find($subjectProperty);
-        $this->propertyType = $propertyType->title;
+        $subjectProperty = isset($propertyData->type_id) ? $propertyData->type_id: 0;
 
-        $valuationDate = $projectInfo->created_at->toArray();
-        $this->valuationDate = $valuationDate['formatted'];
+        // $inspectionDate =  ValuationInspection::where('project_id', $projectId);
+        $inspectionDate =  ValuationInspection::where('project_id', $projectId)->first();
+        $inspectionDate = $inspectionDate->created_at->toArray();
+        $this->inspectionDate = $inspectionDate['formatted'];
+        // dd($this->inspectionDate);
+        $propertyType = ValuationPropertyType::find($subjectProperty);
+        $this->propertyType = isset($propertyType->title) ? $propertyType->title: 0;
+
+        $InstructionDate = $projectInfo->created_at->toArray();
+        $this->InstructionDate = $InstructionDate['formatted'];
 
         $projectId = $projectInfo->id;
         $projectMembers = new ProjectMember;
         $projectMembersData = $projectMembers->where('project_id',$projectId)->first();
-        $userId = $projectMembersData->user_id;
+        $userId = isset($projectMembersData->user_id) ? $projectMembersData->user_id:0;
 
         $userData = User::find($userId);
-        $this->roleName = $userData->name;
+        $this->roleName = isset($userData->name)?$userData->name:0;
 
         $this->valuationMethod = $projectObj::find($id)->getMeta('methods');
 
-        $this->landSizeMeterSquare = $propertyData->sizes_in_meter_sq;
-        $this->landSizeSquareFeet = $propertyData->sizes_in_sq_feet;
-        $this->plotNumber = $propertyData->plot_num;
-        $this->noOfRoads = $propertyData->no_of_roads;
-        $this->landShape = $propertyData->land_structure_type;
-        $this->locality = $propertyData->locality;
+        $this->landSizeMeterSquare = isset($propertyData->sizes_in_meter_sq) ? $propertyData->sizes_in_meter_sq : 0;
+        $this->landSizeSquareFeet = isset($propertyData->sizes_in_sq_feet) ? $propertyData->sizes_in_sq_feet : 0;
+        $this->plotNumber = isset($propertyData->plot_num) ? $propertyData->plot_num : 0;
+        $this->noOfRoads = isset($propertyData->no_of_roads) ? $propertyData->no_of_roads : 0;
+        $this->landShape = isset($propertyData->land_structure_type) ? $propertyData->land_structure_type : 0;
+        $this->locality = isset($propertyData->locality) ? $propertyData->locality : 0;
+        $this->titleDeedNo = isset($propertyData->title_deed_no) ? $propertyData->title_deed_no : 0;
+        $this->caseNo = isset($propertyData->case_no) ? $propertyData->case_no : 0;
+        $this->legalPropertyStatus = isset($propertyData->legal_property_status) ? $propertyData->legal_property_status : 0;
 
 
         $categorizationId = $propertyData->categorization_id;
         $landCategory = ValuationPropertyCategorization::find($categorizationId);
-        $this->landCategory = $landCategory->title;
+        $this->landCategory = isset($landCategory->title) ? $landCategory->title : 0;
 
-        $classificationId = $propertyData->classification_id;
+        $classificationId = isset($propertyData->classification_id) ? $propertyData->classification_id:0;
         $landClassification = ValuationPropertyClassification::find($classificationId);
-        $this->landClassification = $landClassification->title;
+        $this->landClassification = isset($landClassification->title) ? $landClassification->title:0;
 
-        $cityId = $propertyData->city_id;
+        $cityId = isset($propertyData->city_id) ? $propertyData->city_id: 0;
         $cityName = ValuationCity::find($cityId);
-        $this->cityName = $cityName->name;
+        $this->cityName = isset($cityName->name) ? $cityName->name: 0;
 
         $comparisonContent = (array)json_decode($projectInfo->getMeta('methodologyResult'));
         $comparisonContent['hideContent'] = true;
-        $this->comparisonContent = $comparisonContent;
+        $this->comparisonContent = isset($comparisonContent) ? $comparisonContent: 0;
+
+        $propertyMedia = new ValuationPropertyMedia;
+        $propertyMedia = $propertyMedia->where('property_id', $propertyId)->first();
+        $this->propertyMedia = isset($propertyMedia->media_name)  ? $propertyMedia->media_name: 0;
+        
+        $currencyId = $projectInfo->currency_id;
+        $currencyData = Currency::find($currencyId);
+        $this->currency = $currencyData->currency_code;
+        // dd($this->currency);
+        // dd($this->propertyMedia);
         // dd("Here");
         //echo "<pre>"; print_r($this->comparisonContect); exit;
 

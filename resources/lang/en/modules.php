@@ -236,7 +236,8 @@ return array(
   array(
     'addNewProject' => 'Add New Project',
     'noClientFound' => 'No Client Found',
-    'projectName' => 'Valuation Title',
+    'projectName' => 'Valuation Reference',
+    'projectId' => 'Project ID',
     'createScopeOfWork' => 'Create Scope Of Work',
     'projectMembers' => 'Valuations Members',
     'createTitle' => 'Valuation Request',

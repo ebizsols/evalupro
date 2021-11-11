@@ -34,7 +34,9 @@
                 
                 @endphp
                 <tr>
+                    @if (!empty($objRef->getUnit->title))
                     <td>{{$objRef->getUnit->title}}</td>
+                    @endif
                     <td><a onclick="loadTabSub('unitInfotr-{{$objRef->unit_id}}')" class="btn btn-primary" href="javascript:void(0)" >Add Info</a></td>
                      
                 </tr>

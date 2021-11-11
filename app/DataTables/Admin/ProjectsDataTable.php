@@ -86,6 +86,13 @@ class ProjectsDataTable extends BaseDataTable
                 }
                 return (!is_null($row->clientdetails) && $row->clientdetails->company_name != '') ? ucwords($row->client->name) . "<br>[" . $row->clientdetails->company_name . "]" : ucwords($row->client->name);
             })
+            // New Column
+            ->editColumn('project_id', function ($row) {
+                if (!is_null($row->id)) {
+                    return $row->id;
+                }
+            })
+            // End New Column
             ->editColumn('status', function ($row) {
 
                 if ($row->status == 'in progress') {
@@ -238,6 +245,7 @@ class ProjectsDataTable extends BaseDataTable
      */
     protected function getColumns()
     {
+        // echo 'data'; exit;
         return [
             __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false, 'exportable' => false],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false],
@@ -245,6 +253,7 @@ class ProjectsDataTable extends BaseDataTable
             __('modules.projects.projectMembers')  => ['data' => 'name', 'name' => 'name', 'visible' => false],
             __('app.deadline') => ['data' => 'deadline', 'name' => 'deadline'],
             __('app.client') => ['data' => 'client_id', 'name' => 'client_id'],
+            __('modules.projects.projectId') => ['data' => 'project_id', 'name' => 'project_id'],
             __('app.completions') => ['data' => 'completion_percent', 'name' => 'completion_percent', 'exportable' => false],
             __('app.completion') => ['data' => 'completion_export', 'name' => 'completion_export', 'visible' => false],
             Column::computed('action', __('app.action'))

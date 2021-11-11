@@ -92,6 +92,15 @@
                                             <input type="text" name="land_structure_type" class="form-control" id="land_structure_type" value="{{isset($landStructureType)?$landStructureType:'0'}}">
                                         </div>
                                     </div>
+                                    
+                                    {{-- New Code --}}                                    
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Title Deed #</label>
+                                            <input type="text" name="title_deed_no" class="form-control" id="title_deed_no" value="{{isset($TitleDeedNo)?$TitleDeedNo:'0'}}">
+                                        </div>
+                                    </div>
+                                    {{-- End New Code --}}
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
