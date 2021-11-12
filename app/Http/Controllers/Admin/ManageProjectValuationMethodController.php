@@ -160,7 +160,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
 
         $propertyBaseInfo->Weightage = $weightage;*/
 
-        $propertyBaseInfo = ValuationProperty::findOrFail($propertyIdBase);
+        $propertyBaseInfo = ValuationProperty::find($propertyIdBase);
 
         $propertyBaseInfo->bedrooms = 2;
         $propertyBaseInfo->bathrooms = 3;
@@ -169,7 +169,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $propertyBaseInfo->floorLevel = 3;
         $propertyBaseInfo->amenities = 8;
 
-        $propertyInfoOne = ValuationProperty::findOrFail($propertyIdOne);
+        $propertyInfoOne = ValuationProperty::find($propertyIdOne);
         $propertyInfoOne->bedrooms = 2;
         $propertyInfoOne->bathrooms = 3;
         $propertyInfoOne->finishingQuality = 6.25;
@@ -177,7 +177,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $propertyInfoOne->floorLevel = 3;
         $propertyInfoOne->amenities = 8;
 
-        $propertyInfoTwo = ValuationProperty::findOrFail($propertyIdTwo);
+        $propertyInfoTwo = ValuationProperty::find($propertyIdTwo);
         $propertyInfoTwo->bedrooms = 2;
         $propertyInfoTwo->bathrooms = 3;
         $propertyInfoTwo->finishingQuality = 6.25;
@@ -185,7 +185,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $propertyInfoTwo->floorLevel = 3;
         $propertyInfoTwo->amenities = 8;
 
-        $propertyInfoThree = ValuationProperty::findOrFail($propertyIdThree);
+        $propertyInfoThree = ValuationProperty::find($propertyIdThree);
         $propertyInfoThree->bedrooms = 3;
         $propertyInfoThree->bathrooms = 3;
         $propertyInfoThree->finishingQuality = 6.25;
@@ -392,6 +392,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
         // New Code
         // Base Comparison
         $propertyBaseInfo = ValuationProperty::find($propertyIdBase);
+        // dd($propertyBaseInfo);
         
         $this->estimatedValueBase = 0;
         $this->sizeInSquareMeterBase = isset($propertyBaseInfo->sizes_in_meter_sq) ? $propertyBaseInfo->sizes_in_meter_sq : 0;
@@ -424,7 +425,8 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $this->floorLevelBase = $weightageIdFloorLevelBase['value'];
         $this->amenitiesBase = $weightageIdAmenitiesBase['value'];
 
-        $propertyBaseInfo->estimated_value = (isset($this->estimatedValueBase) && $this->estimatedValueBase != '') ? $this->estimatedValueBase:0;
+        // $propertyBaseInfo->estimated_value = (isset($this->estimatedValueBase) && $this->estimatedValueBase != '') ? $this->estimatedValueBase:0;
+        // dd($propertyBaseInfo);
         $propertyBaseInfo->aptSizeIPMS = (isset($this->sizeInSquareMeterBase) && $this->sizeInSquareMeterBase != '') ? $this->sizeInSquareMeterBase: 0;
         $propertyBaseInfo->bedrooms = (isset($this->noOfBedroomBase) && $this->noOfBedroomBase != '') ? $this->noOfBedroomBase: 0;
         $propertyBaseInfo->bathrooms = (isset($this->noOfBathroomBase) && $this->noOfBathroomBase != '') ? $this->noOfBathroomBase: 0;
@@ -582,15 +584,27 @@ class ManageProjectValuationMethodController extends AdminBaseController
 
         $baseAptSizeIPMSMinusProOne = $baseAptSizeIPMS - $aptSizeIPMSPropertyInfoOne;
         $propertyInfoOne->aptSizeIPMSCal = $baseAptSizeIPMSMinusProOne;
-        $propertyInfoOne->aptSizeIPMSComparison = ($baseAptSizeIPMSMinusProOne / $baseAptSizeIPMS)*100;
+        if ($baseAptSizeIPMS == 0) {
+            $propertyInfoOne->aptSizeIPMSComparison = 0;
+        } else {
+            $propertyInfoOne->aptSizeIPMSComparison = ($baseAptSizeIPMSMinusProOne / $baseAptSizeIPMS)*100;
+        }
 
         $baseAptSizeIPMSMinusProTwo = $baseAptSizeIPMS - $aptSizeIPMSPropertyInfoTwo;
         $propertyInfoTwo->aptSizeIPMSCal = $baseAptSizeIPMSMinusProTwo;
-        $propertyInfoTwo->aptSizeIPMSComparison = ($baseAptSizeIPMSMinusProTwo / $baseAptSizeIPMS)*100;
+        if ($baseAptSizeIPMS == 0) {
+            $propertyInfoTwo->aptSizeIPMSComparison = 0;
+        } else {
+            $propertyInfoTwo->aptSizeIPMSComparison = ($baseAptSizeIPMSMinusProTwo / $baseAptSizeIPMS)*100;
+        }
 
         $baseAptSizeIPMSMinusProThree = $baseAptSizeIPMS - $aptSizeIPMSPropertyInfoThree;
         $propertyInfoThree->aptSizeIPMSCal = $baseAptSizeIPMSMinusProThree;
-        $propertyInfoThree->aptSizeIPMSComparison = ($baseAptSizeIPMSMinusProThree / $baseAptSizeIPMS)*100;
+        if ($baseAptSizeIPMS == 0) {
+            $propertyInfoThree->aptSizeIPMSComparison = 0;
+        } else {
+            $propertyInfoThree->aptSizeIPMSComparison = ($baseAptSizeIPMSMinusProThree / $baseAptSizeIPMS)*100;
+        }
 
         //bedrooms comparison
         $baseBedrooms = $propertyBaseInfo->bedrooms;

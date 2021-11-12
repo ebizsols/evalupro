@@ -66,10 +66,10 @@ class ManageProjectReportController extends AdminBaseController
          $productId = $projectInfo->product_id;
 
         $productData = Product::find($productId);
-        $categoryId = $productData->category_id;
-        $subCategoryId = $productData->sub_category_id;
+        $categoryId = isset($productData->category_id) ? $productData->category_id: 0;
+        $subCategoryId = isset($productData->sub_category_id) ? $productData->sub_category_id: 0;
         $productCategory = ProductCategory::find($categoryId);
-        if($productCategory){
+        if(!empty($productCategory)){
             $productCategory = $productCategory->toArray();
         }
         $this->purposeOfValuation = (isset($productCategory['category_name'])) ? $productCategory['category_name'] : "Not found";
@@ -148,9 +148,19 @@ class ManageProjectReportController extends AdminBaseController
         $cityName = ValuationCity::find($cityId);
         $this->cityName = isset($cityName->name) ? $cityName->name: 0;
 
-        $comparisonContent = (array)json_decode($projectInfo->getMeta('methodologyResult'));
-        $comparisonContent['hideContent'] = true;
-        $this->comparisonContent = isset($comparisonContent) ? $comparisonContent: 0;
+        $this->comparisonContent = array();
+        if (!empty($projectInfo->getMeta('methodologyResult'))) {
+            $comparisonContent = (array)json_decode($projectInfo->getMeta('methodologyResult'));
+            $comparisonContent['hideContent'] = true;
+            $comparisonContent = (isset($comparisonContent) && $comparisonContent != null) ? $comparisonContent : 0; 
+            $this->comparisonContent = $comparisonContent;
+            // dd($this->comparisonContent);
+        }
+
+        // $comparisonContent = (isset($comparisonContent) && $comparisonContent != [] && $comparisonContent != null) ? $comparisonContent : 0;
+        // if (isset($comparisonContent) && $comparisonContent == []){
+        // }
+        // dd($this->comparisonContent);
 
         $propertyMedia = new ValuationPropertyMedia;
         $propertyMedia = $propertyMedia->where('property_id', $propertyId)->first();

@@ -82,6 +82,7 @@
     </style>
 
     {{-- Table --}}
+
     <div class="row">
         <div class="col-xs-12">
             <section>
@@ -261,7 +262,11 @@
                     <div class="row tCenter">
                         <div class="col-md-12">
                             <h3 class="basic text-center">Property Valuation</h3>
-                            @include('admin.projects.ValuationMethodology.ComparisionApartmentRes', $comparisonContent)
+                            @if (!empty($comparisonContent))
+                                @include('admin.projects.ValuationMethodology.ComparisionApartmentRes', $comparisonContent);
+                            @else
+                                <h3 class="basic text-center">Methodology Comparison Not found</h3>
+                            @endif
                         </div>
                     </div>
                     <div class="row tCenter">
