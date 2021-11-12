@@ -102,14 +102,18 @@ class ManageProjectReportController extends AdminBaseController
 
         // $inspectionDate =  ValuationInspection::where('project_id', $projectId);
         $inspectionDate =  ValuationInspection::where('project_id', $projectId)->first();
-        $inspectionDate = $inspectionDate->created_at->toArray();
+        if (!empty($inspectionDate)) {
+            $inspectionDate = $inspectionDate->created_at->toArray();
+        }
         $this->inspectionDate = $inspectionDate['formatted'];
         // dd($this->inspectionDate);
         $propertyType = ValuationPropertyType::find($subjectProperty);
         $this->propertyType = isset($propertyType->title) ? $propertyType->title: 0;
 
         $InstructionDate = $projectInfo->created_at->toArray();
-        $this->InstructionDate = $InstructionDate['formatted'];
+        if (!empty($InstructionDate)) {
+            $this->InstructionDate = $InstructionDate['formatted'];
+        }
 
         $projectId = $projectInfo->id;
         $projectMembers = new ProjectMember;
@@ -162,7 +166,6 @@ class ManageProjectReportController extends AdminBaseController
 
         //  End New Dynamic Data
        
-
         return view('admin.projects.report.show', $this->data);
     }
 
