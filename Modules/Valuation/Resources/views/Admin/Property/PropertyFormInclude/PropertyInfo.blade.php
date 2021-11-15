@@ -397,6 +397,42 @@
             <input type="text" name="legal_property_status" class="form-control" id="legal_property_status" value="{{isset($LegalPropertyStatus)?$LegalPropertyStatus:'0'}}">
         </div>
     </div>
+
+     {{-- Weightage View --}}
+     @if (isset($WeitageView) && !empty($WeitageView))
+     <div class="col-md-4">
+         <div class="form-group">
+             <label class="control-label">{{ $WeitageView->title }}</label>
+             <select name="view" class="form-control">
+                 <option value="">--</option>
+                 @foreach ($WeitageView->weightageCategoryItems as $weitageView)
+                     <option @if (isset($ViewCategoryWeightage) && !empty($ViewCategoryWeightage) && $ViewCategoryWeightage[0] == $weitageView->id)
+                         selected="selected"
+                         @endif value="{{ $weitageView->id }}">{{ $weitageView->title }}
+                     </option>
+                 @endforeach
+             </select>
+         </div>
+     </div>
+ @endif
+
+     {{-- Weightage View --}}
+     @if (isset($LandShape) && !empty($LandShape))
+     <div class="col-md-4">
+         <div class="form-group">
+             <label class="control-label">{{ $LandShape->title }}</label>
+             <select name="landInfoLandShape" class="form-control">
+                 <option value="">--</option>
+                 @foreach ($LandShape->weightageCategoryItems as $landShape)
+                     <option @if (isset($LandshapeWeightage) && !empty($LandshapeWeightage) && $LandshapeWeightage[0] == $landShape->id)
+                         selected="selected"
+                         @endif value="{{ $landShape->id }}">{{ $landShape->title }}
+                     </option>
+                 @endforeach
+             </select>
+         </div>
+     </div>
+ @endif
 </div>
 
 </div>

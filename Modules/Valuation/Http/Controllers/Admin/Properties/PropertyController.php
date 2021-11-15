@@ -531,34 +531,36 @@ class PropertyController extends ValuationAdminBaseController
             }
         }
         // Bedroom
-        $bedRoomsUnitInfoWeightage = isset($request->Bedrooms) ? $request->Bedrooms : array();
+        $bedRoomsUnitInfoWeightage = isset($request->Bedrooms) ? $request->Bedrooms : 0;
         $bedRoomsUnitInfoWeightageArray = array();
         $bedRoomsUnitInfoWeightageArray[] = $bedRoomsUnitInfoWeightage;
         // Bathroom
-        $bathRoomUnitInfoWeightage = isset($request->Bathrooms) ? $request->Bathrooms : array();
+        $bathRoomUnitInfoWeightage = isset($request->Bathrooms) ? $request->Bathrooms : 0;
         $bathRoomUnitInfoWeightageArray = array();
         $bathRoomUnitInfoWeightageArray[] = $bathRoomUnitInfoWeightage;
         // Finishing Quality
-        $finishingQualityUnitInfoWeightage = isset($request->finishingQuality) ? $request->finishingQuality : array();
+        $finishingQualityUnitInfoWeightage = isset($request->finishingQuality) ? $request->finishingQuality : 0;
         $finishingQualityUnitInfoWeightageArray = array();
         $finishingQualityUnitInfoWeightageArray[] = $finishingQualityUnitInfoWeightage;
 
         // Amenities
-        $aminatieForUnitInfoWeightage = isset($request->Amenities) ? $request->Amenities : array();
+        $aminatieForUnitInfoWeightage = isset($request->Amenities) ? $request->Amenities : 0;
         $aminatieForUnitInfoWeightageArray = array();
         $aminatieForUnitInfoWeightageArray[] = $aminatieForUnitInfoWeightage;
 
         // Maintencance
-        $unitInfoMaintenanceWeightage = isset($request->Maintenance) ? $request->Maintenance : array();
+        $unitInfoMaintenanceWeightage = isset($request->Maintenance) ? $request->Maintenance : 0;
         $unitInfoMaintenanceWeightageArray = array();
         $unitInfoMaintenanceWeightageArray[] = $unitInfoMaintenanceWeightage;
 
         // Floor Level
-        $unitInfoFloorLevelWeightage = isset($request->floorLevel) ? $request->floorLevel : array();
+        $unitInfoFloorLevelWeightage = isset($request->floorLevel) ? $request->floorLevel : 0;
         $unitInfoFloorLevelWeightageArray = array();
         $unitInfoFloorLevelWeightageArray[] = $unitInfoFloorLevelWeightage;
 
+        $unitInfoViewWeightage = isset($request->view) ? $request->view : 0;
         $unitInfoViewWeightageArray = array();
+        $unitInfoViewWeightageArray[] = $unitInfoFloorLevelWeightage;
 
         $landClassificationWeightage = isset($request->LandClassification) ? $request->LandClassification : 0;
         $landClassificationWeightageArray = array();
@@ -604,12 +606,11 @@ class PropertyController extends ValuationAdminBaseController
         $incomebasevalue_for_property_infoWeightageArray = array();
         $incomebasevalue_for_property_infoWeightageArray[] = $incomebasevalue_for_property_infoWeightage;
 
-        $landInfoLandShapeWeightage = isset($request->landInfoLandShape) ? $request->landInfoLandShape : '';
+        $landInfoLandShapeWeightage = isset($request->landInfoLandShape) ? $request->landInfoLandShape : 0;
         $landInfoLandShapeWeightageArray = array();
         $landInfoLandShapeWeightageArray[] = $landInfoLandShapeWeightage;
 
-        $aminatieForStructureInfoWeightage = isset($request->aminatie) ? $request->aminatie : array();
-        $aminatieForStructureInfoWeightageArray = array();
+        $aminatieForStructureInfoWeightage = isset($request->aminatie) ? $request->aminatie : 0;
         $aminatieForStructureInfoWeightageArray[] = $aminatieForStructureInfoWeightage;
 
         $rentalIncomeStructureWeightage = isset($request->rentalIncomeStructure) ? $request->rentalIncomeStructure : '';

@@ -125,6 +125,16 @@ $generalSettings['category']="Category";
 
 $valuationLang['generalSetting']=$generalSettings;
 
+$reportSettings = array();
+$reportSettings['Title'] = "Report Settings";
+
+$valuationLang['reportSetting']=$reportSettings;
+
+$scopeOfWorkSettings = array();
+$scopeOfWorkSettings['Title'] = "SoW Settings";
+
+$valuationLang['scopeOfWorkSettings'] = $scopeOfWorkSettings;
+
 $propertyFeatures=array();
 $propertyFeatures['Title']="Property Type Feature Setting";
 $propertyFeatures['createFeature']="Create Feature";

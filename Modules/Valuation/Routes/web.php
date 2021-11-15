@@ -107,6 +107,30 @@ Route::prefix('valuation')->group(function() {
             Route::delete('/destroyreportRule/{id?}','Admin\Settings\GeneralController@deletereportRule')->name('destroyreportRule');
             Route::get('/editreportData/{id?}','Admin\Settings\GeneralController@editreportdata')->name('valuation.admin.settings.general.editreportData');
 
+            // Report Settings
+            Route::get('/report', 'Admin\Settings\ReportController@index')->name('valuation.admin.settings.report');
+            Route::get('/report/data','Admin\Settings\ReportController@getData')->name('valuation.admin.settings.report.data');
+            Route::get('/report/editData/{id?}','Admin\Settings\ReportController@editData')->name('valuation.admin.settings.report.editData');
+            Route::post('/report/saveUpdateRuleData/{id?}','Admin\Settings\ReportController@saveUpdateRuleData')->name('valuation.admin.settings.report.saveUpdateRuleData');
+            Route::post('/report/saveUpdateData/{id?}','Admin\Settings\ReportController@saveUpdateData')->name('valuation.admin.settings.report.saveUpdateData');
+            Route::post('/saveReportText','Admin\Settings\ReportController@saveReportText')->name('Successfullysavedata');
+            Route::get('/report/data/get','Admin\Settings\ReportController@getreportData')->name('valuation.admin.settings.report.getdata');
+            Route::delete('/destroyreportRule/{id?}','Admin\Settings\ReportController@deletereportRule')->name('destroyreportRule');
+
+            // Scope of Work Settings
+            Route::get('/scopeOfWork', 'Admin\Settings\ScopeOfWorkController@index')->name('valuation.admin.settings.scopeOfWork');
+            Route::get('/scopeOfWork/data','Admin\Settings\ScopeOfWorkController@getData')->name('valuation.admin.settings.scopeOfWork.data');
+            Route::post('/scopeOfWork/saveUpdateData/{id?}','Admin\Settings\ScopeOfWorkController@saveUpdateData')->name('valuation.admin.settings.scopeOfWork.saveUpdateData');
+            // Route::get('/scopeOfWork/editData/{id?}','Admin\Settings\ScopeOfWorkController@editData')->name('valuation.admin.settings.scopeOfWork.editData');
+            // Route::get('/scopeOfWork/addEditView/{id?}','Admin\Settings\ScopeOfWorkController@addEditView')->name('valuation.admin.settings.scopeOfWork.addEditView');
+            // Route::delete('/scopeOfWork/destroy/{id?}','Admin\Settings\ScopeOfWorkController@destroy')->name('valuation.admin.settings.scopeOfWork.destroy');
+            // Route::post('/scopeOfWork/saveUpdateRuleData/{id?}','Admin\Settings\ScopeOfWorkController@saveUpdateRuleData')->name('valuation.admin.settings.scopeOfWork.saveUpdateRuleData');
+            // Route::delete('/scopeOfWork/destroyRule/{id?}','Admin\Settings\ScopeOfWorkController@destroyRule')->name('valuation.admin.settings.scopeOfWork.destroyRule');
+            // Route::post('/saveReportText','Admin\Settings\ScopeOfWorkController@saveReportText')->name('Successfullysavedata');
+            // Route::get('/scopeOfWork/data/get','Admin\Settings\ScopeOfWorkController@getreportData')->name('valuation.admin.settings.scopeOfWork.getdata');
+
+
+
             //Property Feature Category
             Route::get('/category','Admin\Settings\FeatureCategoryController@index')->name('valuation.admin.settings.category');
             Route::get('/category/addEditView/{id?}','Admin\Settings\FeatureCategoryController@addEditView')->name('valuation.admin.settings.category.addEditView');
