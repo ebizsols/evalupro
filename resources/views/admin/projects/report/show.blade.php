@@ -70,6 +70,11 @@
             font-weight: 600;
         }
 
+        .danger {
+            color: #ED9687;
+            font-weight: 600;
+        }
+
        .pics {
            display: flex;
            align-items: center;
@@ -265,7 +270,7 @@
                             @if (!empty($comparisonContent))
                                 @include('admin.projects.ValuationMethodology.ComparisionApartmentRes', $comparisonContent);
                             @else
-                                <h3 class="basic text-center">Methodology Comparison Not found</h3>
+                                <h3 class="danger text-center">Methodology Comparison Not found</h3>
                             @endif
                         </div>
                     </div>
@@ -484,12 +489,15 @@
 
                                                         <div class="row m-b-10">
                                                             <div class="col-xs-12">
-
-                                                                <button class="btn btn-success btn-outline pull-right "
-                                                                    type="button" data-toggle="modal"
-                                                                    data-target="#addRuleModel"><i
-                                                                        class="fa fa-check"></i> Generate Report
-                                                                </button>
+                                                                        @if ($comparisonContent)
+                                                                        <button class="btn btn-success btn-outline pull-right "
+                                                                        type="button" data-toggle="modal"
+                                                                        data-target="#addRuleModel"><i
+                                                                            class="fa fa-check"></i> Generate Report
+                                                                        </button>
+                                                                        @else
+                                                                        <h3 class="danger text-center">Please Complete The Comparison For PDF Report</h3>
+                                                                        @endif
                                                             </div>
                                                         </div>
                                                         <div class="row">

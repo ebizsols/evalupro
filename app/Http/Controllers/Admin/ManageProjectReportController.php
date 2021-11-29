@@ -175,7 +175,7 @@ class ManageProjectReportController extends AdminBaseController
         //echo "<pre>"; print_r($this->comparisonContect); exit;
 
         //  End New Dynamic Data
-       
+        
         return view('admin.projects.report.show', $this->data);
     }
 

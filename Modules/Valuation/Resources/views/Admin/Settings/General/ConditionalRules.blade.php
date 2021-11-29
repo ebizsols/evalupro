@@ -1,4 +1,4 @@
-@push('head-script')
+{{-- @push('head-script')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css">
     <link rel="stylesheet" href="//cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">
@@ -189,4 +189,4 @@
             }
         }
     </script>
-@endpush
+@endpush --}}

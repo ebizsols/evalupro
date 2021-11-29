@@ -3,12 +3,12 @@
 @section('page-title')
     <div class="row bg-title">
         <!-- .page title -->
-        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <div class="col-lg-6 col-md-4 col-sm-4 col-xs-12">
             <h4 class="page-title"><i class="{{ $pageIcon }}"></i> {{ __($pageTitle) }}</h4>
         </div>
         <!-- /.page title -->
         <!-- .breadcrumb -->
-        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <div class="col-lg-6 col-sm-8 col-md-8 col-xs-12">
             <ol class="breadcrumb">
                 <li><a href="{{ route('admin.dashboard') }}">@lang('app.menu.home')</a></li>
                 <li><a href="{{ route($listingPageRoute) }}">{{ __($pageTitle) }}</a></li>
@@ -20,10 +20,11 @@
 @endsection
 @push('head-script')
     <link rel="stylesheet"
-          href="{{ asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
+        href="{{ asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/bower_components/bootstrap-select/bootstrap-select.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/bower_components/bootstrap-select/bootstrap-select.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/bower_components/custom-select/custom-select.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
    
     <link rel="stylesheet" href="{{ asset('plugins/metronic_plugin/css/datatables-bundle.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/metronic_plugin/css/prismjs-bundle.css') }}">
@@ -33,27 +34,26 @@
 @endpush
 @section('content')
 
+<style>
+    #templateCategory {
+        height : 90px !important;
+    }
+</style>
     <div class="row">
         <div class="col-md-12">
 
             <div class="panel panel-inverse">
-                <div class="panel-heading">{{ __($title) }}</div>
+                <div class="panel-heading">{{ __($headingTitle) }}</div>
 
                 <div class="panel-wrapper collapse in" aria-expanded="true">
                     <div class="panel-body">
                         <div class="vtabs customvtab m-t-10">
                             @include('sections.valuation_sub_setting_menu')
                             <div class="tab-content">
+                                {{-- New Code --}}
+
                                 <div id="vhome3" class="tab-pane active">
                                 @include($viewFolderPath.'Form')
-                                
-                                </div>
-                                {{-- <div id="vhome32" class="tab-pane active">
-                                    @include($viewFolderPath.'ConditionalRules')
-                                </div>
-                                <div id="vhome32" class="tab-pane active">
-                                    @include($viewFolderPath.'ReportConditionalText')
-                                </div> --}}
                             </div>
                         </div>
                     </div>

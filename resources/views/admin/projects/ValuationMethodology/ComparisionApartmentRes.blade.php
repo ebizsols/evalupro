@@ -1,8 +1,8 @@
-<table class="table table-striped compareResTable">
+<table class="table compareResTable">
     <thead>
         <tr>
             <th width="5" class="bold cBlack">No</th>
-            <th colspan="2" width="25" class="bold cBlue">Residential Apartment Comparable Factors</th>
+            <th colspan="2" width="10" class="bold cBlue">Residential Apartment Comparable Factors</th>
             <th width="10" class="bold cBlue">Weighted Factors</th>
             <th width="15" class="bold cBlue">Subject Property</th>
             <th width="15" class="bold cBlue">Comparable No.1</th>
@@ -22,10 +22,24 @@
         </tr>
         <tr>
             <td>2</td>
-            <td colspan="2">Apartment Size in SQM as per IPMS-1</td>
+            {{-- <td colspan="2">Apartment Size in SQM as per IPMS-1</td> --}}
+            {{-- <td colspan="2">Apartment Size</td> --}}
+            <td colspan="2">
+                <table class="table  ">
+                <tr rowspan="3">
+                    <td>Apartment Size</td>
+                </tr>
+                {{-- <tr>
+                <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr> --}}
+                </table>
+            </td>
             <td>{{ $sizeWeightagePerText }}</td>
             <td>
-                <table class="table table-striped ">
+                <table class="table  ">
                     <tr>
                         <td rowspan="3">{{ $propertyBaseInfo->aptSizeIPMS }}</td>
                     </tr>
@@ -38,7 +52,7 @@
                 </table>
             </td>
             <td>
-                <table class="table table-striped">
+                <table class="table ">
                     <tr>
                         <td>{{ $propertyInfoOne->aptSizeIPMS }}</td>
                     </tr>
@@ -51,7 +65,7 @@
                 </table>
             </td>
             <td>
-                <table class="table table-striped">
+                <table class="table ">
                     <tr>
                         <td>{{ $propertyInfoTwo->aptSizeIPMS }}</td>
                     </tr>
@@ -64,7 +78,7 @@
                 </table>
             </td>
             <td>
-                <table class="table table-striped">
+                <table class="table ">
                     <tr>
                         <td>{{ $propertyInfoThree->aptSizeIPMS }}</td>
                     </tr>
@@ -80,10 +94,23 @@
 
         <tr>
             <td>3</td>
-            <td colspan="2">No. of Bedrooms</td>
+            {{-- <td colspan="2">No. of Bedrooms</td> --}}
+            <td colspan="2">
+                <table class="table  ">
+                <tr  rowspan="3">
+                    <td>No. of Bedrooms</td>
+                </tr>
+                {{-- <tr>
+                <td>Bedrooms Difference</td>
+                </tr>
+                <tr>
+                    <td>Difference in %age</td>
+                </tr> --}}
+                </table>
+            </td>
             <td>{{ $bedroomsWeightagePerText }}</td>
             <td>
-                <table class="table table-striped ">
+                <table class="table  ">
                     <tr>
                         <td rowspan="3">{{ $propertyBaseInfo->bedrooms }}</td>
                     </tr>
@@ -96,7 +123,7 @@
                 </table>
             </td>
             <td>
-                <table class="table table-striped">
+                <table class="table ">
                     <tr>
                         <td>{{ $propertyInfoOne->bedrooms }}</td>
                     </tr>
@@ -109,7 +136,7 @@
                 </table>
             </td>
             <td>
-                <table class="table table-striped">
+                <table class="table ">
                     <tr>
                         <td>{{ $propertyInfoTwo->bedrooms }}</td>
                     </tr>
@@ -122,7 +149,7 @@
                 </table>
             </td>
             <td>
-                <table class="table table-striped">
+                <table class="table ">
                     <tr>
                         <td>{{ $propertyInfoThree->bedrooms }}</td>
                     </tr>
@@ -138,10 +165,23 @@
 
         <tr>
             <td>4</td>
-            <td colspan="2">No. of Bathrooms</td>
+            {{-- <td colspan="2">No. of Bathrooms</td> --}}
+            <td colspan="2">
+                <table class="table  ">
+                <tr  rowspan="3">
+                    <td>No. of Bathrooms</td>
+                </tr>
+                {{-- <tr>
+                <td>Bathrooms Difference</td>
+                </tr>
+                <tr>
+                    <td>Difference in %age</td>
+                </tr> --}}
+                </table>
+            </td>
             <td>{{ $bathWeightagePerText }}</td>
             <td>
-                <table class="table table-striped ">
+                <table class="table  ">
                     <tr>
                         <td rowspan="3">{{ $propertyBaseInfo->bathrooms }}</td>
                     </tr>
@@ -154,7 +194,7 @@
                 </table>
             </td>
             <td>
-                <table class="table table-striped">
+                <table class="table ">
                     <tr>
                         <td>{{ $propertyInfoOne->bathrooms }}</td>
                     </tr>
@@ -167,7 +207,7 @@
                 </table>
             </td>
             <td>
-                <table class="table table-striped">
+                <table class="table ">
                     <tr>
                         <td>{{ $propertyInfoTwo->bathrooms }}</td>
                     </tr>
@@ -180,7 +220,7 @@
                 </table>
             </td>
             <td>
-                <table class="table table-striped">
+                <table class="table ">
                     <tr>
                         <td>{{ $propertyInfoThree->bathrooms }}</td>
                     </tr>
@@ -196,15 +236,31 @@
 
         <tr>
             <td>5</td>
-            <td colspan="2">Finishing Quality</td>
+            {{-- <td colspan="2">Finishing Quality</td> --}}
+            <td colspan="2">
+                <table class="table  ">
+                <tr  rowspan="3">
+                    <td>Finishing Quality</td>
+                </tr>
+                <tr>
+                <td>Maintenance</td>
+                </tr>
+                {{-- <tr>
+                    <td>Difference</td>
+                </tr>
+                <tr>
+                    <td>?</td>
+                </tr> --}}
+                </table>
+            </td>
             <td>{{ $finishingQualityWeightagePerText }}</td>
             <td>
-                <table class="table table-striped ">
+                <table class="table  ">
                     <tr>
-                        <td>{{ $propertyBaseInfo->finishingQualitySelectionTitle }}</td>
+                        <td>{{ $propertyBaseInfo->finishingQualityTitle }}</td>
                     </tr>
                     <tr>
-                        <td>{{ $propertyBaseInfo->maintenanceSelectionTitle }}</td>
+                        <td>{{ $propertyBaseInfo->maintenanceTitle }}</td>
                     </tr>
                     <tr>
                         <td rowspan="2">{{ $propertyBaseInfo->finishingQualityCalBase }}</td>
@@ -215,12 +271,12 @@
                 </table>
             </td>
             <td>
-                <table class="table table-striped ">
+                <table class="table  ">
                     <tr>
-                        <td>{{ $propertyInfoOne->finishingQualitySelectionTitle }}</td>
+                        <td>{{ $propertyInfoOne->finishingQualityOneTitle }}</td>
                     </tr>
                     <tr>
-                        <td>{{ $propertyInfoOne->maintenanceSelectionTitle }}</td>
+                        <td>{{ $propertyInfoOne->maintenanceOneTitle }}</td>
                     </tr>
                     <tr>
                         <td>{{ $propertyInfoOne->finishingQualityCalOne }}</td>
@@ -231,12 +287,12 @@
                 </table>
             </td>
             <td>
-                <table class="table table-striped ">
+                <table class="table  ">
                     <tr>
-                        <td>{{ $propertyInfoTwo->finishingQualitySelectionTitle }}</td>
+                        <td>{{ $propertyInfoOne->finishingQualityTwoTitle }}</td>
                     </tr>
                     <tr>
-                        <td>{{ $propertyInfoTwo->maintenanceSelectionTitle }}</td>
+                        <td>{{ $propertyInfoOne->maintenanceTwoTitle }}</td>
                     </tr>
                     <tr>
                         <td>{{ $propertyInfoTwo->finishingQualityCalTwo }}</td>
@@ -247,12 +303,12 @@
                 </table>
             </td>
             <td>
-                <table class="table table-striped ">
+                <table class="table  ">
                     <tr>
-                        <td>{{ $propertyInfoThree->finishingQualitySelectionTitle }}</td>
+                        <td>{{ $propertyInfoOne->finishingQualityThreeTitle }}</td>
                     </tr>
                     <tr>
-                        <td>{{ $propertyInfoThree->maintenanceSelectionTitle }}</td>
+                        <td>{{ $propertyInfoOne->maintenanceThreeTitle }}</td>
                     </tr>
                     <tr>
                         <td>{{ $propertyInfoThree->finishingQualityCalThree }}</td>
@@ -266,15 +322,28 @@
 
         <tr>
             <td>6</td>
-            <td colspan="2">Building Amenities and Facilities</td>
+            {{-- <td colspan="2">Building Amenities and Facilities</td> --}}
+            <td colspan="2">
+                <table class="table  ">
+                <tr  rowspan="3">
+                    <td>Building Amenities and Facilities</td>
+                </tr>
+                {{-- <tr>
+                    <td>Values</td>
+                </tr>
+                <tr>
+                    <td>Difference</td>
+                </tr> --}}
+                </table>
+            </td>
             <td>{{ $amenitiesWeightagePerText }}</td>
             <td>
-                <table class="table table-striped ">
+                <table class="table  ">
                     <tr>
-                        <td>{{ $propertyBaseInfo->amenitiesSlectionTitle }}</td>
+                        <td>{{ $propertyBaseInfo->amenitiesTitle }}</td>
                     </tr>
                     <tr>
-                        <td rowspan="2">{{ $propertyBaseInfo->amenities }}</td>
+                        <td rowspan="2">{{ $propertyBaseInfo->amenitiesSlectionTitle }}</td>
                     </tr>
 
                     {{-- <tr>
@@ -283,12 +352,12 @@
                 </table>
             </td>
             <td>
-                <table class="table table-striped ">
+                <table class="table  ">
                     <tr>
-                        <td>{{ $propertyInfoOne->amenitiesSlectionTitle }}</td>
+                        <td>{{ $propertyInfoOne->amenitiesOneTitle }}</td>
                     </tr>
                     <tr>
-                        <td>{{ $propertyInfoOne->amenities }}</td>
+                        <td>{{ $propertyInfoOne->amenitiesSlectionTitle }}</td>
                     </tr>
 
                     <tr>
@@ -297,12 +366,12 @@
                 </table>
             </td>
             <td>
-                <table class="table table-striped ">
+                <table class="table  ">
                     <tr>
-                        <td>{{ $propertyInfoOne->amenitiesSlectionTitle }}</td>
+                        <td>{{ $propertyInfoTwo->amenitiesTwoTitle }}</td>
                     </tr>
                     <tr>
-                        <td>{{ $propertyInfoOne->amenities }}</td>
+                        <td>{{ $propertyInfoOne->amenitiesSlectionTitle }}</td>
                     </tr>
 
                     <tr>
@@ -311,12 +380,12 @@
                 </table>
             </td>
             <td>
-                <table class="table table-striped ">
+                <table class="table  ">
+                    <tr>
+                        <td>{{ $propertyInfoThree->amenitiesThreeTitle }}</td>
+                    </tr>
                     <tr>
                         <td>{{ $propertyInfoThree->amenitiesSlectionTitle }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ $propertyInfoThree->amenities }}</td>
                     </tr>
 
                     <tr>
@@ -405,7 +474,6 @@
         font-size: 15px;
         font-weight: 400;
         text-align: center;
-        /* vertical-align: middle; */
     }
 
     .saveButton {

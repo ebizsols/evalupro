@@ -421,19 +421,26 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $this->noOfBedroomBase = $weightageIdBedroomBase['value'];
         $this->noOfBathroomBase = $weightageIdBathroomBase['value'];
         $this->finishingQualityBase = $weightageIdFinishingBase['value'];
+        $this->finishingQualityBaseTitle = $weightageIdFinishingBase['title'];
         $this->maintenanceBase = $weightageIdMaintenanceBase['value'];
+        $this->maintenanceBaseTitle = $weightageIdMaintenanceBase['title'];
         $this->floorLevelBase = $weightageIdFloorLevelBase['value'];
         $this->amenitiesBase = $weightageIdAmenitiesBase['value'];
+        $this->amenitiesBaseTitle = $weightageIdAmenitiesBase['title'];
 
         // $propertyBaseInfo->estimated_value = (isset($this->estimatedValueBase) && $this->estimatedValueBase != '') ? $this->estimatedValueBase:0;
         // dd($propertyBaseInfo);
         $propertyBaseInfo->aptSizeIPMS = (isset($this->sizeInSquareMeterBase) && $this->sizeInSquareMeterBase != '') ? $this->sizeInSquareMeterBase: 0;
+        $propertyBaseInfo->aptSizeIPMS = round($propertyBaseInfo->aptSizeIPMS, 3);
         $propertyBaseInfo->bedrooms = (isset($this->noOfBedroomBase) && $this->noOfBedroomBase != '') ? $this->noOfBedroomBase: 0;
         $propertyBaseInfo->bathrooms = (isset($this->noOfBathroomBase) && $this->noOfBathroomBase != '') ? $this->noOfBathroomBase: 0;
         $propertyBaseInfo->finishingQuality = (isset($this->finishingQualityBase) && $this->finishingQualityBase != '') ? $this->finishingQualityBase: 0;
+        $propertyBaseInfo->finishingQualityTitle = (isset($this->finishingQualityBaseTitle) && $this->finishingQualityBaseTitle != '') ? $this->finishingQualityBaseTitle: "";
         $propertyBaseInfo->maintenance = (isset($this->maintenanceBase) && $this->maintenanceBase != '') ? $this->maintenanceBase: 0;
+        $propertyBaseInfo->maintenanceTitle = (isset($this->maintenanceBaseTitle) && $this->maintenanceBaseTitle != '') ? $this->maintenanceBaseTitle: "";
         $propertyBaseInfo->floorLevel = (isset($this->floorLevelBase) && $this->floorLevelBase != '') ? $this->floorLevelBase: 0;
         $propertyBaseInfo->amenities = (isset($this->amenitiesBase) && $this->amenitiesBase != '') ? $this->amenitiesBase: 0;
+        $propertyBaseInfo->amenitiesTitle = (isset($this->amenitiesBaseTitle) && $this->amenitiesBaseTitle != '') ? $this->amenitiesBaseTitle: 0;
 
         // 1st Comparison
         $propertyInfoOne = ValuationProperty::find($propertyIdOne);
@@ -467,18 +474,25 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $this->noOfBedroomOne = $weightageIdBedroomOne['value'];
         $this->noOfBathroomOne = $weightageIdBathroomOne['value'];
         $this->finishingQualityOne = $weightageIdFinishingOne['value'];
+        $this->finishingQualityOneTitle = $weightageIdFinishingOne['title'];
         $this->maintenanceOne = $weightageIdMaintenanceOne['value'];
+        $this->maintenanceOneTitle = $weightageIdMaintenanceOne['title'];
         $this->floorLevelOne = $weightageIdFloorLevelOne['value'];
         $this->amenitiesOne = $weightageIdAmenitiesOne['value'];
+        $this->amenitiesOneTitle = $weightageIdAmenitiesOne['title'];
         
         $propertyInfoOne->estimated_value = (isset($this->estimatedValueOne) && $this->estimatedValueOne != '') ? $this->estimatedValueOne: 0;
         $propertyInfoOne->aptSizeIPMS = (isset($this->sizeInSquareMeterOne) && $this->sizeInSquareMeterOne != '') ? $this->sizeInSquareMeterOne: 0;
+        $propertyInfoOne->aptSizeIPMS = round($propertyInfoOne->aptSizeIPMS, 3);
         $propertyInfoOne->bedrooms = (isset($this->noOfBedroomOne) && $this->noOfBedroomOne != '') ? $this->noOfBedroomOne: 0;
         $propertyInfoOne->bathrooms = (isset($this->noOfBathroomOne) && $this->noOfBathroomOne != '') ? $this->noOfBathroomOne: 0;
         $propertyInfoOne->finishingQuality = (isset($this->finishingQualityOne) && $this->finishingQualityOne != '') ? $this->finishingQualityOne: 0;
+        $propertyInfoOne->finishingQualityOneTitle = (isset($this->finishingQualityOneTitle) && $this->finishingQualityOneTitle != '') ? $this->finishingQualityOneTitle: 0;
         $propertyInfoOne->maintenance = (isset($this->maintenanceOne) && $this->maintenanceOne != '') ? $this->maintenanceOne: 0;
+        $propertyInfoOne->maintenanceOneTitle = (isset($this->maintenanceOneTitle) && $this->maintenanceOneTitle != '') ? $this->maintenanceOneTitle: 0;
         $propertyInfoOne->floorLevel = (isset($this->floorLevelOne) && $this->floorLevelOne != '') ? $this->floorLevelOne: 0;
         $propertyInfoOne->amenities = (isset($this->amenitiesOne) && $this->amenitiesOne != '') ? $this->amenitiesOne: 0;
+        $propertyInfoOne->amenitiesOneTitle = (isset($this->amenitiesOneTitle) && $this->amenitiesOneTitle != '') ? $this->amenitiesOneTitle: 0;
         
         // 2nd Comparison
         $propertyInfoTwo = ValuationProperty::find($propertyIdTwo);
@@ -513,18 +527,25 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $this->noOfBedroomTwo = $weightageIdBedroomTwo['value'];
         $this->noOfBathroomTwo = $weightageIdBathroomTwo['value'];
         $this->finishingQualityTwo = $weightageIdFinishingTwo['value'];
+        $this->finishingQualityTwoTitle = $weightageIdFinishingTwo['title'];
         $this->maintenanceTwo = $weightageIdMaintenanceTwo['value'];
+        $this->maintenanceTwoTitle = $weightageIdMaintenanceTwo['title'];
         $this->floorLevelTwo = $weightageIdFloorLevelTwo['value'];
         $this->amenitiesTwo = $weightageIdAmenitiesTwo['value'];
+        $this->amenitiesTwoTitle = $weightageIdAmenitiesTwo['title'];
 
         $propertyInfoTwo->estimated_value = (isset($this->estimatedValueTwo) && $this->estimatedValueTwo != '') ? $this->estimatedValueTwo: 0;
         $propertyInfoTwo->aptSizeIPMS = (isset($this->sizeInSquareMeterTwo) && $this->sizeInSquareMeterTwo != '') ? $this->sizeInSquareMeterTwo: 0;
+        $propertyInfoTwo->aptSizeIPMS = round($propertyInfoTwo->aptSizeIPMS, 3);
         $propertyInfoTwo->bedrooms = (isset($this->noOfBedroomTwo) && $this->noOfBedroomTwo != '') ? $this->noOfBedroomTwo: 0;
         $propertyInfoTwo->bathrooms = (isset($this->noOfBathroomTwo) && $this->noOfBathroomTwo != '') ? $this->noOfBathroomTwo: 0;
         $propertyInfoTwo->finishingQuality = (isset($this->finishingQualityTwo) && $this->finishingQualityTwo != '') ? $this->finishingQualityTwo: 0;
+        $propertyInfoOne->finishingQualityTwoTitle = (isset($this->finishingQualityTwoTitle) && $this->finishingQualityTwoTitle != '') ? $this->finishingQualityTwoTitle: 0;
         $propertyInfoTwo->maintenance = (isset($this->maintenanceTwo) && $this->maintenanceTwo != '') ? $this->maintenanceTwo: 0;
+        $propertyInfoOne->maintenanceTwoTitle = (isset($this->maintenanceTwoTitle) && $this->maintenanceTwoTitle != '') ? $this->maintenanceTwoTitle: 0;
         $propertyInfoTwo->floorLevel = (isset($this->floorLevelTwo) && $this->floorLevelTwo != '') ? $this->floorLevelTwo: 0;
         $propertyInfoTwo->amenities = (isset($this->amenitiesTwo) && $this->amenitiesTwo != '') ? $this->amenitiesTwo: 0;
+        $propertyInfoTwo->amenitiesTwoTitle = (isset($this->amenitiesTwoTitle) && $this->amenitiesTwoTitle != '') ? $this->amenitiesTwoTitle: 0;
 
         // 3rd Comparison
         $propertyInfoThree = ValuationProperty::findOrFail($propertyIdThree);
@@ -559,18 +580,25 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $this->noOfBedroomThree = $weightageIdBedroomThree['value'];
         $this->noOfBathroomThree = $weightageIdBathroomThree['value'];
         $this->finishingQualityThree = $weightageIdFinishingThree['value'];
+        $this->finishingQualityThreeTitle = $weightageIdFinishingThree['title'];
         $this->maintenanceThree = $weightageIdMaintenanceThree['value'];
+        $this->maintenanceThreeTitle = $weightageIdMaintenanceThree['title'];
         $this->floorLevelThree = $weightageIdFloorLevelThree['value'];
         $this->amenitiesThree = $weightageIdAmenitiesThree['value'];
+        $this->amenitiesThreeTitle = $weightageIdAmenitiesThree['title'];
         
         $propertyInfoThree->estimated_value = (isset($this->estimatedValueThree) && $this->estimatedValueThree != '') ? $this->estimatedValueThree: 0;
         $propertyInfoThree->aptSizeIPMS = (isset($this->sizeInSquareMeterThree) && $this->sizeInSquareMeterThree != '') ? $this->sizeInSquareMeterThree: 0;
+        $propertyInfoThree->aptSizeIPMS = round($propertyInfoThree->aptSizeIPMS, 3);
         $propertyInfoThree->bedrooms = (isset($this->noOfBedroomThree) && $this->noOfBedroomThree != '') ? $this->noOfBedroomThree: 0;
         $propertyInfoThree->bathrooms = (isset($this->noOfBathroomThree) && $this->noOfBathroomThree != '') ? $this->noOfBathroomThree: 0;
         $propertyInfoThree->finishingQuality = (isset($this->finishingQualityThree) && $this->finishingQualityThree != '') ? $this->finishingQualityThree: 0;
+        $propertyInfoOne->finishingQualityThreeTitle = (isset($this->finishingQualityThreeTitle) && $this->finishingQualityThreeTitle != '') ? $this->finishingQualityThreeTitle: 0;
         $propertyInfoThree->maintenance = (isset($this->maintenanceThree) && $this->maintenanceThree != '') ? $this->maintenanceThree: 0;
+        $propertyInfoOne->maintenanceThreeTitle = (isset($this->maintenanceThreeTitle) && $this->maintenanceThreeTitle != '') ? $this->maintenanceThreeTitle: 0;
         $propertyInfoThree->floorLevel = (isset($this->floorLevelThree) && $this->floorLevelThree != '') ? $this->floorLevelThree: 0;
         $propertyInfoThree->amenities = (isset($this->amenitiesThree) && $this->amenitiesThree != '') ? $this->amenitiesThree: 0;
+        $propertyInfoThree->amenitiesThreeTitle = (isset($this->amenitiesThreeTitle) && $this->amenitiesThreeTitle != '') ? $this->amenitiesThreeTitle: 0;
         
 
         //compare Processing start
@@ -587,7 +615,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
         if ($baseAptSizeIPMS == 0) {
             $propertyInfoOne->aptSizeIPMSComparison = 0;
         } else {
-            $propertyInfoOne->aptSizeIPMSComparison = ($baseAptSizeIPMSMinusProOne / $baseAptSizeIPMS)*100;
+            $propertyInfoOne->aptSizeIPMSComparison = round(($baseAptSizeIPMSMinusProOne / $baseAptSizeIPMS)*100, 3);
         }
 
         $baseAptSizeIPMSMinusProTwo = $baseAptSizeIPMS - $aptSizeIPMSPropertyInfoTwo;
@@ -595,7 +623,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
         if ($baseAptSizeIPMS == 0) {
             $propertyInfoTwo->aptSizeIPMSComparison = 0;
         } else {
-            $propertyInfoTwo->aptSizeIPMSComparison = ($baseAptSizeIPMSMinusProTwo / $baseAptSizeIPMS)*100;
+            $propertyInfoTwo->aptSizeIPMSComparison = round(($baseAptSizeIPMSMinusProTwo / $baseAptSizeIPMS)*100, 3);
         }
 
         $baseAptSizeIPMSMinusProThree = $baseAptSizeIPMS - $aptSizeIPMSPropertyInfoThree;
@@ -603,7 +631,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
         if ($baseAptSizeIPMS == 0) {
             $propertyInfoThree->aptSizeIPMSComparison = 0;
         } else {
-            $propertyInfoThree->aptSizeIPMSComparison = ($baseAptSizeIPMSMinusProThree / $baseAptSizeIPMS)*100;
+            $propertyInfoThree->aptSizeIPMSComparison = round(($baseAptSizeIPMSMinusProThree / $baseAptSizeIPMS)*100, 3);
         }
 
         //bedrooms comparison

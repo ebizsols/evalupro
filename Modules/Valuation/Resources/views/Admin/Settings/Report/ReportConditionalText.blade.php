@@ -177,7 +177,7 @@
             if (EditreportId != '' && EditreportId > 0) {
                 $.ajax({
                     type: 'get',
-                    url: "{{ route('valuation.admin.settings.general.editreportData') }}/" + EditreportId,
+                    url: "{{ route('valuation.admin.settings.report.editreportData') }}/" + EditreportId,
                     cache: false,
                     success: function (response) {
 

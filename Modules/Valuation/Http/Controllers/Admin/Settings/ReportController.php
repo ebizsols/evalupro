@@ -14,18 +14,19 @@ class ReportController extends ValuationAdminBaseController
 {
     const viewFolderPath = 'valuation::Admin.Settings.Report.';
     const saveUpdateDataRoute = 'valuation.admin.settings.report.saveUpdateData';
-    // const getAjaxDataRoute = 'valuation.admin.settings.block.getAjaxData';
+    const getAjaxDataRoute = 'valuation.admin.settings.block.getAjaxData';
     const saveUpdateRuleRoute ='valuation.admin.settings.report.saveUpdateRuleData';
     private $viewFolderPath = 'valuation::Admin.Settings.Report.';
 
     private $listingPageRoute = 'valuation.admin.settings.report';
     private $dataRoute = 'valuation.admin.settings.report.data';
-    private $getdataRoute = 'valuation.admin.settings.general.getdata';
+    private $getdataRoute = 'valuation.admin.settings.report.getdata';
     private $saveUpdateDataRoute = 'valuation.admin.settings.report.saveUpdateData';
-    // private $addEditViewRoute = 'valuation.admin.settings.general.addEditView';
-    private $destroyRoute = 'valuation.admin.settings.general.destroy';
+    private $addEditViewRoute = 'valuation.admin.settings.general.addEditView';
+    private $destroyRoute = 'valuation.admin.settings.report.destroy';
     private $saveUpdateRuleRoute = 'valuation.admin.settings.report.saveUpdateRuleData';
-    private $editReportDataRoute = 'valuation.admin.settings.general.editreportData';
+    private $editDataRoute = 'valuation.admin.settings.report.editData';
+    private $editReportDataRoute = 'valuation.admin.settings.report.editreportData';
     /**
      * @var mixed|string
      */
@@ -55,11 +56,11 @@ class ReportController extends ValuationAdminBaseController
         $data['listingPageRoute'] = $this->listingPageRoute;
         $data['dataRoute'] = $this->dataRoute;
         $data['saveUpdateDataRoute'] = $this->saveUpdateDataRoute;
-        // $data['addEditViewRoute'] = $this->addEditViewRoute;
+        $data['addEditViewRoute'] = $this->addEditViewRoute;
         $data['destroyRoute'] = $this->destroyRoute;
         $data['getdataRoute'] = $this->getdataRoute;
         $data['saveUpdateRuleRoute']=$this->saveUpdateRuleRoute;
-        // $data['editDataRoute']=$this->editDataRoute;
+        $data['editDataRoute']=$this->editDataRoute;
         $data['editReportDataRoute']=$this->editReportDataRoute;
         $data['companyId'] = isset(company()->id)?company()->id:0;
 
@@ -80,6 +81,31 @@ class ReportController extends ValuationAdminBaseController
         $this->formData =$formData;
 
         return view($this->viewFolderPath . 'Index', $this->data);
+    }
+
+    public function destroy($id)
+    {
+
+        $feature = ValuationGeneralSetting::find($id);
+
+        if (empty($feature)) {
+            return Reply::error(__('valuation::messages.dataNotFound'));
+        }
+
+        ValuationGeneralSetting::destroy($id);
+
+        return Reply::success(__('valuation::messages.dataDeleted'));
+    }
+
+    public function destroyRule($id)
+    {
+        $rule = ValuationSowRule::find($id);
+        if (empty($rule)) {
+            return Reply::error(__('valuation::messages.dataNotFound'));
+        }
+        ValuationSowRule::destroy($id);
+        return Reply::redirect(route($this->listingPageRoute), __('valuation::messages.dataDeleted'));
+
     }
 
     public function saveUpdateRuleData(Request $request)
@@ -207,16 +233,24 @@ class ReportController extends ValuationAdminBaseController
         return Reply::redirect(route($this->listingPageRoute), __('valuation::messages.dataDeleted'));
     }
 
+    public function editData($id = 0)
+    {
+     
+        $this->__customConstruct($this->data);
+        if($id >0)
+        {
+            $ruleObj = ValuationSowRule::find($id);
+            $array = array();
+            $array['test'] = $ruleObj->toArray();
+            return Reply::successWithData('success',$array);
+        }
+        else
+        {
+            
+        }
+    }
+
 }
-
-
-
-
-
-
-
-
-
 
 
 ?>

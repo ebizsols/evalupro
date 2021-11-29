@@ -135,6 +135,16 @@ $scopeOfWorkSettings['Title'] = "SoW Settings";
 
 $valuationLang['scopeOfWorkSettings'] = $scopeOfWorkSettings;
 
+$methodologySettings = array();
+$methodologySettings['Title'] = "Methodology Template";
+$methodologySettings['createTemplate'] = "Create Template";
+$methodologySettings['editTemplate'] = "Edit Template";
+$methodologySettings['templateTitle'] = "Template Title";
+$methodologySettings['templateCategory'] = "Template Fields";
+$methodologySettings['totalTemplates'] = "Total Templates";
+
+$valuationLang['methodologySettings'] = $methodologySettings;
+
 $propertyFeatures=array();
 $propertyFeatures['Title']="Property Type Feature Setting";
 $propertyFeatures['createFeature']="Create Feature";

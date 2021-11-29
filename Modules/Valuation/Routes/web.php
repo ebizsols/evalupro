@@ -111,11 +111,16 @@ Route::prefix('valuation')->group(function() {
             Route::get('/report', 'Admin\Settings\ReportController@index')->name('valuation.admin.settings.report');
             Route::get('/report/data','Admin\Settings\ReportController@getData')->name('valuation.admin.settings.report.data');
             Route::get('/report/editData/{id?}','Admin\Settings\ReportController@editData')->name('valuation.admin.settings.report.editData');
+            Route::get('/report/addEditView/{id?}','Admin\Settings\ReportController@addEditView')->name('valuation.admin.settings.report.addEditView');
             Route::post('/report/saveUpdateRuleData/{id?}','Admin\Settings\ReportController@saveUpdateRuleData')->name('valuation.admin.settings.report.saveUpdateRuleData');
             Route::post('/report/saveUpdateData/{id?}','Admin\Settings\ReportController@saveUpdateData')->name('valuation.admin.settings.report.saveUpdateData');
             Route::post('/saveReportText','Admin\Settings\ReportController@saveReportText')->name('Successfullysavedata');
             Route::get('/report/data/get','Admin\Settings\ReportController@getreportData')->name('valuation.admin.settings.report.getdata');
             Route::delete('/destroyreportRule/{id?}','Admin\Settings\ReportController@deletereportRule')->name('destroyreportRule');
+            Route::delete('/report/destroyRule/{id?}','Admin\Settings\ReportController@destroyRule')->name('valuation.admin.settings.report.destroyRule');
+            Route::get('/editreportData/{id?}','Admin\Settings\ReportController@editreportdata')->name('valuation.admin.settings.report.editreportData');
+
+
 
             // Scope of Work Settings
             Route::get('/scopeOfWork', 'Admin\Settings\ScopeOfWorkController@index')->name('valuation.admin.settings.scopeOfWork');
@@ -129,7 +134,12 @@ Route::prefix('valuation')->group(function() {
             // Route::post('/saveReportText','Admin\Settings\ScopeOfWorkController@saveReportText')->name('Successfullysavedata');
             // Route::get('/scopeOfWork/data/get','Admin\Settings\ScopeOfWorkController@getreportData')->name('valuation.admin.settings.scopeOfWork.getdata');
 
-
+            // Methodology 
+            Route::get('/methodology', 'Admin\Settings\MethodologyController@index')->name('valuation.admin.settings.methodology');
+            Route::get('/methodology/data','Admin\Settings\MethodologyController@data')->name('valuation.admin.settings.methodology.data');
+            Route::get('/methodology/addEditView/{id?}','Admin\Settings\MethodologyController@addEditView')->name('valuation.admin.settings.methodology.addEditView');
+            Route::post('/methodology/saveUpdateData/{id?}','Admin\Settings\MethodologyController@saveUpdateData')->name('valuation.admin.settings.methodology.saveUpdateData');
+            Route::delete('/methodology/destroy/{id?}','Admin\Settings\MethodologyController@destroy')->name('valuation.admin.settings.methodology.destroy');
 
             //Property Feature Category
             Route::get('/category','Admin\Settings\FeatureCategoryController@index')->name('valuation.admin.settings.category');

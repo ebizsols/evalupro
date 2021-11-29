@@ -121,7 +121,7 @@
                 }, function (isConfirm) {
                     if (isConfirm) {
 
-                        var url = "{{ route('valuation.admin.settings.general.destroyRule',':id') }}";
+                        var url = "{{ route('valuation.admin.settings.report.destroyRule',':id') }}";
                         url = url.replace(':id', id);
 
                         var token = "{{ csrf_token() }}";
@@ -174,7 +174,7 @@
             if (EditId != '' && EditId > 0) {
                 $.ajax({
                     type: 'get',
-                    url: "{{ route('valuation.admin.settings.general.editData') }}/" + EditId,
+                    url: "{{ route('valuation.admin.settings.report.editData') }}/" + EditId,
                     cache: false,
                     success: function (response) {
 

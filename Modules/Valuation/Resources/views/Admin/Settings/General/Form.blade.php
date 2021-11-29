@@ -26,7 +26,7 @@
         </div>
         </div>--}}
 
-    <div class="row">
+    {{-- <div class="row">
         <fieldset>
             <legend>SOW Report Title</legend>
             <div class="row">
@@ -67,7 +67,7 @@
                 </div>
             </div>
         </fieldset>
-    </div>
+    </div> --}}
     <div class="row">
         <fieldset>
             <legend>Google Api Values</legend>
