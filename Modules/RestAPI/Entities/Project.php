@@ -61,7 +61,13 @@ class Project extends \App\Project
 
     public function tasks()
     {
-        // echo "Here"; exit;
+        return $this->hasMany(Task::class, 'project_id')
+            ->where('status', '=', 'incomplete')
+            ->where('is_survey_task', '=', 1);
+    }
+
+    public function tasks_all()
+    {
         return $this->hasMany(Task::class, 'project_id')
             ->where('is_survey_task', '=', 1);
     }

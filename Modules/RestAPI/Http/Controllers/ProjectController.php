@@ -3,6 +3,7 @@
 namespace Modules\RestAPI\Http\Controllers;
 
 use Froiden\RestAPI\ApiResponse;
+use Froiden\RestAPI\Exceptions\ApiException;
 use Modules\RestAPI\Entities\Project;
 use Modules\RestAPI\Http\Requests\Projects\IndexRequest;
 use Modules\RestAPI\Http\Requests\Projects\CreateRequest;
@@ -106,5 +107,123 @@ class ProjectController extends ApiBaseController
         $meta = $this->getMetaData();
 
         return ApiResponse::make(null, $results, $meta);
+    }
+
+    public function me_pending()
+    {
+        app()->make($this->indexRequest);
+
+        $query = $this->parseRequest()
+            ->addIncludes()
+            ->addFilters()
+            ->addOrdering()
+            ->addPaging()
+            ->getQuery();
+
+        $user = api_user();
+
+        $query->whereIn('projects.id', function ($query) use ($user) {
+            $query->select(\DB::raw('DISTINCT(`projects`.`id`)'))
+                ->from('projects')
+                ->join('project_members', 'project_members.project_id', '=', 'projects.id')
+                ->where('project_members.user_id', $user->id);
+        });
+
+        // Load employees relation, if not loaded
+        $relations = $query->getEagerLoads();
+        $relationRequested = true;
+
+        if (!array_key_exists('members_many', $relations)) {
+            $relationRequested = false;
+            $relations['members_many'] = function ($query) {
+                return $query;
+            };
+        }
+
+        $query->setEagerLoads($relations);
+
+        /** @var Collection $results */
+        $results = $this->getResults();
+        $results = $results->toArray();
+
+        $newArray = array();
+        foreach ($results as $key => $result){
+            $project = \App\Project::findOrFail($result['id']);
+            if($project->getMeta('moveToAppArchive') != 1){
+                $newArray[] = $result;
+            }
+        }
+        $results = $newArray;
+
+        $meta = $this->getMetaData();
+
+        return ApiResponse::make(null, $results, $meta);
+    }
+
+    public function me_archive()
+    {
+        app()->make($this->indexRequest);
+
+        $query = $this->parseRequest()
+            ->addIncludes()
+            ->addFilters()
+            ->addOrdering()
+            ->addPaging()
+            ->getQuery();
+
+        $user = api_user();
+
+        $query->whereIn('projects.id', function ($query) use ($user) {
+            $query->select(\DB::raw('DISTINCT(`projects`.`id`)'))
+                ->from('projects')
+                ->join('project_members', 'project_members.project_id', '=', 'projects.id')
+                ->where('project_members.user_id', $user->id);
+        });
+
+        // Load employees relation, if not loaded
+        $relations = $query->getEagerLoads();
+        $relationRequested = true;
+
+        if (!array_key_exists('members_many', $relations)) {
+            $relationRequested = false;
+            $relations['members_many'] = function ($query) {
+                return $query;
+            };
+        }
+
+        $query->setEagerLoads($relations);
+
+        /** @var Collection $results */
+        $results = $this->getResults();
+        $results = $results->toArray();
+
+        $newArray = array();
+        foreach ($results as $key => $result){
+            $project = \App\Project::findOrFail($result['id']);
+            if($project->getMeta('moveToAppArchive') == 1){
+                $newArray[] = $result;
+            }
+        }
+        $results = $newArray;
+
+        $meta = $this->getMetaData();
+
+        return ApiResponse::make(null, $results, $meta);
+    }
+
+    public function to_archive($id)
+    {
+        $project = \App\Project::findOrFail($id);
+        $metaData['moveToAppArchive'] = '1';
+        $project->setMeta($metaData);
+        return ApiResponse::make('Project moved to archive');
+    }
+
+    public function remove_archive($id)
+    {
+        $project = \App\Project::findOrFail($id);
+        $metaData['moveToAppArchive'] = '0';
+        $project->setMeta($metaData);
+        return ApiResponse::make('Project removed from archive');
     }
 }

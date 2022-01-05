@@ -128,7 +128,7 @@ class TaskFormFieldsController extends ApiBaseController
                 $valuationInspectionFieldsModel->field_title = $fieldTitle;
                 $valuationInspectionFieldsModel->field_value = $fieldValue;
                 $valuationInspectionFieldsModel->field_data = json_encode($formField);
-                $valuationInspectionFieldsModel->save();
+                //$valuationInspectionFieldsModel->save();
 
             }
 
