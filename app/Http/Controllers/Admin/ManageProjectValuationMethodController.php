@@ -13,7 +13,9 @@ use App\ProjectMember;
 use App\Team;
 use App\User;
 use Illuminate\Http\Request;
+use Modules\Valuation\Entities\MethodologyTemplate;
 use Modules\Valuation\Entities\ValuationProperty;
+use Modules\Valuation\Entities\ValuationPropertyType;
 use Modules\Valuation\Entities\ValuationPropertyWeightage;
 
 class ManageProjectValuationMethodController extends AdminBaseController
@@ -106,9 +108,9 @@ class ManageProjectValuationMethodController extends AdminBaseController
         switch ($valuationMethod) {
             case 'comparision':
                 switch ($propertyType) {
-                    case'Apartment':
+                    case 'Apartment':
                         break;
-                    case'Land':
+                    case 'Land':
                         break;
                     default:
                         return Reply::error('comparable property 3 id should be greater then 0');
@@ -122,7 +124,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
                 exit;
 
                 break;
-            default :
+            default:
 
                 break;
         }
@@ -307,13 +309,33 @@ class ManageProjectValuationMethodController extends AdminBaseController
             return Reply::error('comparable property 3 id should be greater then 0');
         }
 
-        $propertyType = 'Apartment';
+        // New Code
+        $templateData = MethodologyTemplate::get();
+        $typeId = $templateData->pluck('type_id');
+        $propertyType = ValuationPropertyType::find($typeId);
+        $TypeTitle = $propertyType->pluck('title')->toArray();
+
+        $propertyBaseId = ValuationProperty::find($propertyIdBase);
+        $BaseType = $propertyBaseId->type_id;
+        $BaseTitle = valuationPropertyType::find($BaseType);
+        $BaseTypeTitle = $BaseTitle->title;
+
+        // // dd($BaseTypeTitle);
+        // $result = in_array($BaseTypeTitle, $TypeTitle);
+        // $comparisonType = array();
+        // $comparisonType['landType'] = "Land";
+        // $comparisonType['villaType'] = "Villa";
+        // $comparisonType['buildingType'] = "Building";
+        // $comparisonType['compoundType'] = "Compound";
+        // $comparisonType['apartmentType'] = "Apartment";
+
+        // $selectedType = 'Apartment';
         $valuationMethod = 'comparision';
 
         switch ($valuationMethod) {
             case 'comparision':
-                switch ($propertyType) {
-                    case'Apartment':
+                switch (in_array($BaseTypeTitle, $TypeTitle) == true) {
+                    case $BaseTypeTitle == 'Apartment':
                         $comparisionMethodRes = $this->comparisionApartment($request);
 
                         $returnArray = array();
@@ -328,7 +350,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
                         /* echo json_encode($returnArray); exit;
                          echo json_encode($comparisionMethodRes); exit;*/
                         break;
-                    case'Land':
+                    case $BaseTypeTitle == 'Land':
                         $comparisionMethodRes = $this->comparisionLand($request);
 
                         $returnArray = array();
@@ -338,16 +360,15 @@ class ManageProjectValuationMethodController extends AdminBaseController
                         return Reply::successWithData('Comparison Completed', $returnArray);
                         break;
                     default:
-                        return Reply::error('Property type not define');
+                        return Reply::error('Property type not define, please create a template');
                 }
 
 
                 break;
-            default :
+            default:
                 return Reply::error('Method not define');
                 break;
         }
-
     }
 
     public function comparisionApartment(Request $request)
@@ -377,407 +398,270 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $this->currency = 'BHD';
 
         //percentage
+        // Apartment
         $sizeWeightagePer = '40';
         $this->sizeWeightagePerText = '40%';
+        $this->sizeWeightagePerText = isset($request->apartmentWeightage) ? $request->apartmentWeightage: 0;
+        // dd($this->sizeWeightagePerText);
+        // Bedrooms
         $bedroomsWeightagePer = '20';
         $this->bedroomsWeightagePerText = '20%';
+        // Bathrooms
         $bathWeightagePer = '10';
         $this->bathWeightagePerText = '10%';
+        // Finishing Quality
         $finishingQualityWeightagePer = '15';
         $this->finishingQualityWeightagePerText = '15%';
+        // Amenities
         $amenitiesWeightagePer = '15';
         $this->amenitiesWeightagePerText = '15%';
 
-        
-        // New Code
-        // Base Comparison
         $propertyBaseInfo = ValuationProperty::find($propertyIdBase);
-        // dd($propertyBaseInfo);
-        
-        $this->estimatedValueBase = 0;
-        $this->sizeInSquareMeterBase = isset($propertyBaseInfo->sizes_in_meter_sq) ? $propertyBaseInfo->sizes_in_meter_sq : 0;
-        $noOfBedroomBase = $propertyBaseInfo->getMeta(ValuationProperty::NoOfBedroomText);
-        $noOfBedroomBase = (isset($noOfBedroomBase[0]) && $noOfBedroomBase[0] != '' && !empty($noOfBedroomBase[0])) ? $noOfBedroomBase[0]:0;
-        $noOfBathroomBase = $propertyBaseInfo->getMeta(ValuationProperty::NoOfBathoomsText);
-        $noOfBathroomBase = (isset($noOfBathroomBase[0]) && $noOfBathroomBase[0] != '' && !empty($noOfBathroomBase[0])) ? $noOfBathroomBase[0]:0;
-        $finishingQualityBase = $propertyBaseInfo->getMeta(ValuationProperty::FinishingQualityText);
-        $finishingQualityBase = (isset($finishingQualityBase[0]) && $finishingQualityBase[0] != '' && !empty($finishingQualityBase[0])) ? $finishingQualityBase[0]:0;
-        $maintenanceBase = $propertyBaseInfo->getMeta(ValuationProperty::MaintenanceText);
-        $maintenanceBase = (isset($maintenanceBase[0]) && $maintenanceBase[0] != '' && !empty($maintenanceBase[0])) ? $maintenanceBase[0]:0;
-        $floorLevelBase = $propertyBaseInfo->getMeta(ValuationProperty::FloorlevelText);
-        $floorLevelBase = (isset($floorLevelBase[0]) && $floorLevelBase[0] != '' && !empty($floorLevelBase[0])) ? $floorLevelBase[0]:0;
-        $amenitiesBase = $propertyBaseInfo->getMeta(ValuationProperty::AmenitiesText);
-        $amenitiesBase = (isset($amenitiesBase[0]) && $amenitiesBase[0] != '' && !empty($amenitiesBase[0])) ? $amenitiesBase[0]:0;
-
-        //Valuation Property Weightage BASE
-        $valuationWeightage = new ValuationPropertyWeightage();
-        $weightageIdBedroomBase = $valuationWeightage::find($noOfBedroomBase);
-        $weightageIdBathroomBase = $valuationWeightage::find($noOfBathroomBase);
-        $weightageIdFinishingBase = $valuationWeightage::find($finishingQualityBase);
-        $weightageIdMaintenanceBase = $valuationWeightage::find($maintenanceBase);
-        $weightageIdFloorLevelBase = $valuationWeightage::find($floorLevelBase);
-        $weightageIdAmenitiesBase = $valuationWeightage::find($amenitiesBase);
-    
-        $this->noOfBedroomBase = $weightageIdBedroomBase['value'];
-        $this->noOfBathroomBase = $weightageIdBathroomBase['value'];
-        $this->finishingQualityBase = $weightageIdFinishingBase['value'];
-        $this->finishingQualityBaseTitle = $weightageIdFinishingBase['title'];
-        $this->maintenanceBase = $weightageIdMaintenanceBase['value'];
-        $this->maintenanceBaseTitle = $weightageIdMaintenanceBase['title'];
-        $this->floorLevelBase = $weightageIdFloorLevelBase['value'];
-        $this->amenitiesBase = $weightageIdAmenitiesBase['value'];
-        $this->amenitiesBaseTitle = $weightageIdAmenitiesBase['title'];
-
-        // $propertyBaseInfo->estimated_value = (isset($this->estimatedValueBase) && $this->estimatedValueBase != '') ? $this->estimatedValueBase:0;
-        // dd($propertyBaseInfo);
-        $propertyBaseInfo->aptSizeIPMS = (isset($this->sizeInSquareMeterBase) && $this->sizeInSquareMeterBase != '') ? $this->sizeInSquareMeterBase: 0;
-        $propertyBaseInfo->aptSizeIPMS = round($propertyBaseInfo->aptSizeIPMS, 3);
-        $propertyBaseInfo->bedrooms = (isset($this->noOfBedroomBase) && $this->noOfBedroomBase != '') ? $this->noOfBedroomBase: 0;
-        $propertyBaseInfo->bathrooms = (isset($this->noOfBathroomBase) && $this->noOfBathroomBase != '') ? $this->noOfBathroomBase: 0;
-        $propertyBaseInfo->finishingQuality = (isset($this->finishingQualityBase) && $this->finishingQualityBase != '') ? $this->finishingQualityBase: 0;
-        $propertyBaseInfo->finishingQualityTitle = (isset($this->finishingQualityBaseTitle) && $this->finishingQualityBaseTitle != '') ? $this->finishingQualityBaseTitle: "";
-        $propertyBaseInfo->maintenance = (isset($this->maintenanceBase) && $this->maintenanceBase != '') ? $this->maintenanceBase: 0;
-        $propertyBaseInfo->maintenanceTitle = (isset($this->maintenanceBaseTitle) && $this->maintenanceBaseTitle != '') ? $this->maintenanceBaseTitle: "";
-        $propertyBaseInfo->floorLevel = (isset($this->floorLevelBase) && $this->floorLevelBase != '') ? $this->floorLevelBase: 0;
-        $propertyBaseInfo->amenities = (isset($this->amenitiesBase) && $this->amenitiesBase != '') ? $this->amenitiesBase: 0;
-        $propertyBaseInfo->amenitiesTitle = (isset($this->amenitiesBaseTitle) && $this->amenitiesBaseTitle != '') ? $this->amenitiesBaseTitle: 0;
-
-        // 1st Comparison
         $propertyInfoOne = ValuationProperty::find($propertyIdOne);
-
-        // $this->estimatedValueOne = isset($propertyInfoOne->estimated_value) ? $propertyInfoOne->estimated_value : 0;
-        // Temporary Property Value
-        $this->estimatedValueOne = $propertyInfoOne->getMeta(ValuationProperty::EstimatedValuePropertyInfo);
-        $this->estimatedValueOne = (isset($this->estimatedValueOne[0]) && $this->estimatedValueOne[0] != ''  && !empty($this->estimatedValueOne[0])) ? $this->estimatedValueOne[0]:0;
-        $this->sizeInSquareMeterOne = isset($propertyInfoOne->sizes_in_meter_sq) ? $propertyInfoOne->sizes_in_meter_sq : 0;
-        $noOfBedroomOne = $propertyInfoOne->getMeta(ValuationProperty::NoOfBedroomText);
-        $noOfBedroomOne = (isset($noOfBedroomOne[0]) && $noOfBedroomOne[0] != ''  && !empty($noOfBedroomOne[0])) ? $noOfBedroomOne[0]:0;
-        $noOfBathroomOne = $propertyInfoOne->getMeta(ValuationProperty::NoOfBathoomsText);
-        $noOfBathroomOne = (isset($noOfBathroomOne[0]) && $noOfBathroomOne[0] != ''  && !empty($noOfBathroomOne[0])) ? $noOfBathroomOne[0]:0;
-        $finishingQualityOne = $propertyInfoOne->getMeta(ValuationProperty::FinishingQualityText);
-        $finishingQualityOne = (isset($finishingQualityOne[0]) && $finishingQualityOne[0] != ''  && !empty($finishingQualityOne[0])) ? $finishingQualityOne[0]:0;
-        $maintenanceOne = $propertyInfoOne->getMeta(ValuationProperty::MaintenanceText);
-        $maintenanceOne = (isset($maintenanceOne[0]) && $maintenanceOne[0] != ''  && !empty($maintenanceOne[0])) ? $maintenanceOne[0]:0;
-        $floorLevelOne = $propertyInfoOne->getMeta(ValuationProperty::FloorlevelText);
-        $floorLevelOne = (isset($floorLevelOne[0]) && $floorLevelOne[0] != ''  && !empty($floorLevelOne[0])) ? $floorLevelOne[0]:0;
-        $amenitiesOne = $propertyInfoOne->getMeta(ValuationProperty::AmenitiesText);
-        $amenitiesOne = (isset($amenitiesOne[0]) && $amenitiesOne[0] != ''  && !empty($amenitiesOne[0])) ? $amenitiesOne[0]:0;
-        
-        //Valuation Property Weightage ONE
-        $weightageIdBedroomOne = $valuationWeightage::find($noOfBedroomOne);
-        $weightageIdBathroomOne = $valuationWeightage::find($noOfBathroomOne);
-        $weightageIdFinishingOne = $valuationWeightage::find($finishingQualityOne);
-        $weightageIdMaintenanceOne = $valuationWeightage::find($maintenanceOne);
-        $weightageIdFloorLevelOne = $valuationWeightage::find($floorLevelOne);
-        $weightageIdAmenitiesOne = $valuationWeightage::find($amenitiesOne);
-
-        $this->noOfBedroomOne = $weightageIdBedroomOne['value'];
-        $this->noOfBathroomOne = $weightageIdBathroomOne['value'];
-        $this->finishingQualityOne = $weightageIdFinishingOne['value'];
-        $this->finishingQualityOneTitle = $weightageIdFinishingOne['title'];
-        $this->maintenanceOne = $weightageIdMaintenanceOne['value'];
-        $this->maintenanceOneTitle = $weightageIdMaintenanceOne['title'];
-        $this->floorLevelOne = $weightageIdFloorLevelOne['value'];
-        $this->amenitiesOne = $weightageIdAmenitiesOne['value'];
-        $this->amenitiesOneTitle = $weightageIdAmenitiesOne['title'];
-        
-        $propertyInfoOne->estimated_value = (isset($this->estimatedValueOne) && $this->estimatedValueOne != '') ? $this->estimatedValueOne: 0;
-        $propertyInfoOne->aptSizeIPMS = (isset($this->sizeInSquareMeterOne) && $this->sizeInSquareMeterOne != '') ? $this->sizeInSquareMeterOne: 0;
-        $propertyInfoOne->aptSizeIPMS = round($propertyInfoOne->aptSizeIPMS, 3);
-        $propertyInfoOne->bedrooms = (isset($this->noOfBedroomOne) && $this->noOfBedroomOne != '') ? $this->noOfBedroomOne: 0;
-        $propertyInfoOne->bathrooms = (isset($this->noOfBathroomOne) && $this->noOfBathroomOne != '') ? $this->noOfBathroomOne: 0;
-        $propertyInfoOne->finishingQuality = (isset($this->finishingQualityOne) && $this->finishingQualityOne != '') ? $this->finishingQualityOne: 0;
-        $propertyInfoOne->finishingQualityOneTitle = (isset($this->finishingQualityOneTitle) && $this->finishingQualityOneTitle != '') ? $this->finishingQualityOneTitle: 0;
-        $propertyInfoOne->maintenance = (isset($this->maintenanceOne) && $this->maintenanceOne != '') ? $this->maintenanceOne: 0;
-        $propertyInfoOne->maintenanceOneTitle = (isset($this->maintenanceOneTitle) && $this->maintenanceOneTitle != '') ? $this->maintenanceOneTitle: 0;
-        $propertyInfoOne->floorLevel = (isset($this->floorLevelOne) && $this->floorLevelOne != '') ? $this->floorLevelOne: 0;
-        $propertyInfoOne->amenities = (isset($this->amenitiesOne) && $this->amenitiesOne != '') ? $this->amenitiesOne: 0;
-        $propertyInfoOne->amenitiesOneTitle = (isset($this->amenitiesOneTitle) && $this->amenitiesOneTitle != '') ? $this->amenitiesOneTitle: 0;
-        
-        // 2nd Comparison
         $propertyInfoTwo = ValuationProperty::find($propertyIdTwo);
-        
-        // $this->estimatedValueTwo = isset($propertyInfoTwo->estimated_value) ? $propertyInfoTwo->estimated_value : 0;
-         // Temporary Property Value
-         $this->estimatedValueTwo = $propertyInfoTwo->getMeta(ValuationProperty::EstimatedValuePropertyInfo);
-         $this->estimatedValueTwo = (isset($this->estimatedValueTwo[0]) && $this->estimatedValueTwo[0] != '' && !empty($this->estimatedValueTwo[0])) ? $this->estimatedValueTwo[0]:0;
-         // Temporary Property Value
-        $this->sizeInSquareMeterTwo = isset($propertyInfoTwo->sizes_in_meter_sq) ? $propertyInfoTwo->sizes_in_meter_sq : 0;
-        $noOfBedroomTwo = $propertyInfoTwo->getMeta(ValuationProperty::NoOfBedroomText);
-        $noOfBedroomTwo = (isset($noOfBedroomTwo[0]) && $noOfBedroomTwo[0] != '' && !empty($noOfBedroomTwo[0])) ? $noOfBedroomTwo[0]:0;
-        $noOfBathroomTwo = $propertyInfoTwo->getMeta(ValuationProperty::NoOfBathoomsText);
-        $noOfBathroomTwo = (isset($noOfBathroomTwo[0]) && $noOfBathroomTwo[0] != '' && !empty($noOfBathroomTwo[0])) ? $noOfBathroomTwo[0]:0;
-        $finishingQualityTwo = $propertyInfoTwo->getMeta(ValuationProperty::FinishingQualityText);
-        $finishingQualityTwo = (isset($finishingQualityTwo[0]) && $finishingQualityTwo[0] != '' && !empty($finishingQualityTwo[0])) ? $finishingQualityTwo[0]:0;
-        $maintenanceTwo = $propertyInfoTwo->getMeta(ValuationProperty::MaintenanceText);
-        $maintenanceTwo = (isset($maintenanceTwo[0]) && $maintenanceTwo[0] != '' && !empty($maintenanceTwo[0])) ? $maintenanceTwo[0]:0;
-        $floorLevelTwo = $propertyInfoTwo->getMeta(ValuationProperty::FloorlevelText);
-        $floorLevelTwo = (isset($floorLevelTwo[0]) && $floorLevelTwo[0] != '' && !empty($floorLevelTwo[0])) ? $floorLevelTwo[0]:0;
-        $amenitiesTwo = $propertyInfoTwo->getMeta(ValuationProperty::AmenitiesText);
-        $amenitiesTwo = (isset($amenitiesTwo[0]) && $amenitiesTwo[0] != '' && !empty($amenitiesTwo[0])) ? $amenitiesTwo[0]:0;
-        
-        //Valuation Property Weightage TWO
-        $weightageIdBedroomTwo = $valuationWeightage::find($noOfBedroomTwo);
-        $weightageIdBathroomTwo = $valuationWeightage::find($noOfBathroomTwo);
-        $weightageIdFinishingTwo = $valuationWeightage::find($finishingQualityTwo);
-        $weightageIdMaintenanceTwo = $valuationWeightage::find($maintenanceTwo);
-        $weightageIdFloorLevelTwo = $valuationWeightage::find($floorLevelTwo);
-        $weightageIdAmenitiesTwo = $valuationWeightage::find($amenitiesTwo);
+        $propertyInfoThree = ValuationProperty::find($propertyIdThree);
 
-        $this->noOfBedroomTwo = $weightageIdBedroomTwo['value'];
-        $this->noOfBathroomTwo = $weightageIdBathroomTwo['value'];
-        $this->finishingQualityTwo = $weightageIdFinishingTwo['value'];
-        $this->finishingQualityTwoTitle = $weightageIdFinishingTwo['title'];
-        $this->maintenanceTwo = $weightageIdMaintenanceTwo['value'];
-        $this->maintenanceTwoTitle = $weightageIdMaintenanceTwo['title'];
-        $this->floorLevelTwo = $weightageIdFloorLevelTwo['value'];
-        $this->amenitiesTwo = $weightageIdAmenitiesTwo['value'];
-        $this->amenitiesTwoTitle = $weightageIdAmenitiesTwo['title'];
+        $templateData = MethodologyTemplate::get()->pluck('template_category')->toArray();
+        $templateData = $templateData[0];
+        $templateData = json_decode($templateData);
 
-        $propertyInfoTwo->estimated_value = (isset($this->estimatedValueTwo) && $this->estimatedValueTwo != '') ? $this->estimatedValueTwo: 0;
-        $propertyInfoTwo->aptSizeIPMS = (isset($this->sizeInSquareMeterTwo) && $this->sizeInSquareMeterTwo != '') ? $this->sizeInSquareMeterTwo: 0;
-        $propertyInfoTwo->aptSizeIPMS = round($propertyInfoTwo->aptSizeIPMS, 3);
-        $propertyInfoTwo->bedrooms = (isset($this->noOfBedroomTwo) && $this->noOfBedroomTwo != '') ? $this->noOfBedroomTwo: 0;
-        $propertyInfoTwo->bathrooms = (isset($this->noOfBathroomTwo) && $this->noOfBathroomTwo != '') ? $this->noOfBathroomTwo: 0;
-        $propertyInfoTwo->finishingQuality = (isset($this->finishingQualityTwo) && $this->finishingQualityTwo != '') ? $this->finishingQualityTwo: 0;
-        $propertyInfoOne->finishingQualityTwoTitle = (isset($this->finishingQualityTwoTitle) && $this->finishingQualityTwoTitle != '') ? $this->finishingQualityTwoTitle: 0;
-        $propertyInfoTwo->maintenance = (isset($this->maintenanceTwo) && $this->maintenanceTwo != '') ? $this->maintenanceTwo: 0;
-        $propertyInfoOne->maintenanceTwoTitle = (isset($this->maintenanceTwoTitle) && $this->maintenanceTwoTitle != '') ? $this->maintenanceTwoTitle: 0;
-        $propertyInfoTwo->floorLevel = (isset($this->floorLevelTwo) && $this->floorLevelTwo != '') ? $this->floorLevelTwo: 0;
-        $propertyInfoTwo->amenities = (isset($this->amenitiesTwo) && $this->amenitiesTwo != '') ? $this->amenitiesTwo: 0;
-        $propertyInfoTwo->amenitiesTwoTitle = (isset($this->amenitiesTwoTitle) && $this->amenitiesTwoTitle != '') ? $this->amenitiesTwoTitle: 0;
+        $this->subjectProperty($propertyBaseInfo, $propertyInfoOne, $propertyInfoTwo, $propertyInfoThree);
 
-        // 3rd Comparison
-        $propertyInfoThree = ValuationProperty::findOrFail($propertyIdThree);
+        if (in_array("apartmentSize", $templateData)) {
+            $this->apartmentSize($propertyBaseInfo, $propertyInfoOne, $propertyInfoTwo, $propertyInfoThree);
+        }
+        if (in_array("noOfBedrooms", $templateData)) {
+            $this->noOfBedrooms($propertyBaseInfo, $propertyInfoOne, $propertyInfoTwo, $propertyInfoThree);
+        }
+        if (in_array("noOfBathrooms", $templateData)) {
+            $this->noOfBathrooms($propertyBaseInfo, $propertyInfoOne, $propertyInfoTwo, $propertyInfoThree);
+        }
+        if (in_array("finishingQuality", $templateData)) {
+            $this->finishingQuality($propertyBaseInfo, $propertyInfoOne, $propertyInfoTwo, $propertyInfoThree);
+        }
+        if (in_array("buildingAmenities", $templateData)) {
+            $this->buildingAmenities($propertyBaseInfo, $propertyInfoOne, $propertyInfoTwo, $propertyInfoThree);
+        }
 
-        // $this->estimatedValueThree = isset($propertyInfoThree->estimated_value) ? $propertyInfoThree->estimated_value : 0;
-         // Temporary Property Value
-         $this->estimatedValueThree = $propertyInfoThree->getMeta(ValuationProperty::EstimatedValuePropertyInfo);
-         $this->estimatedValueThree = (isset($this->estimatedValueThree[0]) && $this->estimatedValueThree[0] != '' && !empty($this->estimatedValueThree[0])) ? $this->estimatedValueThree[0]:0;
-         // Temporary Property Value
-        $this->sizeInSquareMeterThree = isset($propertyInfoThree->sizes_in_meter_sq) ? $propertyInfoThree->sizes_in_meter_sq : 0;
-        $noOfBedroomThree = $propertyInfoThree->getMeta(ValuationProperty::NoOfBedroomText);
-        $noOfBedroomThree = (isset($noOfBedroomThree[0]) && $noOfBedroomThree[0] != '' && !empty($noOfBedroomThree[0])) ? $noOfBedroomThree[0]:0;
-        $noOfBathroomThree = $propertyInfoThree->getMeta(ValuationProperty::NoOfBathoomsText);
-        $noOfBathroomThree = (isset($noOfBathroomThree[0]) && $noOfBathroomThree[0] != '' && !empty($noOfBathroomThree[0])) ? $noOfBathroomThree[0]:0;
-        $finishingQualityThree = $propertyInfoThree->getMeta(ValuationProperty::FinishingQualityText);
-        $finishingQualityThree = (isset($finishingQualityThree[0]) && $finishingQualityThree[0] != '' && !empty($finishingQualityThree[0])) ? $finishingQualityThree[0]:0;
-        $maintenanceThree = $propertyInfoThree->getMeta(ValuationProperty::MaintenanceText);
-        $maintenanceThree = (isset($maintenanceThree[0]) && $maintenanceThree[0] != '' && !empty($maintenanceThree[0])) ? $maintenanceThree[0]:0;
-        $floorLevelThree = $propertyInfoThree->getMeta(ValuationProperty::FloorlevelText);
-        $floorLevelThree = (isset($floorLevelThree[0]) && $floorLevelThree[0] != '' && !empty($floorLevelThree[0])) ? $floorLevelThree[0]:0;
-        $amenitiesThree = $propertyInfoThree->getMeta(ValuationProperty::AmenitiesText);
-        $amenitiesThree = (isset($amenitiesThree[0]) && $amenitiesThree[0] != '' && !empty($amenitiesThree[0])) ? $amenitiesThree[0]:0;
-        
-        // Valuation Property Weightage THREE
-        $weightageIdBedroomThree = $valuationWeightage::find($noOfBedroomThree);
-        $weightageIdBathroomThree = $valuationWeightage::find($noOfBathroomThree);
-        $weightageIdFinishingThree = $valuationWeightage::find($finishingQualityThree);
-        $weightageIdMaintenanceThree = $valuationWeightage::find($maintenanceThree);
-        $weightageIdFloorLevelThree = $valuationWeightage::find($floorLevelThree);
-        $weightageIdAmenitiesThree = $valuationWeightage::find($amenitiesThree);
+        $apartmentSizeComparison = in_array("apartmentSize", $templateData);
+        $noOfBedroomsComparison = in_array("noOfBedrooms", $templateData);
+        $noOfBathroomsComparison = in_array("noOfBathrooms", $templateData);
+        $finishingQualityComparison = in_array("finishingQuality", $templateData);
+        $buildingAmenitiesComparison = in_array("buildingAmenities", $templateData);
+        // if () {
 
-        $this->noOfBedroomThree = $weightageIdBedroomThree['value'];
-        $this->noOfBathroomThree = $weightageIdBathroomThree['value'];
-        $this->finishingQualityThree = $weightageIdFinishingThree['value'];
-        $this->finishingQualityThreeTitle = $weightageIdFinishingThree['title'];
-        $this->maintenanceThree = $weightageIdMaintenanceThree['value'];
-        $this->maintenanceThreeTitle = $weightageIdMaintenanceThree['title'];
-        $this->floorLevelThree = $weightageIdFloorLevelThree['value'];
-        $this->amenitiesThree = $weightageIdAmenitiesThree['value'];
-        $this->amenitiesThreeTitle = $weightageIdAmenitiesThree['title'];
-        
-        $propertyInfoThree->estimated_value = (isset($this->estimatedValueThree) && $this->estimatedValueThree != '') ? $this->estimatedValueThree: 0;
-        $propertyInfoThree->aptSizeIPMS = (isset($this->sizeInSquareMeterThree) && $this->sizeInSquareMeterThree != '') ? $this->sizeInSquareMeterThree: 0;
-        $propertyInfoThree->aptSizeIPMS = round($propertyInfoThree->aptSizeIPMS, 3);
-        $propertyInfoThree->bedrooms = (isset($this->noOfBedroomThree) && $this->noOfBedroomThree != '') ? $this->noOfBedroomThree: 0;
-        $propertyInfoThree->bathrooms = (isset($this->noOfBathroomThree) && $this->noOfBathroomThree != '') ? $this->noOfBathroomThree: 0;
-        $propertyInfoThree->finishingQuality = (isset($this->finishingQualityThree) && $this->finishingQualityThree != '') ? $this->finishingQualityThree: 0;
-        $propertyInfoOne->finishingQualityThreeTitle = (isset($this->finishingQualityThreeTitle) && $this->finishingQualityThreeTitle != '') ? $this->finishingQualityThreeTitle: 0;
-        $propertyInfoThree->maintenance = (isset($this->maintenanceThree) && $this->maintenanceThree != '') ? $this->maintenanceThree: 0;
-        $propertyInfoOne->maintenanceThreeTitle = (isset($this->maintenanceThreeTitle) && $this->maintenanceThreeTitle != '') ? $this->maintenanceThreeTitle: 0;
-        $propertyInfoThree->floorLevel = (isset($this->floorLevelThree) && $this->floorLevelThree != '') ? $this->floorLevelThree: 0;
-        $propertyInfoThree->amenities = (isset($this->amenitiesThree) && $this->amenitiesThree != '') ? $this->amenitiesThree: 0;
-        $propertyInfoThree->amenitiesThreeTitle = (isset($this->amenitiesThreeTitle) && $this->amenitiesThreeTitle != '') ? $this->amenitiesThreeTitle: 0;
-        
+        // } else {
 
+        // }
         //compare Processing start
 
-        //apartment comparison
-        $baseAptSizeIPMS = $propertyBaseInfo->aptSizeIPMS;
-        $aptSizeIPMSPropertyInfoOne = $propertyInfoOne->aptSizeIPMS;
-        $aptSizeIPMSPropertyInfoTwo = $propertyInfoTwo->aptSizeIPMS;
-        $aptSizeIPMSPropertyInfoThree = $propertyInfoThree->aptSizeIPMS;
-        $maxBedrooms = '8';
+        if ($apartmentSizeComparison) {
+            //apartment comparison
+            $baseAptSizeIPMS = $propertyBaseInfo->aptSizeIPMS;
+            $aptSizeIPMSPropertyInfoOne = $propertyInfoOne->aptSizeIPMS;
+            $aptSizeIPMSPropertyInfoTwo = $propertyInfoTwo->aptSizeIPMS;
+            $aptSizeIPMSPropertyInfoThree = $propertyInfoThree->aptSizeIPMS;
+            $maxBedrooms = '8';
 
-        $baseAptSizeIPMSMinusProOne = $baseAptSizeIPMS - $aptSizeIPMSPropertyInfoOne;
-        $propertyInfoOne->aptSizeIPMSCal = $baseAptSizeIPMSMinusProOne;
-        if ($baseAptSizeIPMS == 0) {
+            $baseAptSizeIPMSMinusProOne = $baseAptSizeIPMS - $aptSizeIPMSPropertyInfoOne;
+            $propertyInfoOne->aptSizeIPMSCal = $baseAptSizeIPMSMinusProOne;
+            if ($baseAptSizeIPMS == 0) {
+                $propertyInfoOne->aptSizeIPMSComparison = 0;
+            } else {
+                $propertyInfoOne->aptSizeIPMSComparison = round(($baseAptSizeIPMSMinusProOne / $baseAptSizeIPMS) * 100, 3);
+            }
+
+            $baseAptSizeIPMSMinusProTwo = $baseAptSizeIPMS - $aptSizeIPMSPropertyInfoTwo;
+            $propertyInfoTwo->aptSizeIPMSCal = $baseAptSizeIPMSMinusProTwo;
+            if ($baseAptSizeIPMS == 0) {
+                $propertyInfoTwo->aptSizeIPMSComparison = 0;
+            } else {
+                $propertyInfoTwo->aptSizeIPMSComparison = round(($baseAptSizeIPMSMinusProTwo / $baseAptSizeIPMS) * 100, 3);
+            }
+
+            $baseAptSizeIPMSMinusProThree = $baseAptSizeIPMS - $aptSizeIPMSPropertyInfoThree;
+            $propertyInfoThree->aptSizeIPMSCal = $baseAptSizeIPMSMinusProThree;
+            if ($baseAptSizeIPMS == 0) {
+                $propertyInfoThree->aptSizeIPMSComparison = 0;
+            } else {
+                $propertyInfoThree->aptSizeIPMSComparison = round(($baseAptSizeIPMSMinusProThree / $baseAptSizeIPMS) * 100, 3);
+            }
+        }
+
+        if ($noOfBedroomsComparison) {
+            //bedrooms comparison
+            $baseBedrooms = $propertyBaseInfo->bedrooms;
+            $bedroomsPropertyInfoOne = $propertyInfoOne->bedrooms;
+            $bedroomsPropertyInfoTwo = $propertyInfoTwo->bedrooms;
+            $bedroomsPropertyInfoThree = $propertyInfoThree->bedrooms;
+            $maxBedrooms = '8';
+
+            $baseBedroomsMinusProOne = $baseBedrooms - $bedroomsPropertyInfoOne;
+            $propertyInfoOne->baseBedroomsMinusProOne = $baseBedroomsMinusProOne;
+            $propertyInfoOne->bedComparison = ($baseBedroomsMinusProOne / $maxBedrooms) * 100;
+
+            $baseBedroomsMinusProTwo = $baseBedrooms - $bedroomsPropertyInfoTwo;
+            $propertyInfoTwo->baseBedroomsMinusProTwo = $baseBedroomsMinusProTwo;
+            $propertyInfoTwo->bedComparison = ($baseBedroomsMinusProTwo / $maxBedrooms) * 100;
+
+            $baseBedroomsMinusProThree = $baseBedrooms - $bedroomsPropertyInfoThree;
+            $propertyInfoThree->baseBedroomsMinusProThree = $baseBedroomsMinusProThree;
+            $propertyInfoThree->bedComparison = ($baseBedroomsMinusProThree / $maxBedrooms) * 100;
+        }
+
+        if ($noOfBathroomsComparison) {
+            // bathroom comparison
+            $baseBathroom = $propertyBaseInfo->bathrooms;
+            $bathroomsPropertyInfoOne = $propertyInfoOne->bathrooms;
+            $bathroomsPropertyInfoTwo = $propertyInfoTwo->bathrooms;
+            $bathroomsPropertyInfoThree = $propertyInfoThree->bathrooms;
+            $maxBathrooms = '8';
+
+            $bathBaseMinusProOne = $baseBathroom - $bathroomsPropertyInfoOne;
+            $propertyInfoOne->bathBaseMinusProOne = $bathBaseMinusProOne;
+            $propertyInfoOne->bathComparison = ($bathBaseMinusProOne / $maxBathrooms) * 100;
+
+            $bathBaseMinusProTwo = $baseBathroom - $bathroomsPropertyInfoTwo;
+            $propertyInfoTwo->bathBaseMinusProTwo = $bathBaseMinusProTwo;
+            $propertyInfoTwo->bathComparison = ($bathBaseMinusProTwo / $maxBathrooms) * 100;
+
+            $bathBaseMinusProThree = $baseBathroom - $bathroomsPropertyInfoThree;
+            $propertyInfoThree->bathBaseMinusProThree = $bathBaseMinusProThree;
+            $propertyInfoThree->bathComparison = ($bathBaseMinusProThree / $maxBathrooms) * 100;
+        }
+
+        if ($finishingQualityComparison) {
+            //Finishing Quality
+            $finishingQualityBase = $propertyBaseInfo->finishingQuality;
+            $maintenanceBase = $propertyBaseInfo->maintenance;
+            $propertyBaseInfo->finishingQualitySelectionTitle = $finishingQualityBase;
+            $propertyBaseInfo->maintenanceSelectionTitle = $maintenanceBase;
+
+            $finishingQualityPropertyInfoOne = $propertyInfoOne->finishingQuality;
+            $maintenancePropertyInfoOne = $propertyInfoOne->maintenance;
+            $propertyInfoOne->finishingQualitySelectionTitle = $finishingQualityPropertyInfoOne;
+            $propertyInfoOne->maintenanceSelectionTitle = $finishingQualityPropertyInfoOne;
+
+            $finishingQualityPropertyInfoTwo = $propertyInfoTwo->finishingQuality;
+            $maintenancePropertyInfoTwo = $propertyInfoTwo->maintenance;
+            $propertyInfoTwo->finishingQualitySelectionTitle = $finishingQualityPropertyInfoTwo;
+            $propertyInfoTwo->maintenanceSelectionTitle = $maintenancePropertyInfoTwo;
+
+            $finishingQualityPropertyInfoThree = $propertyInfoThree->finishingQuality;
+            $maintenancePropertyInfoThree = $propertyInfoThree->maintenance;
+            $propertyInfoThree->finishingQualitySelectionTitle = $finishingQualityPropertyInfoThree;
+            $propertyInfoThree->maintenanceSelectionTitle = $maintenancePropertyInfoThree;
+
+            $finishingQualityCalBase = $finishingQualityBase + $maintenanceBase;
+            $propertyBaseInfo->finishingQualityCalBase = $finishingQualityCalBase;
+
+            $finishingQualityCalProOne = $finishingQualityPropertyInfoOne + $maintenancePropertyInfoOne;
+            $propertyInfoOne->finishingQualityCalOne = $finishingQualityCalProOne;
+            $propertyInfoOne->finishingQualityComparison = ($finishingQualityCalBase - $finishingQualityCalProOne) / 100;
+
+            $finishingQualityCalProTwo = $finishingQualityPropertyInfoTwo + $maintenancePropertyInfoTwo;
+            $propertyInfoTwo->finishingQualityCalTwo = $finishingQualityCalProTwo;
+            $propertyInfoTwo->finishingQualityComparison = ($finishingQualityCalBase - $finishingQualityCalProTwo) / 100;
+
+            $finishingQualityCalProThree = $finishingQualityPropertyInfoThree + $maintenancePropertyInfoThree;
+            $propertyInfoThree->finishingQualityCalThree = $finishingQualityCalProThree;
+            $propertyInfoThree->finishingQualityComparison = ($finishingQualityCalBase - $finishingQualityCalProThree) / 100;
+        }
+
+        if ($buildingAmenitiesComparison) {
+            // Building Amenities and Facilities
+            $amenitiesBase = $propertyBaseInfo->amenities;
+            $propertyBaseInfo->amenitiesSlectionTitle = $amenitiesBase;
+
+            $amenitiesPropertyInfoOne = $propertyInfoOne->amenities;
+            $propertyInfoOne->amenitiesSlectionTitle = $amenitiesPropertyInfoOne;
+
+            $amenitiesPropertyInfoTwo = $propertyInfoTwo->amenities;
+            $propertyInfoTwo->amenitiesSlectionTitle = $amenitiesPropertyInfoTwo;
+
+            $amenitiesPropertyInfoThree = $propertyInfoThree->amenities;
+            $propertyInfoThree->amenitiesSlectionTitle = $amenitiesPropertyInfoThree;
+
+            $amenitiesMax = 8;
+
+            $propertyInfoOne->amenitiesComparison = ($amenitiesBase - $amenitiesPropertyInfoOne) / $amenitiesMax;
+            $propertyInfoThree->amenitiesComparison = ($amenitiesBase - $amenitiesPropertyInfoTwo) / $amenitiesMax;
+            $propertyInfoThree->amenitiesComparison = ($amenitiesBase - $amenitiesPropertyInfoThree) / $amenitiesMax;
+        }
+
+        if (!$apartmentSizeComparison) {
             $propertyInfoOne->aptSizeIPMSComparison = 0;
-        } else {
-            $propertyInfoOne->aptSizeIPMSComparison = round(($baseAptSizeIPMSMinusProOne / $baseAptSizeIPMS)*100, 3);
-        }
-
-        $baseAptSizeIPMSMinusProTwo = $baseAptSizeIPMS - $aptSizeIPMSPropertyInfoTwo;
-        $propertyInfoTwo->aptSizeIPMSCal = $baseAptSizeIPMSMinusProTwo;
-        if ($baseAptSizeIPMS == 0) {
             $propertyInfoTwo->aptSizeIPMSComparison = 0;
-        } else {
-            $propertyInfoTwo->aptSizeIPMSComparison = round(($baseAptSizeIPMSMinusProTwo / $baseAptSizeIPMS)*100, 3);
+            $propertyInfoThree->aptSizeIPMSComparison   = 0;
+            // dd("No Apartment Comparison Done");
         }
-
-        $baseAptSizeIPMSMinusProThree = $baseAptSizeIPMS - $aptSizeIPMSPropertyInfoThree;
-        $propertyInfoThree->aptSizeIPMSCal = $baseAptSizeIPMSMinusProThree;
-        if ($baseAptSizeIPMS == 0) {
-            $propertyInfoThree->aptSizeIPMSComparison = 0;
-        } else {
-            $propertyInfoThree->aptSizeIPMSComparison = round(($baseAptSizeIPMSMinusProThree / $baseAptSizeIPMS)*100, 3);
+        if (!$noOfBedroomsComparison) {
+            $propertyInfoOne->bedComparison = 0;
+            $propertyInfoTwo->bedComparison = 0;
+            $propertyInfoThree->bedComparison = 0;
         }
-
-        //bedrooms comparison
-        $baseBedrooms = $propertyBaseInfo->bedrooms;
-        $bedroomsPropertyInfoOne = $propertyInfoOne->bedrooms;
-        $bedroomsPropertyInfoTwo = $propertyInfoTwo->bedrooms;
-        $bedroomsPropertyInfoThree = $propertyInfoThree->bedrooms;
-        $maxBedrooms = '8';
-
-        $baseBedroomsMinusProOne = $baseBedrooms - $bedroomsPropertyInfoOne;
-        $propertyInfoOne->baseBedroomsMinusProOne = $baseBedroomsMinusProOne;
-        $propertyInfoOne->bedComparison = ($baseBedroomsMinusProOne / $maxBedrooms) * 100;
-
-        $baseBedroomsMinusProTwo = $baseBedrooms - $bedroomsPropertyInfoTwo;
-        $propertyInfoTwo->baseBedroomsMinusProTwo = $baseBedroomsMinusProTwo;
-        $propertyInfoTwo->bedComparison = ($baseBedroomsMinusProTwo / $maxBedrooms) * 100;
-
-        $baseBedroomsMinusProThree = $baseBedrooms - $bedroomsPropertyInfoThree;
-        $propertyInfoThree->baseBedroomsMinusProThree = $baseBedroomsMinusProThree;
-        $propertyInfoThree->bedComparison = ($baseBedroomsMinusProThree / $maxBedrooms) * 100;
-
-        // bathroom comparison
-        $baseBathroom = $propertyBaseInfo->bathrooms;
-        $bathroomsPropertyInfoOne = $propertyInfoOne->bathrooms;
-        $bathroomsPropertyInfoTwo = $propertyInfoTwo->bathrooms;
-        $bathroomsPropertyInfoThree = $propertyInfoThree->bathrooms;
-        $maxBathrooms = '8';
-
-        $bathBaseMinusProOne = $baseBathroom - $bathroomsPropertyInfoOne;
-        $propertyInfoOne->bathBaseMinusProOne = $bathBaseMinusProOne;
-        $propertyInfoOne->bathComparison = ($bathBaseMinusProOne / $maxBathrooms) * 100;
-
-        $bathBaseMinusProTwo = $baseBathroom - $bathroomsPropertyInfoTwo;
-        $propertyInfoTwo->bathBaseMinusProTwo = $bathBaseMinusProTwo;
-        $propertyInfoTwo->bathComparison = ($bathBaseMinusProTwo / $maxBathrooms) * 100;
-
-        $bathBaseMinusProThree = $baseBathroom - $bathroomsPropertyInfoThree;
-        $propertyInfoThree->bathBaseMinusProThree = $bathBaseMinusProThree;
-        $propertyInfoThree->bathComparison = ($bathBaseMinusProThree / $maxBathrooms) * 100;
-
-        //Finishing Quality
-        $finishingQualityBase = $propertyBaseInfo->finishingQuality;
-        $maintenanceBase = $propertyBaseInfo->maintenance;
-        $propertyBaseInfo->finishingQualitySelectionTitle = $finishingQualityBase;
-        $propertyBaseInfo->maintenanceSelectionTitle = $maintenanceBase;
-
-        $finishingQualityPropertyInfoOne = $propertyInfoOne->finishingQuality;
-        $maintenancePropertyInfoOne = $propertyInfoOne->maintenance;
-        $propertyInfoOne->finishingQualitySelectionTitle = $finishingQualityPropertyInfoOne;
-        $propertyInfoOne->maintenanceSelectionTitle = $finishingQualityPropertyInfoOne;
-
-        $finishingQualityPropertyInfoTwo = $propertyInfoTwo->finishingQuality;
-        $maintenancePropertyInfoTwo = $propertyInfoTwo->maintenance;
-        $propertyInfoTwo->finishingQualitySelectionTitle = $finishingQualityPropertyInfoTwo;
-        $propertyInfoTwo->maintenanceSelectionTitle = $maintenancePropertyInfoTwo;
-
-        $finishingQualityPropertyInfoThree = $propertyInfoThree->finishingQuality;
-        $maintenancePropertyInfoThree = $propertyInfoThree->maintenance;
-        $propertyInfoThree->finishingQualitySelectionTitle = $finishingQualityPropertyInfoThree;
-        $propertyInfoThree->maintenanceSelectionTitle = $maintenancePropertyInfoThree;
-
-        $finishingQualityCalBase = $finishingQualityBase + $maintenanceBase;
-        $propertyBaseInfo->finishingQualityCalBase = $finishingQualityCalBase;
-
-        $finishingQualityCalProOne = $finishingQualityPropertyInfoOne + $maintenancePropertyInfoOne;
-        $propertyInfoOne->finishingQualityCalOne = $finishingQualityCalProOne;
-        $propertyInfoOne->finishingQualityComparison = ($finishingQualityCalBase - $finishingQualityCalProOne) / 100;
-
-        $finishingQualityCalProTwo = $finishingQualityPropertyInfoTwo + $maintenancePropertyInfoTwo;
-        $propertyInfoTwo->finishingQualityCalTwo = $finishingQualityCalProTwo;
-        $propertyInfoTwo->finishingQualityComparison = ($finishingQualityCalBase - $finishingQualityCalProTwo) / 100;
-
-        $finishingQualityCalProThree = $finishingQualityPropertyInfoThree + $maintenancePropertyInfoThree;
-        $propertyInfoThree->finishingQualityCalThree = $finishingQualityCalProThree;
-        $propertyInfoThree->finishingQualityComparison = ($finishingQualityCalBase - $finishingQualityCalProThree) / 100;
-
-        // Building Amenities and Facilities
-        $amenitiesBase = $propertyBaseInfo->amenities;
-        $propertyBaseInfo->amenitiesSlectionTitle = $amenitiesBase;
-
-        $amenitiesPropertyInfoOne = $propertyInfoOne->amenities;
-        $propertyInfoOne->amenitiesSlectionTitle = $amenitiesPropertyInfoOne;
-
-        $amenitiesPropertyInfoTwo = $propertyInfoTwo->amenities;
-        $propertyInfoTwo->amenitiesSlectionTitle = $amenitiesPropertyInfoTwo;
-
-        $amenitiesPropertyInfoThree = $propertyInfoThree->amenities;
-        $propertyInfoThree->amenitiesSlectionTitle = $amenitiesPropertyInfoThree;
-
-        $amenitiesMax = 8;
-
-        $propertyInfoOne->amenitiesComparison = ($amenitiesBase - $amenitiesPropertyInfoOne) / $amenitiesMax;
-        $propertyInfoThree->amenitiesComparison = ($amenitiesBase - $amenitiesPropertyInfoTwo) / $amenitiesMax;
-        $propertyInfoThree->amenitiesComparison = ($amenitiesBase - $amenitiesPropertyInfoThree) / $amenitiesMax;
-
+        if (!$noOfBathroomsComparison) {
+            $propertyInfoOne->bathComparison = 0;
+            $propertyInfoTwo->bathComparison = 0;
+            $propertyInfoThree->bathComparison = 0;
+        }
+        if (!$finishingQualityComparison) {
+            $propertyInfoOne->finishingQualityComparison = 0;
+            $propertyInfoTwo->finishingQualityComparison = 0;
+            $propertyInfoThree->finishingQualityComparison = 0;
+        }
+        if (!$buildingAmenitiesComparison) {
+            $propertyInfoOne->amenitiesComparison = 0;
+            $propertyInfoTwo->amenitiesComparison = 0;
+            $propertyInfoThree->amenitiesComparison = 0;
+        }
 
         //Weighted Factor Adjustment
-        $weightedFacAdjProOne = ($propertyInfoOne->aptSizeIPMSComparison*$sizeWeightagePer)+
-            ($propertyInfoOne->bedComparison*$bedroomsWeightagePer)+
-            ($propertyInfoOne->bathComparison*$bathWeightagePer)+
-            ($propertyInfoOne->finishingQualityComparison*$finishingQualityWeightagePer)+
-            ($propertyInfoOne->amenitiesComparison*$amenitiesWeightagePer);
+        $weightedFacAdjProOne = ($propertyInfoOne->aptSizeIPMSComparison * $sizeWeightagePer) +
+            ($propertyInfoOne->bedComparison * $bedroomsWeightagePer) +
+            ($propertyInfoOne->bathComparison * $bathWeightagePer) +
+            ($propertyInfoOne->finishingQualityComparison * $finishingQualityWeightagePer) +
+            ($propertyInfoOne->amenitiesComparison * $amenitiesWeightagePer);
         $propertyInfoOne->weightedFacAdj = $weightedFacAdjProOne;
 
-        $weightedFacAdjProTwo = ($propertyInfoOne->aptSizeIPMSComparison*$sizeWeightagePer)+
-            ($propertyInfoTwo->bedComparison*$bedroomsWeightagePer)+
-            ($propertyInfoTwo->bathComparison*$bathWeightagePer)+
-            ($propertyInfoTwo->finishingQualityComparison*$finishingQualityWeightagePer)+
-            ($propertyInfoTwo->amenitiesComparison*$amenitiesWeightagePer);
+        $weightedFacAdjProTwo = ($propertyInfoOne->aptSizeIPMSComparison * $sizeWeightagePer) +
+            ($propertyInfoTwo->bedComparison * $bedroomsWeightagePer) +
+            ($propertyInfoTwo->bathComparison * $bathWeightagePer) +
+            ($propertyInfoTwo->finishingQualityComparison * $finishingQualityWeightagePer) +
+            ($propertyInfoTwo->amenitiesComparison * $amenitiesWeightagePer);
         $propertyInfoTwo->weightedFacAdj = $weightedFacAdjProTwo;
 
-        $weightedFacAdjProThree = ($propertyInfoOne->aptSizeIPMSComparison*$sizeWeightagePer)+
-            ($propertyInfoThree->bedComparison*$bedroomsWeightagePer)+
-            ($propertyInfoThree->bathComparison*$bathWeightagePer)+
-            ($propertyInfoThree->finishingQualityComparison*$finishingQualityWeightagePer)+
-            ($propertyInfoThree->amenitiesComparison*$amenitiesWeightagePer);
+        $weightedFacAdjProThree = ($propertyInfoOne->aptSizeIPMSComparison * $sizeWeightagePer) +
+            ($propertyInfoThree->bedComparison * $bedroomsWeightagePer) +
+            ($propertyInfoThree->bathComparison * $bathWeightagePer) +
+            ($propertyInfoThree->finishingQualityComparison * $finishingQualityWeightagePer) +
+            ($propertyInfoThree->amenitiesComparison * $amenitiesWeightagePer);
         $propertyInfoThree->weightedFacAdj = $weightedFacAdjProThree;
 
         //Amount Adjustment to Original Price
-        $propertyInfoOne->amountAdjOriPrice = $propertyInfoOne->estimated_value*$propertyInfoOne->weightedFacAdj;
-        $propertyInfoTwo->amountAdjOriPrice = $propertyInfoTwo->estimated_value*$propertyInfoTwo->weightedFacAdj;
-        $propertyInfoThree->amountAdjOriPrice = $propertyInfoThree->estimated_value*$propertyInfoThree->weightedFacAdj;
+        $propertyInfoOne->amountAdjOriPrice = $propertyInfoOne->estimated_value * $propertyInfoOne->weightedFacAdj;
+        $propertyInfoTwo->amountAdjOriPrice = $propertyInfoTwo->estimated_value * $propertyInfoTwo->weightedFacAdj;
+        $propertyInfoThree->amountAdjOriPrice = $propertyInfoThree->estimated_value * $propertyInfoThree->weightedFacAdj;
 
         //Weighted Factor Average Price
-        $propertyInfoOne->weightedFactAvgPrice = $propertyInfoOne->estimated_value+$propertyInfoOne->amountAdjOriPrice;
-        $propertyInfoTwo->weightedFactAvgPrice = $propertyInfoTwo->estimated_value+$propertyInfoTwo->amountAdjOriPrice;
-        $propertyInfoThree->weightedFactAvgPrice = $propertyInfoThree->estimated_value+$propertyInfoThree->amountAdjOriPrice;
+        $propertyInfoOne->weightedFactAvgPrice = $propertyInfoOne->estimated_value + $propertyInfoOne->amountAdjOriPrice;
+        $propertyInfoTwo->weightedFactAvgPrice = $propertyInfoTwo->estimated_value + $propertyInfoTwo->amountAdjOriPrice;
+        $propertyInfoThree->weightedFactAvgPrice = $propertyInfoThree->estimated_value + $propertyInfoThree->amountAdjOriPrice;
 
         //Comparable Overall Weighted Adjustment
-        $propertyInfoOne->comparableOverallWeightAdj = 100;
-        $propertyInfoTwo->comparableOverallWeightAdj = 0.00;
-        $propertyInfoThree->comparableOverallWeightAdj = 0.00;
+        $propertyInfoOne->comparableOverallWeightAdj = 33.3;
+        $propertyInfoTwo->comparableOverallWeightAdj = 33.3;
+        $propertyInfoThree->comparableOverallWeightAdj = 33.3;
 
         //Total Weighted Adjusted Price
         $propertyInfoOne->totalWeightAdjPrice = $propertyInfoOne->weightedFactAvgPrice * $propertyInfoOne->comparableOverallWeightAdj;
         $propertyInfoTwo->totalWeightAdjPrice = $propertyInfoTwo->weightedFactAvgPrice * $propertyInfoTwo->comparableOverallWeightAdj;
-        $propertyInfoThree->totalWeightAdjPrice =$propertyInfoThree->weightedFactAvgPrice * $propertyInfoThree->comparableOverallWeightAdj;
-
-        $propertyInfoOne->totalWeightAdjPrice = $propertyInfoOne->weightedFactAvgPrice * $propertyInfoOne->comparableOverallWeightAdj;
-        $propertyInfoTwo->totalWeightAdjPrice = $propertyInfoTwo->weightedFactAvgPrice * $propertyInfoTwo->comparableOverallWeightAdj;
-        $propertyInfoThree->totalWeightAdjPrice =$propertyInfoThree->weightedFactAvgPrice * $propertyInfoThree->comparableOverallWeightAdj;
+        $propertyInfoThree->totalWeightAdjPrice = $propertyInfoThree->weightedFactAvgPrice * $propertyInfoThree->comparableOverallWeightAdj;
 
         //Subject Property Weighted Market Value
         $propertyBaseInfo->weightedMrktValue = $propertyInfoOne->totalWeightAdjPrice
-            +$propertyInfoTwo->totalWeightAdjPrice
-            +$propertyInfoThree->totalWeightAdjPrice;
+            + $propertyInfoTwo->totalWeightAdjPrice
+            + $propertyInfoThree->totalWeightAdjPrice;
 
         $propertiesInfo = array();
         $propertiesInfo['propertyBaseInfo'] = $propertyBaseInfo;
@@ -792,13 +676,17 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $this->propertyInfoThree = $propertyInfoThree;
 
         $comparisonResultData = array();
-        //$comparisonResultData['propertiesInfo'] = $propertiesInfo->toArray();
+        $comparisonResultData['apartmentSizeComparison'] = $apartmentSizeComparison;
+        $comparisonResultData['noOfBedroomsComparison'] = $noOfBedroomsComparison;
+        $comparisonResultData['noOfBathroomsComparison'] = $noOfBathroomsComparison;
+        $comparisonResultData['finishingQualityComparison'] = $finishingQualityComparison;
+        $comparisonResultData['buildingAmenitiesComparison'] = $buildingAmenitiesComparison;
 
         $comparisonResultData['currency'] = 'BHD';
 
         //percentage
         $sizeWeightagePer = '40';
-        $comparisonResultData['sizeWeightagePerText'] ='40%';
+        $comparisonResultData['sizeWeightagePerText'] = $this->sizeWeightagePerText;
         $bedroomsWeightagePer = '20';
         $comparisonResultData['bedroomsWeightagePerText'] = '20%';
         $bathWeightagePer = '10';
@@ -809,7 +697,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $comparisonResultData['amenitiesWeightagePerText'] = '15%';
 
         $projectId = $request->projectId;
-        $comparisonResultData['projectId'] = $projectId; 
+        $comparisonResultData['projectId'] = $projectId;
         $basePropertyId = $request->basePropertyId;
         $comparisonResultData['basePropertyId'] = $basePropertyId;
         $comparePropertyOne = $request->comparePropertyOne;
@@ -833,7 +721,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $comparisonResultData = (array)json_decode(json_encode($comparisonResultData));
         // $comparisonResultData['comparisonResultData'] = $comparisonResultData;
 
-        
+        // dd($comparisonResultData);
         // Condition
         $saveData = $request->saveData;
         if ($saveData == true) {
@@ -843,7 +731,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
             $project->setMeta($metaData);
         } else {
             return view('admin.projects.ValuationMethodology.ComparisionApartmentRes', $comparisonResultData)->render();
-        } 
+        }
     }
 
     public function comparisionLand(Request $request)
@@ -961,13 +849,13 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $recencyOfTansPropertyInfoThree = $propertyInfoThree->recencyOfTansWeightVal;
         $maxRecencyOfTans = 10;
 
-        $landSizePropertyBaseCalProOne = ((0-$recencyOfTansPropertyInfoOne)/$maxRecencyOfTans);
+        $landSizePropertyBaseCalProOne = ((0 - $recencyOfTansPropertyInfoOne) / $maxRecencyOfTans);
         $propertyInfoOne->recencyOfTansComparison = $landSizePropertyBaseCalProOne;
 
-        $landSizePropertyBaseCalProTwo = ((0-$recencyOfTansPropertyInfoTwo)/$maxRecencyOfTans);
+        $landSizePropertyBaseCalProTwo = ((0 - $recencyOfTansPropertyInfoTwo) / $maxRecencyOfTans);
         $propertyInfoTwo->recencyOfTansComparison = $landSizePropertyBaseCalProTwo;
 
-        $landSizePropertyBaseCalProThree = ((0-$recencyOfTansPropertyInfoThree)/$maxRecencyOfTans);
+        $landSizePropertyBaseCalProThree = ((0 - $recencyOfTansPropertyInfoThree) / $maxRecencyOfTans);
         $propertyInfoThree->recencyOfTansComparison = $landSizePropertyBaseCalProThree;
 
         //Location
@@ -976,13 +864,13 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $locationOfTansPropertyInfoThree = $propertyInfoThree->recencyOfTansWeightVal;
         $maxLocation = 10;
 
-        $locationPropertyBaseCalProOne = (($locationPropertyInfoOne)/$maxLocation);
+        $locationPropertyBaseCalProOne = (($locationPropertyInfoOne) / $maxLocation);
         $propertyInfoOne->locationComparison = $locationPropertyBaseCalProOne;
 
-        $locationPropertyBaseCalProTwo = (($locationOfTansPropertyInfoTwo)/$maxLocation);
+        $locationPropertyBaseCalProTwo = (($locationOfTansPropertyInfoTwo) / $maxLocation);
         $propertyInfoTwo->locationComparison = $locationPropertyBaseCalProTwo;
 
-        $locationPropertyBaseCalProThree = (($locationOfTansPropertyInfoThree)/$maxLocation);
+        $locationPropertyBaseCalProThree = (($locationOfTansPropertyInfoThree) / $maxLocation);
         $propertyInfoThree->locationComparison = $locationPropertyBaseCalProThree;
 
         //No. of Access Roads
@@ -1010,35 +898,278 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $this->propertyInfoThree = $propertyInfoThree;
 
         return view('admin.projects.ValuationMethodology.ComparisionLandRes', $this->data)->render();
-
     }
 
+    public function subjectProperty(&$propertyBaseInfo, &$propertyInfoOne, &$propertyInfoTwo, &$propertyInfoThree)
+    {
+        // BASE COMPARISION
+        $this->estimatedValueBase = 0;
+        // 1st COMPARISION
+        $this->estimatedValueOne = $propertyInfoOne->getMeta(ValuationProperty::EstimatedValuePropertyInfo);
+        $this->estimatedValueOne = (isset($this->estimatedValueOne[0]) && $this->estimatedValueOne[0] != ''  && !empty($this->estimatedValueOne[0])) ? $this->estimatedValueOne[0] : 0;
 
+        $propertyInfoOne->estimated_value = (isset($this->estimatedValueOne) && $this->estimatedValueOne != '') ? $this->estimatedValueOne : 0;
+        // 2nd COMPARISION
+        $this->estimatedValueTwo = $propertyInfoTwo->getMeta(ValuationProperty::EstimatedValuePropertyInfo);
+        $this->estimatedValueTwo = (isset($this->estimatedValueTwo[0]) && $this->estimatedValueTwo[0] != '' && !empty($this->estimatedValueTwo[0])) ? $this->estimatedValueTwo[0] : 0;
 
+        $propertyInfoTwo->estimated_value = (isset($this->estimatedValueTwo) && $this->estimatedValueTwo != '') ? $this->estimatedValueTwo : 0;
+        // 3rd COMPARISION
+        $this->estimatedValueThree = $propertyInfoThree->getMeta(ValuationProperty::EstimatedValuePropertyInfo);
+        $this->estimatedValueThree = (isset($this->estimatedValueThree[0]) && $this->estimatedValueThree[0] != '' && !empty($this->estimatedValueThree[0])) ? $this->estimatedValueThree[0] : 0;
 
+        $propertyInfoThree->estimated_value = (isset($this->estimatedValueThree) && $this->estimatedValueThree != '') ? $this->estimatedValueThree : 0;
+    }
 
+    public function apartmentSize(&$propertyBaseInfo, &$propertyInfoOne, &$propertyInfoTwo, &$propertyInfoThree)
+    {
+        // BASE COMPARISION
+        $this->sizeInSquareMeterBase = isset($propertyBaseInfo->sizes_in_meter_sq) ? $propertyBaseInfo->sizes_in_meter_sq : 0;
 
+        $propertyBaseInfo->aptSizeIPMS = (isset($this->sizeInSquareMeterBase) && $this->sizeInSquareMeterBase != '') ? $this->sizeInSquareMeterBase : 0;
+        $propertyBaseInfo->aptSizeIPMS = round($propertyBaseInfo->aptSizeIPMS, 3);
 
+        // 1st COMPARISION
+        $this->sizeInSquareMeterOne = isset($propertyInfoOne->sizes_in_meter_sq) ? $propertyInfoOne->sizes_in_meter_sq : 0;
 
+        $propertyInfoOne->aptSizeIPMS = (isset($this->sizeInSquareMeterOne) && $this->sizeInSquareMeterOne != '') ? $this->sizeInSquareMeterOne : 0;
+        $propertyInfoOne->aptSizeIPMS = round($propertyInfoOne->aptSizeIPMS, 3);
 
+        // 2nd COMPARISION
+        $this->sizeInSquareMeterTwo = isset($propertyInfoTwo->sizes_in_meter_sq) ? $propertyInfoTwo->sizes_in_meter_sq : 0;
 
+        $propertyInfoTwo->aptSizeIPMS = (isset($this->sizeInSquareMeterTwo) && $this->sizeInSquareMeterTwo != '') ? $this->sizeInSquareMeterTwo : 0;
+        $propertyInfoTwo->aptSizeIPMS = round($propertyInfoTwo->aptSizeIPMS, 3);
 
+        // 3rd COMPARISION
+        $this->sizeInSquareMeterThree = isset($propertyInfoThree->sizes_in_meter_sq) ? $propertyInfoThree->sizes_in_meter_sq : 0;
 
+        $propertyInfoThree->aptSizeIPMS = (isset($this->sizeInSquareMeterThree) && $this->sizeInSquareMeterThree != '') ? $this->sizeInSquareMeterThree : 0;
+        $propertyInfoThree->aptSizeIPMS = round($propertyInfoThree->aptSizeIPMS, 3);
 
+        // return $propertyBaseInfo->aptSizeIPMS;
+    }
+    public function noOfBedrooms(&$propertyBaseInfo, &$propertyInfoOne, &$propertyInfoTwo, &$propertyInfoThree)
+    {
+        // BASE COMPARISION
+        $noOfBedroomBase = $propertyBaseInfo->getMeta(ValuationProperty::NoOfBedroomText);
+        $noOfBedroomBase = (isset($noOfBedroomBase[0]) && $noOfBedroomBase[0] != '' && !empty($noOfBedroomBase[0])) ? $noOfBedroomBase[0] : 0;
 
+        $valuationWeightage = new ValuationPropertyWeightage();
+        $weightageIdBedroomBase = $valuationWeightage::find($noOfBedroomBase);
 
+        echo "<pre>"; print_r($weightageIdBedroomBase); exit;
+        $this->noOfBedroomBase = $weightageIdBedroomBase['value'];
+        $propertyBaseInfo->bedrooms = (isset($this->noOfBedroomBase) && $this->noOfBedroomBase != '') ? $this->noOfBedroomBase : 0;
 
+        // 1st COMPARISION
+        $noOfBedroomOne = $propertyInfoOne->getMeta(ValuationProperty::NoOfBedroomText);
+        $noOfBedroomOne = (isset($noOfBedroomOne[0]) && $noOfBedroomOne[0] != ''  && !empty($noOfBedroomOne[0])) ? $noOfBedroomOne[0] : 0;
 
+        $weightageIdBedroomOne = $valuationWeightage::find($noOfBedroomOne);
 
+        $this->noOfBedroomOne = $weightageIdBedroomOne['value'];
+        $propertyInfoOne->bedrooms = (isset($this->noOfBedroomOne) && $this->noOfBedroomOne != '') ? $this->noOfBedroomOne : 0;
 
+        // 2nd COMPARISION
+        $noOfBedroomTwo = $propertyInfoTwo->getMeta(ValuationProperty::NoOfBedroomText);
+        $noOfBedroomTwo = (isset($noOfBedroomTwo[0]) && $noOfBedroomTwo[0] != '' && !empty($noOfBedroomTwo[0])) ? $noOfBedroomTwo[0] : 0;
 
+        $weightageIdBedroomTwo = $valuationWeightage::find($noOfBedroomTwo);
+        $this->noOfBedroomTwo = $weightageIdBedroomTwo['value'];
 
+        $propertyInfoTwo->bedrooms = (isset($this->noOfBedroomTwo) && $this->noOfBedroomTwo != '') ? $this->noOfBedroomTwo : 0;
 
+        // 3rd COMPARISION
+        $noOfBedroomThree = $propertyInfoThree->getMeta(ValuationProperty::NoOfBedroomText);
+        $noOfBedroomThree = (isset($noOfBedroomThree[0]) && $noOfBedroomThree[0] != '' && !empty($noOfBedroomThree[0])) ? $noOfBedroomThree[0] : 0;
 
+        $weightageIdBedroomThree = $valuationWeightage::find($noOfBedroomThree);
 
+        $this->noOfBedroomThree = $weightageIdBedroomThree['value'];
+        $propertyInfoThree->bedrooms = (isset($this->noOfBedroomThree) && $this->noOfBedroomThree != '') ? $this->noOfBedroomThree : 0;
+    }
+    public function noOfBathrooms(&$propertyBaseInfo, &$propertyInfoOne, &$propertyInfoTwo, &$propertyInfoThree)
+    {
+        // BASE COMPARISION
+        $noOfBathroomBase = $propertyBaseInfo->getMeta(ValuationProperty::NoOfBathoomsText);
+        $noOfBathroomBase = (isset($noOfBathroomBase[0]) && $noOfBathroomBase[0] != '' && !empty($noOfBathroomBase[0])) ? $noOfBathroomBase[0] : 0;
 
+        $valuationWeightage = new ValuationPropertyWeightage();
+        $weightageIdBathroomBase = $valuationWeightage::find($noOfBathroomBase);
 
+        $this->noOfBathroomBase = $weightageIdBathroomBase['value'];
+        $propertyBaseInfo->bathrooms = (isset($this->noOfBathroomBase) && $this->noOfBathroomBase != '') ? $this->noOfBathroomBase : 0;
 
+        // 1st COMPARISION
+        $noOfBathroomOne = $propertyInfoOne->getMeta(ValuationProperty::NoOfBathoomsText);
+        $noOfBathroomOne = (isset($noOfBathroomOne[0]) && $noOfBathroomOne[0] != ''  && !empty($noOfBathroomOne[0])) ? $noOfBathroomOne[0] : 0;
+
+        $weightageIdBathroomOne = $valuationWeightage::find($noOfBathroomOne);
+
+        $this->noOfBathroomOne = $weightageIdBathroomOne['value'];
+        $propertyInfoOne->bathrooms = (isset($this->noOfBathroomOne) && $this->noOfBathroomOne != '') ? $this->noOfBathroomOne : 0;
+
+        // 2nd COMPARISION
+        $noOfBathroomTwo = $propertyInfoTwo->getMeta(ValuationProperty::NoOfBathoomsText);
+        $noOfBathroomTwo = (isset($noOfBathroomTwo[0]) && $noOfBathroomTwo[0] != '' && !empty($noOfBathroomTwo[0])) ? $noOfBathroomTwo[0] : 0;
+
+        $weightageIdBathroomTwo = $valuationWeightage::find($noOfBathroomTwo);
+        $this->noOfBathroomTwo = $weightageIdBathroomTwo['value'];
+
+        $propertyInfoTwo->bathrooms = (isset($this->noOfBathroomTwo) && $this->noOfBathroomTwo != '') ? $this->noOfBathroomTwo : 0;
+
+        // 3rd COMPARISION
+        $noOfBathroomThree = $propertyInfoThree->getMeta(ValuationProperty::NoOfBathoomsText);
+        $noOfBathroomThree = (isset($noOfBathroomThree[0]) && $noOfBathroomThree[0] != '' && !empty($noOfBathroomThree[0])) ? $noOfBathroomThree[0] : 0;
+
+        $weightageIdBathroomThree = $valuationWeightage::find($noOfBathroomThree);
+        $this->noOfBathroomThree = $weightageIdBathroomThree['value'];
+
+        $propertyInfoThree->bathrooms = (isset($this->noOfBathroomThree) && $this->noOfBathroomThree != '') ? $this->noOfBathroomThree : 0;
+    }
+    public function finishingQuality(&$propertyBaseInfo, &$propertyInfoOne, &$propertyInfoTwo, &$propertyInfoThree)
+    {
+        // BASE COMPARISION
+
+        $finishingQualityBase = $propertyBaseInfo->getMeta(ValuationProperty::FinishingQualityText);
+        $finishingQualityBase = (isset($finishingQualityBase[0]) && $finishingQualityBase[0] != '' && !empty($finishingQualityBase[0])) ? $finishingQualityBase[0] : 0;
+
+        $maintenanceBase = $propertyBaseInfo->getMeta(ValuationProperty::MaintenanceText);
+        $maintenanceBase = (isset($maintenanceBase[0]) && $maintenanceBase[0] != '' && !empty($maintenanceBase[0])) ? $maintenanceBase[0] : 0;
+
+        $valuationWeightage = new ValuationPropertyWeightage();
+        $weightageIdFinishingBase = $valuationWeightage::find($finishingQualityBase);
+        $weightageIdMaintenanceBase = $valuationWeightage::find($maintenanceBase);
+
+        $this->finishingQualityBase = $weightageIdFinishingBase['value'];
+        $this->finishingQualityBaseTitle = $weightageIdFinishingBase['title'];
+        $this->maintenanceBase = $weightageIdMaintenanceBase['value'];
+        $this->maintenanceBaseTitle = $weightageIdMaintenanceBase['title'];
+
+        $propertyBaseInfo->finishingQuality = (isset($this->finishingQualityBase) && $this->finishingQualityBase != '') ? $this->finishingQualityBase : 0;
+        $propertyBaseInfo->finishingQualityTitle = (isset($this->finishingQualityBaseTitle) && $this->finishingQualityBaseTitle != '') ? $this->finishingQualityBaseTitle : "";
+        $propertyBaseInfo->maintenance = (isset($this->maintenanceBase) && $this->maintenanceBase != '') ? $this->maintenanceBase : 0;
+        $propertyBaseInfo->maintenanceTitle = (isset($this->maintenanceBaseTitle) && $this->maintenanceBaseTitle != '') ? $this->maintenanceBaseTitle : "";
+
+        // 1st COMPARISION
+
+        $finishingQualityOne = $propertyInfoOne->getMeta(ValuationProperty::FinishingQualityText);
+        $finishingQualityOne = (isset($finishingQualityOne[0]) && $finishingQualityOne[0] != ''  && !empty($finishingQualityOne[0])) ? $finishingQualityOne[0] : 0;
+
+        $maintenanceOne = $propertyInfoOne->getMeta(ValuationProperty::MaintenanceText);
+        $maintenanceOne = (isset($maintenanceOne[0]) && $maintenanceOne[0] != ''  && !empty($maintenanceOne[0])) ? $maintenanceOne[0] : 0;
+
+        $weightageIdFinishingOne = $valuationWeightage::find($finishingQualityOne);
+        $weightageIdMaintenanceOne = $valuationWeightage::find($maintenanceOne);
+
+        $this->finishingQualityOne = $weightageIdFinishingOne['value'];
+        $this->finishingQualityOneTitle = $weightageIdFinishingOne['title'];
+        $this->maintenanceOne = $weightageIdMaintenanceOne['value'];
+        $this->maintenanceOneTitle = $weightageIdMaintenanceOne['title'];
+
+        $propertyInfoOne->finishingQuality = (isset($this->finishingQualityOne) && $this->finishingQualityOne != '') ? $this->finishingQualityOne : 0;
+        $propertyInfoOne->finishingQualityOneTitle = (isset($this->finishingQualityOneTitle) && $this->finishingQualityOneTitle != '') ? $this->finishingQualityOneTitle : 0;
+        $propertyInfoOne->maintenance = (isset($this->maintenanceOne) && $this->maintenanceOne != '') ? $this->maintenanceOne : 0;
+        $propertyInfoOne->maintenanceOneTitle = (isset($this->maintenanceOneTitle) && $this->maintenanceOneTitle != '') ? $this->maintenanceOneTitle : 0;
+
+        // 2nd COMPARISION
+
+        $finishingQualityTwo = $propertyInfoTwo->getMeta(ValuationProperty::FinishingQualityText);
+        $finishingQualityTwo = (isset($finishingQualityTwo[0]) && $finishingQualityTwo[0] != '' && !empty($finishingQualityTwo[0])) ? $finishingQualityTwo[0] : 0;
+
+        $maintenanceTwo = $propertyInfoTwo->getMeta(ValuationProperty::MaintenanceText);
+        $maintenanceTwo = (isset($maintenanceTwo[0]) && $maintenanceTwo[0] != '' && !empty($maintenanceTwo[0])) ? $maintenanceTwo[0] : 0;
+
+        $weightageIdFinishingTwo = $valuationWeightage::find($finishingQualityTwo);
+        $weightageIdMaintenanceTwo = $valuationWeightage::find($maintenanceTwo);
+
+        $this->finishingQualityTwo = $weightageIdFinishingTwo['value'];
+        $this->finishingQualityTwoTitle = $weightageIdFinishingTwo['title'];
+        $this->maintenanceTwo = $weightageIdMaintenanceTwo['value'];
+        $this->maintenanceTwoTitle = $weightageIdMaintenanceTwo['title'];
+
+        $propertyInfoTwo->finishingQuality = (isset($this->finishingQualityTwo) && $this->finishingQualityTwo != '') ? $this->finishingQualityTwo : 0;
+        $propertyInfoOne->finishingQualityTwoTitle = (isset($this->finishingQualityTwoTitle) && $this->finishingQualityTwoTitle != '') ? $this->finishingQualityTwoTitle : 0;
+        $propertyInfoTwo->maintenance = (isset($this->maintenanceTwo) && $this->maintenanceTwo != '') ? $this->maintenanceTwo : 0;
+        $propertyInfoOne->maintenanceTwoTitle = (isset($this->maintenanceTwoTitle) && $this->maintenanceTwoTitle != '') ? $this->maintenanceTwoTitle : 0;
+
+        // 3rd COMPARISION
+
+        $finishingQualityThree = $propertyInfoThree->getMeta(ValuationProperty::FinishingQualityText);
+        $finishingQualityThree = (isset($finishingQualityThree[0]) && $finishingQualityThree[0] != '' && !empty($finishingQualityThree[0])) ? $finishingQualityThree[0] : 0;
+
+        $maintenanceThree = $propertyInfoThree->getMeta(ValuationProperty::MaintenanceText);
+        $maintenanceThree = (isset($maintenanceThree[0]) && $maintenanceThree[0] != '' && !empty($maintenanceThree[0])) ? $maintenanceThree[0] : 0;
+
+        $weightageIdFinishingThree = $valuationWeightage::find($finishingQualityThree);
+        $weightageIdMaintenanceThree = $valuationWeightage::find($maintenanceThree);
+
+        $this->finishingQualityThree = $weightageIdFinishingThree['value'];
+        $this->finishingQualityThreeTitle = $weightageIdFinishingThree['title'];
+        $this->maintenanceThree = $weightageIdMaintenanceThree['value'];
+        $this->maintenanceThreeTitle = $weightageIdMaintenanceThree['title'];
+
+        $propertyInfoThree->finishingQuality = (isset($this->finishingQualityThree) && $this->finishingQualityThree != '') ? $this->finishingQualityThree : 0;
+        $propertyInfoThree->finishingQualityThreeTitle = (isset($this->finishingQualityThreeTitle) && $this->finishingQualityThreeTitle != '') ? $this->finishingQualityThreeTitle : 0;
+        $propertyInfoThree->maintenance = (isset($this->maintenanceThree) && $this->maintenanceThree != '') ? $this->maintenanceThree : 0;
+        $propertyInfoThree->maintenanceThreeTitle = (isset($this->maintenanceThreeTitle) && $this->maintenanceThreeTitle != '') ? $this->maintenanceThreeTitle : 0;
+    }
+    public function buildingAmenities(&$propertyBaseInfo, &$propertyInfoOne, &$propertyInfoTwo, &$propertyInfoThree)
+    {
+        // BASE COMPARISION
+
+        $amenitiesBase = $propertyBaseInfo->getMeta(ValuationProperty::AmenitiesText);
+        $amenitiesBase = (isset($amenitiesBase[0]) && $amenitiesBase[0] != '' && !empty($amenitiesBase[0])) ? $amenitiesBase[0] : 0;
+
+        $valuationWeightage = new ValuationPropertyWeightage();
+        $weightageIdAmenitiesBase = $valuationWeightage::find($amenitiesBase);
+
+        $this->amenitiesBase = $weightageIdAmenitiesBase['value'];
+        $this->amenitiesBaseTitle = $weightageIdAmenitiesBase['title'];
+
+        $propertyBaseInfo->amenities = (isset($this->amenitiesBase) && $this->amenitiesBase != '') ? $this->amenitiesBase : 0;
+        $propertyBaseInfo->amenitiesTitle = (isset($this->amenitiesBaseTitle) && $this->amenitiesBaseTitle != '') ? $this->amenitiesBaseTitle : 0;
+
+        // 1st COMPARISION
+
+        $amenitiesOne = $propertyInfoOne->getMeta(ValuationProperty::AmenitiesText);
+        $amenitiesOne = (isset($amenitiesOne[0]) && $amenitiesOne[0] != ''  && !empty($amenitiesOne[0])) ? $amenitiesOne[0] : 0;
+
+        $weightageIdAmenitiesOne = $valuationWeightage::find($amenitiesOne);
+
+        $this->amenitiesOne = $weightageIdAmenitiesOne['value'];
+        $this->amenitiesOneTitle = $weightageIdAmenitiesOne['title'];
+
+        $propertyInfoOne->amenities = (isset($this->amenitiesOne) && $this->amenitiesOne != '') ? $this->amenitiesOne : 0;
+        $propertyInfoOne->amenitiesOneTitle = (isset($this->amenitiesOneTitle) && $this->amenitiesOneTitle != '') ? $this->amenitiesOneTitle : 0;
+
+        // 2nd COMPARISION
+
+        $amenitiesTwo = $propertyInfoTwo->getMeta(ValuationProperty::AmenitiesText);
+        $amenitiesTwo = (isset($amenitiesTwo[0]) && $amenitiesTwo[0] != '' && !empty($amenitiesTwo[0])) ? $amenitiesTwo[0] : 0;
+
+        $weightageIdAmenitiesTwo = $valuationWeightage::find($amenitiesTwo);
+
+        $this->amenitiesTwo = $weightageIdAmenitiesTwo['value'];
+        $this->amenitiesTwoTitle = $weightageIdAmenitiesTwo['title'];
+
+        $propertyInfoTwo->amenities = (isset($this->amenitiesTwo) && $this->amenitiesTwo != '') ? $this->amenitiesTwo : 0;
+        $propertyInfoTwo->amenitiesTwoTitle = (isset($this->amenitiesTwoTitle) && $this->amenitiesTwoTitle != '') ? $this->amenitiesTwoTitle : 0;
+
+        // 3rd COMPARISION
+
+        $amenitiesThree = $propertyInfoThree->getMeta(ValuationProperty::AmenitiesText);
+        $amenitiesThree = (isset($amenitiesThree[0]) && $amenitiesThree[0] != '' && !empty($amenitiesThree[0])) ? $amenitiesThree[0] : 0;
+
+        $weightageIdAmenitiesThree = $valuationWeightage::find($amenitiesThree);
+
+        $this->amenitiesThree = $weightageIdAmenitiesThree['value'];
+        $this->amenitiesThreeTitle = $weightageIdAmenitiesThree['title'];
+
+        $propertyInfoThree->amenities = (isset($this->amenitiesThree) && $this->amenitiesThree != '') ? $this->amenitiesThree : 0;
+        $propertyInfoThree->amenitiesThreeTitle = (isset($this->amenitiesThreeTitle) && $this->amenitiesThreeTitle != '') ? $this->amenitiesThreeTitle : 0;
+    }
 
     ////////////////////////////////////////////// not in use
 
@@ -1150,6 +1281,5 @@ class ManageProjectValuationMethodController extends AdminBaseController
      */
     public function store(StoreProjectMembers $request)
     {
-
     }
 }

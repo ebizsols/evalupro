@@ -171,7 +171,7 @@
 
                         </div>
                         <div class=" pics col-md-6 d-flex justify-content-center align-items-center">
-                            <img src=" {{ asset('user-uploads/property-img') . '/' . $propertyMedia }} " alt="Property" />
+                            <img src=" {{ asset('user-uploads/property-img') . '/' . $propertyMedia }} " alt="Property Image Not Found" />
                         </div>
                         
                     </div>

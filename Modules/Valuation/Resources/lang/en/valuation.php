@@ -142,6 +142,7 @@ $methodologySettings['editTemplate'] = "Edit Template";
 $methodologySettings['templateTitle'] = "Template Title";
 $methodologySettings['templateCategory'] = "Template Fields";
 $methodologySettings['totalTemplates'] = "Total Templates";
+$methodologySettings['propertyType'] = "Property Type";
 
 $valuationLang['methodologySettings'] = $methodologySettings;
 

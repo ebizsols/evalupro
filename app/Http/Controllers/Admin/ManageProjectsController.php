@@ -80,12 +80,12 @@ class ManageProjectsController extends AdminBaseController
         $this->projectBudgetTotal = Project::sum('project_budget');
         $this->categories = ProjectCategory::all();
 
-        $project =  Project::find(1);
-        $updatePropertyMeta["project_meta"] = json_encode($this->allEmployees);
+        // $project =  Project::find(1);
+        // $updatePropertyMeta["project_meta"] = json_encode($this->allEmployees);
 
-        if (!empty($updatePropertyMeta)) {
-            $project->setMeta($updatePropertyMeta);
-        }
+        // if (!empty($updatePropertyMeta)) {
+        //     $project->setMeta($updatePropertyMeta);
+        // }
 
         $this->projectEarningTotal = Payment::join('projects', 'projects.id', '=', 'payments.project_id')
             ->where('payments.status', 'complete')

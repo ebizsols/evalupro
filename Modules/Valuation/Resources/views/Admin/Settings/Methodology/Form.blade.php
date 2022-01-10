@@ -3,6 +3,24 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
+                <label class="required">Property Type</label>
+                <select name="property_type" data-placeholder="@lang('modules.messages.chooseMember')" id="PropertyType"
+                    class="form-control">
+                    <option value="">Select Property Type</option>
+                    @if (isset($propertyType) && !empty($propertyType))
+                        @foreach ($propertyType as $typeObj)
+                            <option @if (isset($property_type) && !empty($property_type) && $property_type == $typeObj->id) selected="selected" @endif value="{{ $typeObj->id }}">
+                                {{ $typeObj->title }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
                 <label class="required">Template Name</label>
                 <input type="text" name="template_name" id="templateTitle"
                     value="{{ isset($template_name) ? $template_name : '' }}" class="form-control"
@@ -65,8 +83,12 @@
 
             let title = $("#templateTitle");
             let templateCategory = $("#templateCategory");
+            let PropertyType = $("#PropertyType")
 
-            if (title.val() == '') {
+            if (PropertyType.val() == '') {
+                alert("Please select Property Type");
+                return false;
+            } else if (title.val() == '') {
                 alert('Please enter Template Name');
                 return false;
             } else if (templateCategory.val() == '') {

@@ -72,15 +72,17 @@ class ManageProjectReportController extends AdminBaseController
         if(!empty($productCategory)){
             $productCategory = $productCategory->toArray();
         }
-        $this->purposeOfValuation = (isset($productCategory['category_name'])) ? $productCategory['category_name'] : "Not found";
+        $this->purposeOfValuation = (isset($productCategory['category_name'])) ? $productCategory['category_name'] : "Not Found";
 
         $productSubCategory = ProductSubCategory::find($subCategoryId);
         if($productSubCategory){
             $productSubCategory = $productSubCategory->toArray();
         }
-        $this->basisOfValuation = (isset($productSubCategory['category_name'])) ? $productSubCategory['category_name'] : "Not found";
+        $this->basisOfValuation = (isset($productSubCategory['category_name'])) ? $productSubCategory['category_name'] : "Not Found";
 
-        $this->approachInfo = $projectObj::find($id)->getMeta('approaches');
+        $approachInfo = $projectObj::find($id)->getMeta('approaches');
+        $this->approachInfo = (isset($approachInfo)) ? $approachInfo : "Not Found"; 
+
          $propertyInfo = ValuationProperty::find($propertyId);
          if($propertyInfo){
              $propertyInfo = $propertyInfo->toArray();
@@ -92,7 +94,7 @@ class ManageProjectReportController extends AdminBaseController
          if($clientDetails){
              $clientDetails = $clientDetails->toArray();
          }
-         $this->clientName = (isset($clientDetails['name'])) ? $clientDetails['name'] : 'Not found';
+         $this->clientName = (isset($clientDetails['name'])) ? $clientDetails['name'] : 'Not Found';
          $this->date = Carbon::now("GMT+5")->toDateTimeString();
  
         //  New Dynamic Data
@@ -105,7 +107,7 @@ class ManageProjectReportController extends AdminBaseController
         if (!empty($inspectionDate)) {
             $inspectionDate = $inspectionDate->created_at->toArray();
         }
-        $this->inspectionDate = $inspectionDate['formatted'];
+        $this->inspectionDate = (isset($inspectionDate['formatted'])) ? $inspectionDate['formatted'] : 'Not Found';
         // dd($this->inspectionDate);
         $propertyType = ValuationPropertyType::find($subjectProperty);
         $this->propertyType = isset($propertyType->title) ? $propertyType->title: 0;
@@ -123,7 +125,9 @@ class ManageProjectReportController extends AdminBaseController
         $userData = User::find($userId);
         $this->roleName = isset($userData->name)?$userData->name:0;
 
-        $this->valuationMethod = $projectObj::find($id)->getMeta('methods');
+        $valuationMethod = $projectObj::find($id)->getMeta('methods');
+        $this->valuationMethod = (isset($valuationMethod)) ? $valuationMethod : 'Not Found';
+
 
         $this->landSizeMeterSquare = isset($propertyData->sizes_in_meter_sq) ? $propertyData->sizes_in_meter_sq : 0;
         $this->landSizeSquareFeet = isset($propertyData->sizes_in_sq_feet) ? $propertyData->sizes_in_sq_feet : 0;

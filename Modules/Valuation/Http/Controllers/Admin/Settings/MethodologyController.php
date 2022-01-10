@@ -5,6 +5,7 @@ namespace Modules\Valuation\Http\Controllers\Admin\Settings;
 use App\Helper\Reply;
 use Illuminate\Http\Request;
 use Modules\Valuation\Entities\MethodologyTemplate;
+use Modules\Valuation\Entities\ValuationPropertyType;
 use Yajra\DataTables\Facades\DataTables;
 use Modules\Valuation\Http\Controllers\Admin\ValuationAdminBaseController;
 
@@ -51,8 +52,7 @@ class MethodologyController extends ValuationAdminBaseController
         $data['addEditViewRoute'] = $this->addEditViewRoute;
         $data['saveUpdateDataRoute'] = $this->saveUpdateDataRoute;
         $data['destroyRoute'] = $this->destroyRoute;
-        $data['companyId'] = isset(company()->id)?company()->id:0;
-
+        $data['companyId'] = isset(company()->id) ? company()->id : 0;
     }
 
     public function index()
@@ -69,7 +69,7 @@ class MethodologyController extends ValuationAdminBaseController
     {
         $this->__customConstruct($this->data);
 
-        
+
         $this->id = $id;
         $this->headingTitle = 'valuation::valuation.methodologySettings.createTemplate';
         $templateData = new MethodologyTemplate();
@@ -83,18 +83,23 @@ class MethodologyController extends ValuationAdminBaseController
             $this->templateFields = json_decode($templateInfo->template_category, TRUE);
         }
 
+        // Property Type
+        $propertyType = new ValuationPropertyType();
+        $this->propertyType = $propertyType->getAllForCompany();
+        $this->property_type = isset($templateInfo->type_id) ? $templateInfo->type_id : '';
+
         $this->template_name = isset($templateInfo->template_name) ? $templateInfo->template_name : '';
-        $template_category = isset($templateInfo->template)?$templateInfo->template: "";
+        $template_category = isset($templateInfo->template) ? $templateInfo->template : "";
         $this->template_category = json_decode($template_category, true);
 
         $tempData = array();
-         $tempData['apartmentSize'] = "Apartment Size";
-         $tempData['noOfBedrooms'] = "No. of Bedrooms";
-         $tempData['noOfBathrooms'] = "No. of Bathrooms";
-         $tempData['finishingQuality'] = "Finishing Quality";
-         $tempData['buildingAmenities'] = "Building Amenities";
+        $tempData['apartmentSize'] = "Apartment Size";
+        $tempData['noOfBedrooms'] = "No. of Bedrooms";
+        $tempData['noOfBathrooms'] = "No. of Bathrooms";
+        $tempData['finishingQuality'] = "Finishing Quality";
+        $tempData['buildingAmenities'] = "Building Amenities";
 
-         $this->tempData = $tempData;
+        $this->tempData = $tempData;
 
         return view($this->viewFolderPath . 'AddEditView', $this->data);
     }
@@ -110,9 +115,11 @@ class MethodologyController extends ValuationAdminBaseController
             $template = new MethodologyTemplate();
         }
 
+        $template->type_id = isset($request->property_type) ? $request->property_type : '';
+
         $template->company_id = isset($data['companyId']) ? $data['companyId'] : 0;
         $template->template_name = isset($request->template_name) ? $request->template_name : '';
-        $template->template_category = json_encode( isset($request->template_category) ? $request->template_category : array());
+        $template->template_category = json_encode(isset($request->template_category) ? $request->template_category : array());
         $template->save();
         $templateId = $template->id;
         if ($templateId) {
@@ -122,7 +129,6 @@ class MethodologyController extends ValuationAdminBaseController
         } else {
             return Reply::redirect(route($this->listingPageRoute), __('Save Success'));
         }
-
     }
 
     /**
@@ -163,12 +169,19 @@ class MethodologyController extends ValuationAdminBaseController
                 $action .= '</ul> </div>';
 
                 return $action;
-
             })
             ->editColumn(
                 'template_name',
                 function ($row) {
                     return ucfirst($row->template_name);
+                }
+            )
+            ->editColumn(
+                'type_id',
+                function ($row) {
+                    $id = $row->type_id;
+                    $typeTitle = ValuationPropertyType::find($id)->title;
+                    return ucfirst($typeTitle);
                 }
             )
             ->editColumn(
