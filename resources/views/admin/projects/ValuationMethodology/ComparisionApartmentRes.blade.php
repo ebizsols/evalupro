@@ -19,7 +19,7 @@
             <td>{{ $propertyInfoThree->estimated_value }}</td>
         </tr>
 
-        @if ($apartmentSizeComparison == true)
+        @if (!empty($apartmentSizeComparison) && $apartmentSizeComparison == true)
             <tr>
                 {{-- <td colspan="2">Apartment Size in SQM as per IPMS-1</td> --}}
                 {{-- <td colspan="2">Apartment Size</td> --}}
@@ -92,7 +92,7 @@
             </tr>
         @endif
 
-        @if ($noOfBedroomsComparison == true)
+        @if (!empty($noOfBedroomsComparison) && $noOfBedroomsComparison == true)
             <tr>
                 {{-- <td colspan="2">No. of Bedrooms</td> --}}
                 <td colspan="2">
@@ -164,7 +164,7 @@
             </tr>
         @endif
 
-        @if ($noOfBathroomsComparison == true)
+        @if (!empty($noOfBathroomsComparison) && $noOfBathroomsComparison == true)
             <tr>
                 {{-- <td colspan="2">No. of Bathrooms</td> --}}
                 <td colspan="2">
@@ -236,7 +236,7 @@
             </tr>
         @endif
 
-        @if ($finishingQualityComparison == true)
+        @if (!empty($finishingQualityComparison) && $finishingQualityComparison == true)
             <tr>
                 {{-- <td colspan="2">Finishing Quality</td> --}}
                 <td colspan="2">
@@ -323,7 +323,7 @@
             </tr>
         @endif
 
-        @if ($buildingAmenitiesComparison == true)
+        @if (!empty($buildingAmenitiesComparison) && $buildingAmenitiesComparison == true)
             <tr>
                 {{-- <td colspan="2">Building Amenities and Facilities</td> --}}
                 <td colspan="2">

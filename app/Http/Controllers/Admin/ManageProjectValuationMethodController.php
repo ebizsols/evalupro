@@ -311,25 +311,15 @@ class ManageProjectValuationMethodController extends AdminBaseController
 
         // New Code
         $templateData = MethodologyTemplate::get();
-        $typeId = $templateData->pluck('type_id');
+        $typeId = $templateData->pluck('type_id')->first();
         $propertyType = ValuationPropertyType::find($typeId);
         $TypeTitle = $propertyType->pluck('title')->toArray();
-
+        
         $propertyBaseId = ValuationProperty::find($propertyIdBase);
         $BaseType = $propertyBaseId->type_id;
         $BaseTitle = valuationPropertyType::find($BaseType);
         $BaseTypeTitle = $BaseTitle->title;
 
-        // // dd($BaseTypeTitle);
-        // $result = in_array($BaseTypeTitle, $TypeTitle);
-        // $comparisonType = array();
-        // $comparisonType['landType'] = "Land";
-        // $comparisonType['villaType'] = "Villa";
-        // $comparisonType['buildingType'] = "Building";
-        // $comparisonType['compoundType'] = "Compound";
-        // $comparisonType['apartmentType'] = "Apartment";
-
-        // $selectedType = 'Apartment';
         $valuationMethod = 'comparision';
 
         switch ($valuationMethod) {
@@ -347,8 +337,6 @@ class ManageProjectValuationMethodController extends AdminBaseController
                         } else {
                             return Reply::successWithData('Comparison Completed', $returnArray);
                         }
-                        /* echo json_encode($returnArray); exit;
-                         echo json_encode($comparisionMethodRes); exit;*/
                         break;
                     case $BaseTypeTitle == 'Land':
                         $comparisionMethodRes = $this->comparisionLand($request);
@@ -920,7 +908,6 @@ class ManageProjectValuationMethodController extends AdminBaseController
 
         $propertyInfoThree->estimated_value = (isset($this->estimatedValueThree) && $this->estimatedValueThree != '') ? $this->estimatedValueThree : 0;
     }
-
     public function apartmentSize(&$propertyBaseInfo, &$propertyInfoOne, &$propertyInfoTwo, &$propertyInfoThree)
     {
         // BASE COMPARISION
@@ -954,12 +941,12 @@ class ManageProjectValuationMethodController extends AdminBaseController
         // BASE COMPARISION
         $noOfBedroomBase = $propertyBaseInfo->getMeta(ValuationProperty::NoOfBedroomText);
         $noOfBedroomBase = (isset($noOfBedroomBase[0]) && $noOfBedroomBase[0] != '' && !empty($noOfBedroomBase[0])) ? $noOfBedroomBase[0] : 0;
+        // echo "<pre>"; print_r($noOfBedroomBase); exit;
 
         $valuationWeightage = new ValuationPropertyWeightage();
         $weightageIdBedroomBase = $valuationWeightage::find($noOfBedroomBase);
 
-        echo "<pre>"; print_r($weightageIdBedroomBase); exit;
-        $this->noOfBedroomBase = $weightageIdBedroomBase['value'];
+        $this->noOfBedroomBase = (isset($weightageIdBedroomBase) && $weightageIdBedroomBase != '') ? $weightageIdBedroomBase['value']:0;
         $propertyBaseInfo->bedrooms = (isset($this->noOfBedroomBase) && $this->noOfBedroomBase != '') ? $this->noOfBedroomBase : 0;
 
         // 1st COMPARISION
@@ -968,7 +955,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
 
         $weightageIdBedroomOne = $valuationWeightage::find($noOfBedroomOne);
 
-        $this->noOfBedroomOne = $weightageIdBedroomOne['value'];
+        $this->noOfBedroomOne = (isset($weightageIdBedroomOne) && $weightageIdBedroomOne != '') ? $weightageIdBedroomOne['value']:0;
         $propertyInfoOne->bedrooms = (isset($this->noOfBedroomOne) && $this->noOfBedroomOne != '') ? $this->noOfBedroomOne : 0;
 
         // 2nd COMPARISION
@@ -976,7 +963,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $noOfBedroomTwo = (isset($noOfBedroomTwo[0]) && $noOfBedroomTwo[0] != '' && !empty($noOfBedroomTwo[0])) ? $noOfBedroomTwo[0] : 0;
 
         $weightageIdBedroomTwo = $valuationWeightage::find($noOfBedroomTwo);
-        $this->noOfBedroomTwo = $weightageIdBedroomTwo['value'];
+        $this->noOfBedroomTwo = (isset($weightageIdBedroomTwo) && $weightageIdBedroomTwo != '') ? $weightageIdBedroomTwo['value']:0;
 
         $propertyInfoTwo->bedrooms = (isset($this->noOfBedroomTwo) && $this->noOfBedroomTwo != '') ? $this->noOfBedroomTwo : 0;
 
@@ -986,7 +973,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
 
         $weightageIdBedroomThree = $valuationWeightage::find($noOfBedroomThree);
 
-        $this->noOfBedroomThree = $weightageIdBedroomThree['value'];
+        $this->noOfBedroomThree = (isset($weightageIdBedroomThree) && $weightageIdBedroomThree != '') ? $weightageIdBedroomThree['value']:0;
         $propertyInfoThree->bedrooms = (isset($this->noOfBedroomThree) && $this->noOfBedroomThree != '') ? $this->noOfBedroomThree : 0;
     }
     public function noOfBathrooms(&$propertyBaseInfo, &$propertyInfoOne, &$propertyInfoTwo, &$propertyInfoThree)
@@ -998,7 +985,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $valuationWeightage = new ValuationPropertyWeightage();
         $weightageIdBathroomBase = $valuationWeightage::find($noOfBathroomBase);
 
-        $this->noOfBathroomBase = $weightageIdBathroomBase['value'];
+        $this->noOfBathroomBase = (isset($weightageIdBathroomBase) && $weightageIdBathroomBase != '') ? $weightageIdBathroomBase['value']:0;
         $propertyBaseInfo->bathrooms = (isset($this->noOfBathroomBase) && $this->noOfBathroomBase != '') ? $this->noOfBathroomBase : 0;
 
         // 1st COMPARISION
@@ -1007,7 +994,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
 
         $weightageIdBathroomOne = $valuationWeightage::find($noOfBathroomOne);
 
-        $this->noOfBathroomOne = $weightageIdBathroomOne['value'];
+        $this->noOfBathroomOne = (isset($weightageIdBathroomOne) && $weightageIdBathroomOne != '') ? $weightageIdBathroomOne['value']:0;
         $propertyInfoOne->bathrooms = (isset($this->noOfBathroomOne) && $this->noOfBathroomOne != '') ? $this->noOfBathroomOne : 0;
 
         // 2nd COMPARISION
@@ -1015,7 +1002,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $noOfBathroomTwo = (isset($noOfBathroomTwo[0]) && $noOfBathroomTwo[0] != '' && !empty($noOfBathroomTwo[0])) ? $noOfBathroomTwo[0] : 0;
 
         $weightageIdBathroomTwo = $valuationWeightage::find($noOfBathroomTwo);
-        $this->noOfBathroomTwo = $weightageIdBathroomTwo['value'];
+        $this->noOfBathroomTwo = (isset($weightageIdBathroomTwo) && $weightageIdBathroomTwo != '') ? $weightageIdBathroomTwo['value']:0;
 
         $propertyInfoTwo->bathrooms = (isset($this->noOfBathroomTwo) && $this->noOfBathroomTwo != '') ? $this->noOfBathroomTwo : 0;
 
@@ -1024,7 +1011,7 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $noOfBathroomThree = (isset($noOfBathroomThree[0]) && $noOfBathroomThree[0] != '' && !empty($noOfBathroomThree[0])) ? $noOfBathroomThree[0] : 0;
 
         $weightageIdBathroomThree = $valuationWeightage::find($noOfBathroomThree);
-        $this->noOfBathroomThree = $weightageIdBathroomThree['value'];
+        $this->noOfBathroomThree = (isset($weightageIdBathroomThree) && $weightageIdBathroomThree != '') ? $weightageIdBathroomThree['value']:0;
 
         $propertyInfoThree->bathrooms = (isset($this->noOfBathroomThree) && $this->noOfBathroomThree != '') ? $this->noOfBathroomThree : 0;
     }
@@ -1042,10 +1029,11 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $weightageIdFinishingBase = $valuationWeightage::find($finishingQualityBase);
         $weightageIdMaintenanceBase = $valuationWeightage::find($maintenanceBase);
 
-        $this->finishingQualityBase = $weightageIdFinishingBase['value'];
-        $this->finishingQualityBaseTitle = $weightageIdFinishingBase['title'];
-        $this->maintenanceBase = $weightageIdMaintenanceBase['value'];
-        $this->maintenanceBaseTitle = $weightageIdMaintenanceBase['title'];
+        $this->finishingQualityBase = (isset($weightageIdFinishingBase) && $weightageIdFinishingBase != '') ? $weightageIdFinishingBase['value']:0;
+        $this->finishingQualityBaseTitle = (isset($weightageIdFinishingBase) && $weightageIdFinishingBase != '') ? $weightageIdFinishingBase['title']:0;
+        $this->maintenanceBase = (isset($weightageIdMaintenanceBase) && $weightageIdMaintenanceBase != '') ? $weightageIdMaintenanceBase['value']:0;
+        $this->maintenanceBaseTitle = (isset($weightageIdMaintenanceBase) && $weightageIdMaintenanceBase != '') ? $weightageIdMaintenanceBase['title']:0;
+        
 
         $propertyBaseInfo->finishingQuality = (isset($this->finishingQualityBase) && $this->finishingQualityBase != '') ? $this->finishingQualityBase : 0;
         $propertyBaseInfo->finishingQualityTitle = (isset($this->finishingQualityBaseTitle) && $this->finishingQualityBaseTitle != '') ? $this->finishingQualityBaseTitle : "";
@@ -1063,10 +1051,11 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $weightageIdFinishingOne = $valuationWeightage::find($finishingQualityOne);
         $weightageIdMaintenanceOne = $valuationWeightage::find($maintenanceOne);
 
-        $this->finishingQualityOne = $weightageIdFinishingOne['value'];
-        $this->finishingQualityOneTitle = $weightageIdFinishingOne['title'];
-        $this->maintenanceOne = $weightageIdMaintenanceOne['value'];
-        $this->maintenanceOneTitle = $weightageIdMaintenanceOne['title'];
+        $this->finishingQualityOne = (isset($weightageIdFinishingOne) && $weightageIdFinishingOne != '') ? $weightageIdFinishingOne['value']:0;
+        $this->finishingQualityOneTitle = (isset($weightageIdFinishingOne) && $weightageIdFinishingOne != '') ? $weightageIdFinishingOne['title']:0;
+        $this->maintenanceOne = (isset($weightageIdMaintenanceOne) && $weightageIdMaintenanceOne != '') ? $weightageIdMaintenanceOne['value']:0;
+        $this->maintenanceOneTitle = (isset($weightageIdMaintenanceOne) && $weightageIdMaintenanceOne != '') ? $weightageIdMaintenanceOne['title']:0;
+        
 
         $propertyInfoOne->finishingQuality = (isset($this->finishingQualityOne) && $this->finishingQualityOne != '') ? $this->finishingQualityOne : 0;
         $propertyInfoOne->finishingQualityOneTitle = (isset($this->finishingQualityOneTitle) && $this->finishingQualityOneTitle != '') ? $this->finishingQualityOneTitle : 0;
@@ -1084,10 +1073,11 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $weightageIdFinishingTwo = $valuationWeightage::find($finishingQualityTwo);
         $weightageIdMaintenanceTwo = $valuationWeightage::find($maintenanceTwo);
 
-        $this->finishingQualityTwo = $weightageIdFinishingTwo['value'];
-        $this->finishingQualityTwoTitle = $weightageIdFinishingTwo['title'];
-        $this->maintenanceTwo = $weightageIdMaintenanceTwo['value'];
-        $this->maintenanceTwoTitle = $weightageIdMaintenanceTwo['title'];
+        $this->finishingQualityTwo = (isset($weightageIdFinishingTwo) && $weightageIdFinishingTwo != '') ? $weightageIdFinishingTwo['value']:0;
+        $this->finishingQualityTwoTitle = (isset($weightageIdFinishingTwo) && $weightageIdFinishingTwo != '') ? $weightageIdFinishingTwo['title']:0;
+        $this->maintenanceTwo = (isset($weightageIdMaintenanceTwo) && $weightageIdMaintenanceTwo != '') ? $weightageIdMaintenanceTwo['value']:0;
+        $this->maintenanceTwoTitle = (isset($weightageIdMaintenanceTwo) && $weightageIdMaintenanceTwo != '') ? $weightageIdMaintenanceTwo['title']:0;
+        
 
         $propertyInfoTwo->finishingQuality = (isset($this->finishingQualityTwo) && $this->finishingQualityTwo != '') ? $this->finishingQualityTwo : 0;
         $propertyInfoOne->finishingQualityTwoTitle = (isset($this->finishingQualityTwoTitle) && $this->finishingQualityTwoTitle != '') ? $this->finishingQualityTwoTitle : 0;
@@ -1105,10 +1095,11 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $weightageIdFinishingThree = $valuationWeightage::find($finishingQualityThree);
         $weightageIdMaintenanceThree = $valuationWeightage::find($maintenanceThree);
 
-        $this->finishingQualityThree = $weightageIdFinishingThree['value'];
-        $this->finishingQualityThreeTitle = $weightageIdFinishingThree['title'];
-        $this->maintenanceThree = $weightageIdMaintenanceThree['value'];
-        $this->maintenanceThreeTitle = $weightageIdMaintenanceThree['title'];
+        $this->finishingQualityThree = (isset($weightageIdFinishingThree) && $weightageIdFinishingThree != '') ? $weightageIdFinishingThree['value']:0;
+        $this->finishingQualityThreeTitle = (isset($weightageIdFinishingThree) && $weightageIdFinishingThree != '') ? $weightageIdFinishingThree['title']:0;
+        $this->maintenanceThree = (isset($weightageIdMaintenanceThree) && $weightageIdMaintenanceThree != '') ? $weightageIdMaintenanceThree['value']:0;
+        $this->maintenanceThreeTitle = (isset($weightageIdMaintenanceThree) && $weightageIdMaintenanceThree != '') ? $weightageIdMaintenanceThree['title']:0;
+        
 
         $propertyInfoThree->finishingQuality = (isset($this->finishingQualityThree) && $this->finishingQualityThree != '') ? $this->finishingQualityThree : 0;
         $propertyInfoThree->finishingQualityThreeTitle = (isset($this->finishingQualityThreeTitle) && $this->finishingQualityThreeTitle != '') ? $this->finishingQualityThreeTitle : 0;
@@ -1125,8 +1116,9 @@ class ManageProjectValuationMethodController extends AdminBaseController
         $valuationWeightage = new ValuationPropertyWeightage();
         $weightageIdAmenitiesBase = $valuationWeightage::find($amenitiesBase);
 
-        $this->amenitiesBase = $weightageIdAmenitiesBase['value'];
-        $this->amenitiesBaseTitle = $weightageIdAmenitiesBase['title'];
+        $this->amenitiesBase = (isset($weightageIdAmenitiesBase) && $weightageIdAmenitiesBase != '') ? $weightageIdAmenitiesBase['value']:0;
+        $this->amenitiesBaseTitle = (isset($weightageIdAmenitiesBase) && $weightageIdAmenitiesBase != '') ? $weightageIdAmenitiesBase['title']:0;
+        
 
         $propertyBaseInfo->amenities = (isset($this->amenitiesBase) && $this->amenitiesBase != '') ? $this->amenitiesBase : 0;
         $propertyBaseInfo->amenitiesTitle = (isset($this->amenitiesBaseTitle) && $this->amenitiesBaseTitle != '') ? $this->amenitiesBaseTitle : 0;
@@ -1138,8 +1130,9 @@ class ManageProjectValuationMethodController extends AdminBaseController
 
         $weightageIdAmenitiesOne = $valuationWeightage::find($amenitiesOne);
 
-        $this->amenitiesOne = $weightageIdAmenitiesOne['value'];
-        $this->amenitiesOneTitle = $weightageIdAmenitiesOne['title'];
+        $this->amenitiesOne = (isset($weightageIdAmenitiesOne) && $weightageIdAmenitiesOne != '') ? $weightageIdAmenitiesOne['value']:0;
+        $this->amenitiesOneTitle = (isset($weightageIdAmenitiesOne) && $weightageIdAmenitiesOne != '') ? $weightageIdAmenitiesOne['title']:0;
+        
 
         $propertyInfoOne->amenities = (isset($this->amenitiesOne) && $this->amenitiesOne != '') ? $this->amenitiesOne : 0;
         $propertyInfoOne->amenitiesOneTitle = (isset($this->amenitiesOneTitle) && $this->amenitiesOneTitle != '') ? $this->amenitiesOneTitle : 0;
@@ -1151,9 +1144,9 @@ class ManageProjectValuationMethodController extends AdminBaseController
 
         $weightageIdAmenitiesTwo = $valuationWeightage::find($amenitiesTwo);
 
-        $this->amenitiesTwo = $weightageIdAmenitiesTwo['value'];
-        $this->amenitiesTwoTitle = $weightageIdAmenitiesTwo['title'];
-
+        $this->amenitiesTwo = (isset($weightageIdAmenitiesTwo) && $weightageIdAmenitiesTwo != '') ? $weightageIdAmenitiesTwo['value']:0;
+        $this->amenitiesTwoTitle = (isset($weightageIdAmenitiesTwo) && $weightageIdAmenitiesTwo != '') ? $weightageIdAmenitiesTwo['title']:0;
+        
         $propertyInfoTwo->amenities = (isset($this->amenitiesTwo) && $this->amenitiesTwo != '') ? $this->amenitiesTwo : 0;
         $propertyInfoTwo->amenitiesTwoTitle = (isset($this->amenitiesTwoTitle) && $this->amenitiesTwoTitle != '') ? $this->amenitiesTwoTitle : 0;
 
@@ -1164,9 +1157,9 @@ class ManageProjectValuationMethodController extends AdminBaseController
 
         $weightageIdAmenitiesThree = $valuationWeightage::find($amenitiesThree);
 
-        $this->amenitiesThree = $weightageIdAmenitiesThree['value'];
-        $this->amenitiesThreeTitle = $weightageIdAmenitiesThree['title'];
-
+        $this->amenitiesThree = (isset($weightageIdAmenitiesThree) && $weightageIdAmenitiesThree != '') ? $weightageIdAmenitiesThree['value']:0;
+        $this->amenitiesThreeTitle = (isset($weightageIdAmenitiesThree) && $weightageIdAmenitiesThree != '') ? $weightageIdAmenitiesThree['title']:0;
+        
         $propertyInfoThree->amenities = (isset($this->amenitiesThree) && $this->amenitiesThree != '') ? $this->amenitiesThree : 0;
         $propertyInfoThree->amenitiesThreeTitle = (isset($this->amenitiesThreeTitle) && $this->amenitiesThreeTitle != '') ? $this->amenitiesThreeTitle : 0;
     }
