@@ -29,6 +29,7 @@ class Task extends \App\Task
         'due_date',
         'is_private',
         'status',
+        'board_column_id'
     ];
 
     protected $hidden = [
@@ -63,6 +64,11 @@ class Task extends \App\Task
     public function project()
     {
         return $this->belongsTo(Project::class)->withTrashed();
+    }
+
+    public function getStatusAttribute()
+    {
+        return $this->belongsTo(TaskboardColumn::class, 'board_column_id')->select('*')->first()->column_name;
     }
 
     public function getAllBoardColumnsAttribute()
