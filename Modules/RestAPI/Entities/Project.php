@@ -62,7 +62,6 @@ class Project extends \App\Project
     public function tasks()
     {
         return $this->hasMany(Task::class, 'project_id')
-            ->where('status', '=', 'incomplete')
             ->where('is_survey_task', '=', 1);
     }
 
