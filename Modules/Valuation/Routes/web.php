@@ -141,6 +141,9 @@ Route::prefix('valuation')->group(function() {
             Route::post('/methodology/saveUpdateData/{id?}','Admin\Settings\MethodologyController@saveUpdateData')->name('valuation.admin.settings.methodology.saveUpdateData');
             Route::delete('/methodology/destroy/{id?}','Admin\Settings\MethodologyController@destroy')->name('valuation.admin.settings.methodology.destroy');
 
+            Route::get('/methodology/getComparableData', 'Admin\Settings\MethodologyController@getComparableData')->name('valuation.admin.settings.methodology.getComparableData');
+            // Route::get('/methodology/getComparableData/{comparable?}', 'Admin\Settings\MethodologyController@getComparableData')->name('valuation.admin.settings.methodology.getComparableData');
+
             //Property Feature Category
             Route::get('/category','Admin\Settings\FeatureCategoryController@index')->name('valuation.admin.settings.category');
             Route::get('/category/addEditView/{id?}','Admin\Settings\FeatureCategoryController@addEditView')->name('valuation.admin.settings.category.addEditView');

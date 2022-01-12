@@ -151,6 +151,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label class="control-label">{{ $BedRooms->title }}</label>
+                                                <small class="pull-right cursor-pointer comparableModal" data-toggle="modal" data-comparable="noOfBedrooms">Add to comparables</small>
                                                 <select class="form-control" name="Bedrooms">
                                                     <option value="">--</option>
                                                     @foreach ($BedRooms->weightageCategoryItems as $subCate)
@@ -170,6 +171,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label class="control-label">{{ $BathRoom->title }}</label>
+                                            <small class="pull-right cursor-pointer comparableModal" data-toggle="modal" data-comparable="noOfBathrooms">Add to comparables</small>
                                             <select class="form-control" name="Bathrooms">
                                                 <option value="">--</option>
                                                 @foreach ($BathRoom->weightageCategoryItems as $subCate)
@@ -188,6 +190,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">{{ $FinishingQuality->title }}</label>
+                                    <small class="pull-right cursor-pointer comparableModal" data-toggle="modal" data-comparable="finishingQuality">Add to comparables</small>
                                     <select class="form-control" name="finishingQuality">
                                         <option value="">--</option>
                                         @foreach ($FinishingQuality->weightageCategoryItems as $subCate)
@@ -749,12 +752,34 @@
 
     <script !src="">
         $('.openModal').on('show.bs.modal', function(event) {
+            // alert("Here");
             var button = $(event.relatedTarget);
             var recipient = button.data('whatever');
             var modal = $(this);
             modal.find('.modal-title').text(recipient);
         })
     </script>
+    {{-- Create Comparable Data Fetching Script --}}
+    <script !src="">
+        $('.comparableModal').on('click', function(event) {
+            var comparable = $(this).data('comparable');
+            // alert(categoryData);
+
+            $.easyAjax({
+                type: 'GET',
+                url: "{{ route('valuation.admin.settings.methodology.getComparableData') }}",
+                data: {
+                    'comparable': comparable,
+                },
+                success: function(response) {
+                    if (response.status == "success") {
+                       console.log(response);
+                    }
+                }
+            });
+        })
+    </script>
+    {{-- Create Comparable Data Fetching Script --}}
     <script type="text/javascript">
         function checkFeature(i) {
             if ($('#' + i).is(":checked")) {

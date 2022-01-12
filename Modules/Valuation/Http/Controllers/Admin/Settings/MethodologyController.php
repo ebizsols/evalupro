@@ -18,6 +18,7 @@ class MethodologyController extends ValuationAdminBaseController
     private $addEditViewRoute = 'valuation.admin.settings.methodology.addEditView';
     private $saveUpdateDataRoute = 'valuation.admin.settings.methodology.saveUpdateData';
     private $destroyRoute = 'valuation.admin.settings.methodology.destroy';
+    private $getComparableData = 'valuation.admin.settings.methodology.getComparableData';
 
 
     /**
@@ -52,6 +53,7 @@ class MethodologyController extends ValuationAdminBaseController
         $data['addEditViewRoute'] = $this->addEditViewRoute;
         $data['saveUpdateDataRoute'] = $this->saveUpdateDataRoute;
         $data['destroyRoute'] = $this->destroyRoute;
+        $data['getComparableData'] = $this->getComparableData;
         $data['companyId'] = isset(company()->id) ? company()->id : 0;
     }
 
@@ -149,6 +151,14 @@ class MethodologyController extends ValuationAdminBaseController
         MethodologyTemplate::destroy($id);
 
         return Reply::redirect(route($this->listingPageRoute), __('valuation::messages.dataDeleted'));
+    }
+
+    public function getComparableData(Request $request)
+    {
+        $comparable = $request->comparable;
+        echo "<pre>--"; print_r($comparable); exit;
+
+        $comparablesArray = array();
     }
 
     public function data()
