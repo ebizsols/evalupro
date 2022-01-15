@@ -4,6 +4,7 @@ namespace Modules\Valuation\Http\Controllers\Admin\Settings;
 
 use App\Helper\Reply;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Modules\Valuation\Entities\MethodologyTemplate;
 use Modules\Valuation\Entities\ValuationPropertyType;
 use Yajra\DataTables\Facades\DataTables;
@@ -71,39 +72,64 @@ class MethodologyController extends ValuationAdminBaseController
     {
         $this->__customConstruct($this->data);
 
-
         $this->id = $id;
         $this->headingTitle = 'valuation::valuation.methodologySettings.createTemplate';
         $templateData = new MethodologyTemplate();
-        // $this->templateData = $templateData->getAllForCompany();
 
         if ($id > 0) {
+            // echo "<pre>"; print_r("Here in Edit"); exit;
             $this->headingTitle = 'valuation::valuation.methodologySettings.editTemplate';
             $templateData = new MethodologyTemplate();
             $templateInfo = $templateData->find($id);
             $this->id = $id;
-            $this->templateFields = json_decode($templateInfo->template_category, TRUE);
+            $this->templateFields = json_decode($templateInfo->property_comparables, TRUE);
         }
 
         // Property Type
         $propertyType = new ValuationPropertyType();
         $this->propertyType = $propertyType->getAllForCompany();
         $this->property_type = isset($templateInfo->type_id) ? $templateInfo->type_id : '';
-
         $this->template_name = isset($templateInfo->template_name) ? $templateInfo->template_name : '';
+        $property_comparables = isset($templateInfo->property_comparables) ? $templateInfo->property_comparables : array();
         $template_category = isset($templateInfo->template) ? $templateInfo->template : "";
         $this->template_category = json_decode($template_category, true);
 
-        $tempData = array();
-        $tempData['apartmentSize'] = "Apartment Size";
-        $tempData['noOfBedrooms'] = "No. of Bedrooms";
-        $tempData['noOfBathrooms'] = "No. of Bathrooms";
-        $tempData['finishingQuality'] = "Finishing Quality";
-        $tempData['buildingAmenities'] = "Building Amenities";
-
-        $this->tempData = $tempData;
+        if ($id > 0) {
+            $this->tempData = json_decode($property_comparables, true);
+        } else {
+            $this->tempData = $property_comparables;
+        }
 
         return view($this->viewFolderPath . 'AddEditView', $this->data);
+    }
+
+    public function getComparableData(Request $request)
+    {
+        $typeId = $request->id;
+        $comparable = isset($request->comparable) ? $request->comparable : array();
+
+        $templateData = new MethodologyTemplate();
+        $templateInfo = $templateData->where('type_id', $typeId)->update([
+                'property_comparables' => json_encode($comparable),
+            ]);
+    }
+
+    public function getAjaxComparableData(Request $request)
+    {
+        $typeId = $request->id;
+        $methodologyData = DB::table('methodology_templates')->where('type_id', $typeId)->pluck('property_comparables')->toArray();
+        $finalData = (isset($methodologyData) && $methodologyData != '' && $methodologyData != null) ? $methodologyData[0] :"";
+        $comparableData = json_decode($finalData, true);
+        $finalComparableData = (isset($comparableData) && $comparableData != '' && $comparableData != null) ? $comparableData :array();
+
+        $output = '<option value="">Select Comparable</option>';
+        foreach($finalComparableData as $key => $row)
+        {
+            $output .= '<option value="' . $key .'">'.$row.'</option>';
+        }
+        echo $output;
+        die();
+        // return var_dump(json_decode($finalData, true)); 
     }
 
     public function saveUpdateData(Request $request)
@@ -151,14 +177,6 @@ class MethodologyController extends ValuationAdminBaseController
         MethodologyTemplate::destroy($id);
 
         return Reply::redirect(route($this->listingPageRoute), __('valuation::messages.dataDeleted'));
-    }
-
-    public function getComparableData(Request $request)
-    {
-        $comparable = $request->comparable;
-        echo "<pre>--"; print_r($comparable); exit;
-
-        $comparablesArray = array();
     }
 
     public function data()

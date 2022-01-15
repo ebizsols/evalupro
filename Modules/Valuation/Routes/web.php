@@ -142,7 +142,7 @@ Route::prefix('valuation')->group(function() {
             Route::delete('/methodology/destroy/{id?}','Admin\Settings\MethodologyController@destroy')->name('valuation.admin.settings.methodology.destroy');
 
             Route::get('/methodology/getComparableData', 'Admin\Settings\MethodologyController@getComparableData')->name('valuation.admin.settings.methodology.getComparableData');
-            // Route::get('/methodology/getComparableData/{comparable?}', 'Admin\Settings\MethodologyController@getComparableData')->name('valuation.admin.settings.methodology.getComparableData');
+            Route::get('/methodology/getAjaxComparableData', 'Admin\Settings\MethodologyController@getAjaxComparableData')->name('valuation.admin.settings.methodology.getAjaxComparableData');
 
             //Property Feature Category
             Route::get('/category','Admin\Settings\FeatureCategoryController@index')->name('valuation.admin.settings.category');

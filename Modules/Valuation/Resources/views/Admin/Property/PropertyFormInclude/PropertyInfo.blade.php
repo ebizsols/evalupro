@@ -151,7 +151,9 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label class="control-label">{{ $BedRooms->title }}</label>
-                                                <small class="pull-right cursor-pointer comparableModal" data-toggle="modal" data-comparable="noOfBedrooms">Add to comparables</small>
+                                                <small class="pull-right cursor-pointer comparableModal"
+                                                    data-toggle="modal" data-comparable="noOfBedrooms">Add to
+                                                    comparables</small>
                                                 <select class="form-control" name="Bedrooms">
                                                     <option value="">--</option>
                                                     @foreach ($BedRooms->weightageCategoryItems as $subCate)
@@ -171,7 +173,8 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label class="control-label">{{ $BathRoom->title }}</label>
-                                            <small class="pull-right cursor-pointer comparableModal" data-toggle="modal" data-comparable="noOfBathrooms">Add to comparables</small>
+                                            <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
+                                                data-comparable="noOfBathrooms">Add to comparables</small>
                                             <select class="form-control" name="Bathrooms">
                                                 <option value="">--</option>
                                                 @foreach ($BathRoom->weightageCategoryItems as $subCate)
@@ -190,7 +193,8 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">{{ $FinishingQuality->title }}</label>
-                                    <small class="pull-right cursor-pointer comparableModal" data-toggle="modal" data-comparable="finishingQuality">Add to comparables</small>
+                                    <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
+                                        data-comparable="finishingQuality">Add to comparables</small>
                                     <select class="form-control" name="finishingQuality">
                                         <option value="">--</option>
                                         @foreach ($FinishingQuality->weightageCategoryItems as $subCate)
@@ -208,6 +212,8 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="control-label">{{ $Amenities->title }}</label>
+                            <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
+                                        data-comparable="Amenities">Add to comparables</small>
                             <select class="form-control" name="Amenities">
                                 <option value="">--</option>
                                 @foreach ($Amenities->weightageCategoryItems as $subCate)
@@ -233,6 +239,8 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="control-label">{{ $LandClassification->title }}</label>
+                    <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
+                                        data-comparable="landClassification">Add to comparables</small>
                     <select name="LandClassification" id="propertyClassification" class="form-control" required>
                         <option value="">--</option>
                         @foreach ($LandClassification->weightageCategoryItems as $landClass)
@@ -261,6 +269,8 @@
     <div class="col-md-4">
         <div class="form-group">
             <label class="control-label">{{ $Accessibility->title }}</label>
+            <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
+                                        data-comparable="Accessibility">Add to comparables</small>
             <select class="form-control" name="landInfoAccessibility">
                 <option value="">--</option>
                 @foreach ($Accessibility->weightageCategoryItems as $subCate)
@@ -278,6 +288,8 @@
     <div class="col-md-4">
         <div class="form-group">
             <label class="control-label">{{ $AccessibilityType->title }}</label>
+            <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
+                                        data-comparable="accessibilityType">Add to comparables</small>
             <select class="form-control" name="landInfoAccessibilityType">
                 <option value="">--</option>
                 @foreach ($AccessibilityType->weightageCategoryItems as $assciblityTypeObj)
@@ -298,6 +310,8 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label class="control-label">{{ $RoadAccessNo->title }}</label>
+                <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
+                                        data-comparable="noOfAccessRoads">Add to comparables</small>
                 <select name="landInfoRoadAccess" class="form-control">
                     <option value="">--</option>
                     @foreach ($RoadAccessNo->weightageCategoryItems as $roadNo)
@@ -315,6 +329,8 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label class="control-label">{{ $RoadAccessType->title }}</label>
+                <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
+                                        data-comparable="accessRoadType">Add to comparables</small>
                 <select name="landRoadAccessType" class="form-control">
                     <option value="">--</option>
                     @foreach ($RoadAccessType->weightageCategoryItems as $roadType)
@@ -354,6 +370,8 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label class="control-label">{{ $Maintenance->title }}</label>
+                <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
+                                        data-comparable="Maintenance">Add to comparables</small>
                 <select name="Maintenance" class="form-control">
                     <option value="">--</option>
                     @foreach ($Maintenance->weightageCategoryItems as $maintenance)
@@ -371,6 +389,8 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label class="control-label">{{ $Floorlevel->title }}</label>
+                <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
+                                        data-comparable="floorLevel">Add to comparables</small>
                 <select name="floorLevel" class="form-control">
                     <option value="">--</option>
                     @foreach ($Floorlevel->weightageCategoryItems as $floorLevel)
@@ -384,11 +404,12 @@
         </div>
     @endif
 
-     {{-- New Code --}}                                    
-     <div class="col-md-4">
+    {{-- New Code --}}
+    <div class="col-md-4">
         <div class="form-group">
             <label class="control-label">Case #</label>
-            <input type="text" name="case_no" class="form-control" id="case_no" value="{{isset($CaseNo)?$CaseNo:'0'}}">
+            <input type="text" name="case_no" class="form-control" id="case_no"
+                value="{{ isset($CaseNo) ? $CaseNo : '0' }}">
         </div>
     </div>
     {{-- End New Code --}}
@@ -397,45 +418,50 @@
     <div class="col-md-4">
         <div class="form-group">
             <label class="control-label">Legal Property Status</label>
-            <input type="text" name="legal_property_status" class="form-control" id="legal_property_status" value="{{isset($LegalPropertyStatus)?$LegalPropertyStatus:'0'}}">
+            <input type="text" name="legal_property_status" class="form-control" id="legal_property_status"
+                value="{{ isset($LegalPropertyStatus) ? $LegalPropertyStatus : '0' }}">
         </div>
     </div>
 
-     {{-- Weightage View --}}
-     @if (isset($WeitageView) && !empty($WeitageView))
-     <div class="col-md-4">
-         <div class="form-group">
-             <label class="control-label">{{ $WeitageView->title }}</label>
-             <select name="view" class="form-control">
-                 <option value="">--</option>
-                 @foreach ($WeitageView->weightageCategoryItems as $weitageView)
-                     <option @if (isset($ViewCategoryWeightage) && !empty($ViewCategoryWeightage) && $ViewCategoryWeightage[0] == $weitageView->id)
-                         selected="selected"
-                         @endif value="{{ $weitageView->id }}">{{ $weitageView->title }}
-                     </option>
-                 @endforeach
-             </select>
-         </div>
-     </div>
- @endif
+    {{-- Weightage View --}}
+    @if (isset($WeitageView) && !empty($WeitageView))
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="control-label">{{ $WeitageView->title }}</label>
+                <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
+                                        data-comparable="View">Add to comparables</small>
+                <select name="view" class="form-control">
+                    <option value="">--</option>
+                    @foreach ($WeitageView->weightageCategoryItems as $weitageView)
+                        <option @if (isset($ViewCategoryWeightage) && !empty($ViewCategoryWeightage) && $ViewCategoryWeightage[0] == $weitageView->id)
+                            selected="selected"
+                            @endif value="{{ $weitageView->id }}">{{ $weitageView->title }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    @endif
 
-     {{-- Weightage View --}}
-     @if (isset($LandShape) && !empty($LandShape))
-     <div class="col-md-4">
-         <div class="form-group">
-             <label class="control-label">{{ $LandShape->title }}</label>
-             <select name="landInfoLandShape" class="form-control">
-                 <option value="">--</option>
-                 @foreach ($LandShape->weightageCategoryItems as $landShape)
-                     <option @if (isset($LandshapeWeightage) && !empty($LandshapeWeightage) && $LandshapeWeightage[0] == $landShape->id)
-                         selected="selected"
-                         @endif value="{{ $landShape->id }}">{{ $landShape->title }}
-                     </option>
-                 @endforeach
-             </select>
-         </div>
-     </div>
- @endif
+    {{-- Weightage View --}}
+    @if (isset($LandShape) && !empty($LandShape))
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="control-label">{{ $LandShape->title }}</label>
+                <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
+                                        data-comparable="landShape">Add to comparables</small>
+                <select name="landInfoLandShape" class="form-control">
+                    <option value="">--</option>
+                    @foreach ($LandShape->weightageCategoryItems as $landShape)
+                        <option @if (isset($LandshapeWeightage) && !empty($LandshapeWeightage) && $LandshapeWeightage[0] == $landShape->id)
+                            selected="selected"
+                            @endif value="{{ $landShape->id }}">{{ $landShape->title }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    @endif
 </div>
 
 </div>
@@ -761,20 +787,30 @@
     </script>
     {{-- Create Comparable Data Fetching Script --}}
     <script !src="">
+        var array = new Array();
         $('.comparableModal').on('click', function(event) {
+            var typeId = $('#propertyType').find(":selected").val();
+            var url = "{{ route('valuation.admin.settings.methodology.getComparableData', ':id') }}";
+            url = url.replace(':id', typeId);
             var comparable = $(this).data('comparable');
-            // alert(categoryData);
+            var comparableArray = array.push(comparable);
+            $(this).unbind('click');
+            $("here").val(array.join());
 
             $.easyAjax({
                 type: 'GET',
-                url: "{{ route('valuation.admin.settings.methodology.getComparableData') }}",
+                url: url,
                 data: {
-                    'comparable': comparable,
+                    'id': typeId,
+                    'comparable': array,
                 },
+                reload: true,
+                dataType: 'text',
                 success: function(response) {
-                    if (response.status == "success") {
-                       console.log(response);
-                    }
+                    $(".comparableModal").on('click', function() {
+                        $(this).html("Remove from Comparable");
+                    })
+                    console.log(response);
                 }
             });
         })

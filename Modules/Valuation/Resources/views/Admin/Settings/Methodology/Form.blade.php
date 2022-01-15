@@ -27,6 +27,7 @@
                     placeholder="Enter Name" autocomplete="nope">
             </div>
         </div>
+        {{-- @php echo "<pre>"; print_r($tempData); exit; @endphp --}}
         <div class="col-md-6">
             <div class="form-group">
                 <label class="required">Template Fields</label>
@@ -34,7 +35,7 @@
                     id="templateCategory" class="form-control" multiple="multiple">
                     @if (isset($tempData) && !empty($tempData))
                         @foreach ($tempData as $index => $tempField)
-                            <option value="{{ $index }}" @if (isset($templateFields) && in_array($index, $templateFields) == true) selected="selected" @endif>
+                            <option value="{{ $tempField }}" @if (isset($templateFields) && in_array($index, $templateFields) == true) selected="selected" @endif>
                                 {{ $tempField }}
                             </option>
                         @endforeach
@@ -116,6 +117,30 @@
                     data: form_data,
                     success: (typeof afterSaveTemplate === "function") ? afterSaveTemplate : ''
                 })
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $("#PropertyType").change(function() {
+                var typeId = $('#PropertyType').find(":selected").val();
+                var url = "{{ route('valuation.admin.settings.methodology.getAjaxComparableData') }}";
+                url = url.replace(':id', typeId);
+
+                $.easyAjax({
+                    type: 'GET',
+                    url: url,
+                    data: {
+                        'id': typeId,
+                    },
+                    dataType: "text",
+                    success: function(response) {
+                        alert('Success!');
+                        console.log(response);
+                        $("#templateCategory").html(response);
+                    },
+                });
             });
         });
     </script>
