@@ -121,7 +121,7 @@
         });
     </script>
 
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             $("#PropertyType").change(function() {
                 var typeId = $('#PropertyType').find(":selected").val();
@@ -143,5 +143,5 @@
                 });
             });
         });
-    </script>
+    </script> --}}
 @endpush
