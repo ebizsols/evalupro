@@ -110,22 +110,21 @@ class MethodologyController extends ValuationAdminBaseController
 
         $templateData = new MethodologyTemplate();
         $templateInfo = $templateData->where('type_id', $typeId)->update([
-                'property_comparables' => json_encode($comparable),
-            ]);
+            'template_category' => json_encode($comparable),
+        ]);
     }
 
     public function getAjaxComparableData(Request $request)
     {
         $typeId = $request->id;
         $methodologyData = DB::table('methodology_templates')->where('type_id', $typeId)->pluck('property_comparables')->toArray();
-        $finalData = (isset($methodologyData) && $methodologyData != '' && $methodologyData != null) ? $methodologyData[0] :"";
+        $finalData = (isset($methodologyData) && $methodologyData != '' && $methodologyData != null) ? $methodologyData[0] : "";
         $comparableData = json_decode($finalData, true);
-        $finalComparableData = (isset($comparableData) && $comparableData != '' && $comparableData != null) ? $comparableData :array();
+        $finalComparableData = (isset($comparableData) && $comparableData != '' && $comparableData != null) ? $comparableData : array();
 
         $output = '<option value="">Select Comparable</option>';
-        foreach($finalComparableData as $key => $row)
-        {
-            $output .= '<option value="' . $key .'">'.$row.'</option>';
+        foreach ($finalComparableData as $key => $row) {
+            $output .= '<option value="' . $key . '">' . $row . '</option>';
         }
         echo $output;
         die();

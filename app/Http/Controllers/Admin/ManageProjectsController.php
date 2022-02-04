@@ -275,7 +275,9 @@ class ManageProjectsController extends AdminBaseController
                     SubTask::create(
                         [
                             'title' => $value->title,
-                            'task_id' => $projectTask->id
+                            'task_id' => $projectTask->id,
+                            'formFieldKey' => $value->formFieldKey,
+                            'due_date' => $value->due_date,
                         ]
                     );
                 }

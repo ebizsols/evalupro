@@ -154,8 +154,10 @@
                                                 <small class="pull-right cursor-pointer comparableModal"
                                                     data-toggle="modal" data-comparable="noOfBedrooms">Add to
                                                     comparables</small>
-                                                    <small style="display:none"; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
-                                                data-remove="noOfBedrooms">Remove from comparables</small>
+                                                <small style="display:none" ;
+                                                    class="pull-right cursor-pointer removeComparable"
+                                                    data-toggle="modal" data-remove="noOfBedrooms">Remove from
+                                                    comparables</small>
                                                 <select class="form-control" name="Bedrooms">
                                                     <option value="">--</option>
                                                     @foreach ($BedRooms->weightageCategoryItems as $subCate)
@@ -177,7 +179,8 @@
                                             <label class="control-label">{{ $BathRoom->title }}</label>
                                             <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
                                                 data-comparable="noOfBathrooms">Add to comparables</small>
-                                            <small style="display:none"; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
+                                            <small style="display:none" ;
+                                                class="pull-right cursor-pointer removeComparable" data-toggle="modal"
                                                 data-remove="noOfBathrooms">Remove from comparables</small>
                                             <select class="form-control" name="Bathrooms">
                                                 <option value="">--</option>
@@ -199,8 +202,9 @@
                                     <label class="control-label">{{ $FinishingQuality->title }}</label>
                                     <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
                                         data-comparable="finishingQuality">Add to comparables</small>
-                                        <small style="display:none"; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
-                                                data-remove="finishingQuality">Remove from comparables</small>
+                                    <small style="display:none" ; class="pull-right cursor-pointer removeComparable"
+                                        data-toggle="modal" data-remove="finishingQuality">Remove from
+                                        comparables</small>
                                     <select class="form-control" name="finishingQuality">
                                         <option value="">--</option>
                                         @foreach ($FinishingQuality->weightageCategoryItems as $subCate)
@@ -219,9 +223,9 @@
                         <div class="form-group">
                             <label class="control-label">{{ $Amenities->title }}</label>
                             <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
-                                        data-comparable="Amenities">Add to comparables</small>
-                                        <small style="display:none"; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
-                                                data-remove="Amenities">Remove from comparables</small>
+                                data-comparable="Amenities">Add to comparables</small>
+                            <small style="display:none" ; class="pull-right cursor-pointer removeComparable"
+                                data-toggle="modal" data-remove="Amenities">Remove from comparables</small>
                             <select class="form-control" name="Amenities">
                                 <option value="">--</option>
                                 @foreach ($Amenities->weightageCategoryItems as $subCate)
@@ -248,9 +252,9 @@
                 <div class="form-group">
                     <label class="control-label">{{ $LandClassification->title }}</label>
                     <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
-                                        data-comparable="landClassification">Add to comparables</small>
-                                        <small style="display:none"; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
-                                                data-remove="landClassification">Remove from comparables</small>
+                        data-comparable="landClassification">Add to comparables</small>
+                    <small style="display:none" ; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
+                        data-remove="landClassification">Remove from comparables</small>
                     <select name="LandClassification" id="propertyClassification" class="form-control" required>
                         <option value="">--</option>
                         @foreach ($LandClassification->weightageCategoryItems as $landClass)
@@ -280,9 +284,9 @@
         <div class="form-group">
             <label class="control-label">{{ $Accessibility->title }}</label>
             <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
-                                        data-comparable="Accessibility">Add to comparables</small>
-                                        <small style="display:none"; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
-                                                data-remove="Accessibility">Remove from comparables</small>
+                data-comparable="Accessibility">Add to comparables</small>
+            <small style="display:none" ; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
+                data-remove="Accessibility">Remove from comparables</small>
             <select class="form-control" name="landInfoAccessibility">
                 <option value="">--</option>
                 @foreach ($Accessibility->weightageCategoryItems as $subCate)
@@ -301,9 +305,9 @@
         <div class="form-group">
             <label class="control-label">{{ $AccessibilityType->title }}</label>
             <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
-                                        data-comparable="accessibilityType">Add to comparables</small>
-                                        <small style="display:none"; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
-                                        data-remove="accessibilityType">Remove from comparables</small>
+                data-comparable="accessibilityType">Add to comparables</small>
+            <small style="display:none" ; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
+                data-remove="accessibilityType">Remove from comparables</small>
             <select class="form-control" name="landInfoAccessibilityType">
                 <option value="">--</option>
                 @foreach ($AccessibilityType->weightageCategoryItems as $assciblityTypeObj)
@@ -325,9 +329,9 @@
             <div class="form-group">
                 <label class="control-label">{{ $RoadAccessNo->title }}</label>
                 <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
-                                        data-comparable="noOfAccessRoads">Add to comparables</small>
-                                        <small style="display:none"; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
-                                        data-remove="noOfAccessRoads">Remove from comparables</small>
+                    data-comparable="noOfAccessRoads">Add to comparables</small>
+                <small style="display:none" ; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
+                    data-remove="noOfAccessRoads">Remove from comparables</small>
                 <select name="landInfoRoadAccess" class="form-control">
                     <option value="">--</option>
                     @foreach ($RoadAccessNo->weightageCategoryItems as $roadNo)
@@ -346,9 +350,9 @@
             <div class="form-group">
                 <label class="control-label">{{ $RoadAccessType->title }}</label>
                 <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
-                                        data-comparable="accessRoadType">Add to comparables</small>
-                                        <small style="display:none"; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
-                                        data-remove="accessRoadType">Remove from comparables</small>
+                    data-comparable="accessRoadType">Add to comparables</small>
+                <small style="display:none" ; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
+                    data-remove="accessRoadType">Remove from comparables</small>
                 <select name="landRoadAccessType" class="form-control">
                     <option value="">--</option>
                     @foreach ($RoadAccessType->weightageCategoryItems as $roadType)
@@ -389,9 +393,9 @@
             <div class="form-group">
                 <label class="control-label">{{ $Maintenance->title }}</label>
                 <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
-                                        data-comparable="Maintenance">Add to comparables</small>
-                                        <small style="display:none"; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
-                                        data-remove="Maintenance">Remove from comparables</small>
+                    data-comparable="Maintenance">Add to comparables</small>
+                <small style="display:none" ; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
+                    data-remove="Maintenance">Remove from comparables</small>
                 <select name="Maintenance" class="form-control">
                     <option value="">--</option>
                     @foreach ($Maintenance->weightageCategoryItems as $maintenance)
@@ -410,9 +414,9 @@
             <div class="form-group">
                 <label class="control-label">{{ $Floorlevel->title }}</label>
                 <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
-                                        data-comparable="floorLevel">Add to comparables</small>
-                                        <small style="display:none"; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
-                                        data-remove="floorLevel">Remove from comparables</small>
+                    data-comparable="floorLevel">Add to comparables</small>
+                <small style="display:none" ; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
+                    data-remove="floorLevel">Remove from comparables</small>
                 <select name="floorLevel" class="form-control">
                     <option value="">--</option>
                     @foreach ($Floorlevel->weightageCategoryItems as $floorLevel)
@@ -450,10 +454,10 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label class="control-label">{{ $WeitageView->title }}</label>
-                <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
-                                        data-comparable="View">Add to comparables</small>
-                                        <small style="display:none"; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
-                                        data-remove="View">Remove from comparables</small>
+                <small class="pull-right cursor-pointer comparableModal" data-toggle="modal" data-comparable="View">Add
+                    to comparables</small>
+                <small style="display:none" ; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
+                    data-remove="View">Remove from comparables</small>
                 <select name="view" class="form-control">
                     <option value="">--</option>
                     @foreach ($WeitageView->weightageCategoryItems as $weitageView)
@@ -473,9 +477,9 @@
             <div class="form-group">
                 <label class="control-label">{{ $LandShape->title }}</label>
                 <small class="pull-right cursor-pointer comparableModal" data-toggle="modal"
-                                        data-comparable="landShape">Add to comparables</small>
-                                        <small style="display:none"; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
-                                        data-remove="landShape">Remove from comparables</small>
+                    data-comparable="landShape">Add to comparables</small>
+                <small style="display:none" ; class="pull-right cursor-pointer removeComparable" data-toggle="modal"
+                    data-remove="landShape">Remove from comparables</small>
                 <select name="landInfoLandShape" class="form-control">
                     <option value="">--</option>
                     @foreach ($LandShape->weightageCategoryItems as $landShape)
@@ -833,10 +837,9 @@
                 reload: true,
                 dataType: 'text',
                 success: function(response) {
-                        $(document).find(`[data-comparable='${comparable}']`).hide(); 
-                        // $(document).find(`[data-comparable='${comparable}']`).css('display', 'none');
-                        $(document).find(`[data-remove='${comparable}']`).show(); 
-                        // $(document).find(`[data-remove='${comparable}']`).css('display', 'block'); 
+                    // set the comparable value in local storage
+                    $(document).find(`[data-comparable='${comparable}']`).hide();
+                    $(document).find(`[data-remove='${comparable}']`).show();
                     console.log(response);
                 }
             });

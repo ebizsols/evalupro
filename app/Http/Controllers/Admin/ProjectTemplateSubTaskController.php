@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helper\Reply;
+use App\Http\Controllers\Classes\TaskLinker;
 use App\Http\Requests\TemplateTasks\SubTaskStoreRequest;
 use App\Http\Requests\TemplateTasks\StoreTask;
 use App\ProjectTemplate;
@@ -45,6 +46,7 @@ class ProjectTemplateSubTaskController extends AdminBaseController
     public function create(Request $request)
     {
         $this->taskID = $request->task_id;
+        $this->subTaskFormElements = TaskLinker::$subTaskFormElement;
 
         return view('admin.project-template.sub-task.create-edit', $this->data);
     }
@@ -55,11 +57,17 @@ class ProjectTemplateSubTaskController extends AdminBaseController
      */
     public function store(SubTaskStoreRequest $request)
     {
-        foreach ($request->name as  $value) {
+        $formFieldKey = $request->formFieldKey;
+        $dueDate =
+        Carbon::createFromFormat($this->global->date_format, $request->due_date)->toDateString();
+        // dd($dueDate);
+        foreach ($request->name as $value) {
             if ($value){
                 ProjectTemplateSubTask::firstOrCreate([
                     'title' => $value,
                     'project_template_task_id' => $request->taskID,
+                    'due_date' => $dueDate,
+                    'formFieldKey' => $formFieldKey,
                 ]);
             }
         }
