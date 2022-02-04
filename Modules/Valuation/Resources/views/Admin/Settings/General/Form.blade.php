@@ -1,4 +1,4 @@
-{!! Form::open(['id'=>'saveUpdateFeature','class'=>'ajax-form','method'=>'POST']) !!}
+{!! Form::open(['id'=>'saveUpdateFeature','class'=>'ajax-form','method'=>'POST', 'enctype'=>'multipart/form-data']) !!}
 <div class="form-body">
 <!--    <div class="row">
         <div class="col-md-6">
@@ -83,6 +83,31 @@
             </div>
         </fieldset>
     </div>
+
+    <div class="row">
+        <fieldset>
+            <legend>App Background Image</legend>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="required" for="googleApi">    Background Image</label>
+                        <input type="file" class="form-control inputDisabled" id="image"
+                               value="{{isset($formData['image'])?$formData['image']:''}}.jpg" autocomplete="nope" name="image" />
+
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            
+            <img src="/img/{{isset($formData['appImage'])?$formData['appImage']:''}}" widt="30"  height="30"/>
+        
+
+        </div>
+
+    </div>
     <div class="row">
         <fieldset>
             <legend>Weight Max Values</legend>
@@ -92,7 +117,7 @@
                         <label class="required" for="maxNumberOfBedrooms">Max number of bedrooms</label>
                         <input type="number" class="form-control inputDisabled" id="maxNumberOfBedrooms"
                                value="{{isset($formData['maxNumberOfBedrooms'])?$formData['maxNumberOfBedrooms']:''}}" autocomplete="nope" name="maxNumberOfBedrooms" disabled="disabled"/>
-
+                                {{-- @php echo"<pre>"; print_r($formData); exit() @endphp --}}
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -208,6 +233,7 @@
                 type: "POST",
                 redirect: '{{isset($isRedirectTrue)?$isRedirectTrue:true}}',
                 data: $('#saveUpdateFeature').serialize(),
+                file: (document.getElementById("image").files.length == 0) ? false : true,
                 success: (typeof afterSaveBlock === "function") ? afterSaveBlock : ''
             })
         });

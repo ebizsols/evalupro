@@ -73,7 +73,7 @@ class Estimate extends BaseModel
 
     public function getOriginalEstimateNumberAttribute()
     {
-        $invoiceSettings = InvoiceSetting::select('estimate_digit')->first();
+        $invoiceSettings = InvoiceSetting::select('estimate_digit')->first();s
         $zero = '';
         if (strlen($this->estimate_number) < $invoiceSettings->estimate_digit) {
             for ($i = 0; $i < $invoiceSettings->estimate_digit - strlen($this->estimate_number); $i++) {

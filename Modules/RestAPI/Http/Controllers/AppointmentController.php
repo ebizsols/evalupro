@@ -10,6 +10,8 @@ use Modules\RestAPI\Http\Requests\Appointments\CreateRequest;
 use Modules\RestAPI\Http\Requests\Appointments\UpdateRequest;
 use Modules\RestAPI\Http\Requests\Appointments\ShowRequest;
 use Modules\RestAPI\Http\Requests\Appointments\DeleteRequest;
+use App\ProjectAppointment;
+use Carbon\Carbon;
 
 class AppointmentController extends ApiBaseController
 {
@@ -123,6 +125,7 @@ class AppointmentController extends ApiBaseController
 
     public function list()
     {
+       
         app()->make($this->indexRequest);
 
         $query = $this->parseRequest()
@@ -140,11 +143,11 @@ class AppointmentController extends ApiBaseController
                 ->join('project_members', 'project_members.project_id', '=', 'projects.id')
                 ->where('project_members.user_id', $user->id);
         });
-
+ 
         // Load employees relation, if not loaded
         $relations = $query->getEagerLoads();
         $relationRequested = true;
-
+         
         if (!array_key_exists('members_many', $relations)) {
             $relationRequested = false;
             $relations['members_many'] = function ($query) {
@@ -165,31 +168,55 @@ class AppointmentController extends ApiBaseController
         if($results){
             foreach ($results as $resultsIn){
                 $projectId = $resultsIn['id'];
-                $projectObj = Project::find($projectId);
+                // $projectObj = Project::find($projectId);
+                $project_appointments= new ProjectAppointment();
+                $project_active_appointment =  $project_appointments->select("*")->where("status","active")
+                ->where('project_id',$projectId )
+                ->first();
 
-                $appointmentDateObj = $projectObj->start_date;
-                if(!empty($appointmentDateObj)){
-                    $appointmentDate = $appointmentDateObj->format('Y-m-d');
-                    $appointmentTime = $appointmentDateObj->format('h:i A');
-
-                    $tempArray = array();
-                    $tempArray['projectId'] = $projectId;
-                    $tempArray['eventName'] = 'House Inspection';
-                    $tempArray['eventTime'] = $appointmentTime;
-                    $tempArray['eventDate'] = $appointmentDate;
-                    $appointments[$appointmentDate][] = $tempArray;
+                         if(!empty($project_active_appointment)){
+                            $id = $project_active_appointment->id;
+                            $project_id = $project_active_appointment->project_id;
+                            $status= $project_active_appointment->status;
+                            $note= $project_active_appointment->note;
+                            
+                        $appointment_date_time = $project_active_appointment->appointment_date_time;
+                        $appointment_date_time =  Carbon::createFromFormat('Y-m-d H:i:s', $appointment_date_time);
+                       
+                        if(!empty($appointment_date_time)){
+                           $appointmentDate =  $appointment_date_time->format('Y-m-d');
+                            $appointmentTime =   $appointment_date_time->format('h:i A');
+            
+                            $tempArray = array();
+                            $tempArray['id'] = $id;
+                            $tempArray['project_id'] = $project_id;
+                            $tempArray['status'] = $status;
+                            $tempArray['note'] = $note;
+                            $tempArray['appointment_date_Date'] =  $appointmentDate;
+                            $tempArray['appointment_date_time'] = $appointmentTime;
+                            
+                            $appointments[$appointmentDate][] = $tempArray;
+                           
+                        }
+                    }
+                   }
                 }
-            }
-        }
 
+      //echo"<pre>"; print_r($appointments); exit();
+       
+          
         // format appointment array
-        $formatAppointmentArray = array();
-        $count = 0;
-        foreach ( $appointments as $key => $appointment){
-            $formatAppointmentArray[$count] = array('events'=>$appointment);
-            $count++;
-        }
 
+     $formatAppointmentArray = array();
+        $count = 0;
+        foreach ($appointments as $key => $appointment){
+            $formatAppointmentArray[$count] = array('events'=>$appointment);
+            //echo"<pre>"; print_r($formatAppointmentArray[$count] ); exit();
+           $count++;
+         }
+        
+
+                  
         $meta = $this->getMetaData();
 
         return ApiResponse::make(null, $formatAppointmentArray, $meta);

@@ -16,3 +16,4 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/valuation', function (Request $request) {
     return $request->user();
 });
+ApiRoute::get('/PropertyData', [ 'uses' => 'PropertyDataController@PropertyData']);

@@ -109,24 +109,65 @@ class GeneralController extends ValuationAdminBaseController
         $data = array();
         $this->__customConstruct($data);
 
-        foreach($request->all() as $key =>$value)
-        {
-            if ( $key !== '_token' )
-            {
+        //
+        $valGeneralSettingmodel = new ValuationGeneralSetting();
+        $valGeneralSettingmodelData = $valGeneralSettingmodel->data;
+        $newValidArray = array();
+        foreach ($valGeneralSettingmodelData as $key => $valGeneralSettingmodelDataIn) {
+            $newValidArray[] = $key;
+        }
+        //echo "<pre>"; print_r($newValidArray); exit;
+        foreach ($request->all() as $key =>$value) {
+            if (in_array($key, $newValidArray)) {
                 $features = ValuationGeneralSetting::firstOrNew(array('meta_key' => $key));
-//                $features = ValuationGeneralSetting::where(array('mate_key' => $key))->get();
 
-//                dd($features);
                 $features->company_id = $data['companyId'] ?? 0;
                 $features->meta_key = $key ?? '';
                 $features->meta_value = $value ?? '';
+                $features->company_id;
+
                 $features->save();
             }
         }
+        
+    
+        
+        
+        if ($request->hasfile('image')) {
+
+            $getImageData = ValuationGeneralSetting::where('company_id', $data['companyId'])->where('meta_key', '=', 'appImage')->first();
+            $getMetaValue = $getImageData['meta_value'];
+           
+            
+            $path = public_path('img'). '/'.$getMetaValue;
+             if (file_exists($path)) {
+                @unlink($path);
+                
+            }
+            //image uploading
+            $file= $request->file('image');
+            $extenstion = $file->getClientOriginalExtension();
+            $filename = time(). '.' .$extenstion;
+            $imgPath = public_path('img'). '/';
+            $file->move($imgPath, $filename);
+            $features->image = $filename;
+            
+            //saving data in meta
+            $key = 'appImage';
+            $features = ValuationGeneralSetting::firstOrNew(array('meta_key' => $key));
+            $features->company_id = $data['companyId'] ?? 0;
+            $features->meta_key = $key;
+            $features->meta_value = $filename;
+            $features->save();
+        }
+    
+         
 
         return Reply::redirect(route($this->listingPageRoute), __('Updated Success'));
 
-    }
+    
+}
+
 
     /**
      * Remove the specified resource from storage.

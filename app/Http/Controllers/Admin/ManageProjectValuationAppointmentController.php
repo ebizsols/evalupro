@@ -70,13 +70,17 @@ class ManageProjectValuationAppointmentController extends AdminBaseController
 
         return view('admin.projects.ValuationAppointment.show', $this->data);
     }
+
+
+
+
     public function store(Request $request)
     {
         $this->__customConstruct($this->data);
 
         $store=new ProjectAppointment();
 
-        $store->project_id=isset($this->data['projectId']) ? $this->data['projectId'] : 0;
+        $store->project_id=isset($request->projectId) ? $request->projectId : 0;
         $store->appointment_date_time=isset($request->appointment_date_time) ? $request->appointment_date_time : 0 ;
         $store->status=isset($request->status) ? $request->status : 'Active' ;
         $store->note=isset($request->description) ? $request->description : '';
@@ -121,7 +125,7 @@ class ManageProjectValuationAppointmentController extends AdminBaseController
             $project = Project::find( $projectId);
             $metaData['appointment_day']=$request->appointment_date_time;
             $project->setMeta($metaData);
-
+ 
         }
         else{
             $projectAppointmentData->status  =  $status;
@@ -131,7 +135,7 @@ class ManageProjectValuationAppointmentController extends AdminBaseController
         return Reply::redirect(route($this->showPageRoute, $projectId) , __('Save Success'));
         
     }
-
+                    
     public function data()
     {
         $projectAppointments = new ProjectAppointment;        

@@ -111,6 +111,7 @@ class ProjectController extends ApiBaseController
 
     public function me_pending()
     {
+    
         app()->make($this->indexRequest);
 
         $query = $this->parseRequest()
@@ -218,6 +219,7 @@ class ProjectController extends ApiBaseController
         $project->setMeta($metaData);
         return ApiResponse::make('Project moved to archive');
     }
+
 
     public function remove_archive($id)
     {

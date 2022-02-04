@@ -34,6 +34,9 @@ use Modules\Valuation\Http\Controllers\Admin\Properties\ClassificationController
 use Modules\Valuation\Http\Controllers\Admin\Properties\TypeController;
 use App\Currency;
 use Modules\Valuation\Entities\ValuationMeasurementUnit;
+use Modules\RestAPI\Http\Requests\Property\IndexRequest;
+use Modules\RestAPI\Http\Requests\Property\PropertDetailRequest;
+use Modules\RestAPI\Http\Requests\Property\SearchPropertyRequest;
 
 class PropertyController extends ApiBaseController
 {
@@ -41,6 +44,11 @@ class PropertyController extends ApiBaseController
 
     protected $updateRequest = UpdateRequest::class;
     protected $showRequest = ShowRequest::class;
+    protected $indexRequest = IndexRequest::class;
+   
+    protected $PropertyDetailRequest = PropertDetailRequest::class;
+    protected $searchpropertyRequest =SearchPropertyRequest::class;
+
 
     private $viewFolderPath = 'valuation::Admin.Property.';
 
@@ -109,9 +117,104 @@ class PropertyController extends ApiBaseController
         $data['measurementUnit']= isset($unit->measure_unit)?$unit->measure_unit:$unitObj->default;
     }
 
+    public function list(){
+
+        app()->make($this->indexRequest);
+
+        $query = $this->parseRequest()
+            ->addIncludes()
+            ->addFilters()
+            ->addOrdering()
+            ->addPaging()
+            ->getQuery();
+
+        $user = api_user();
+        $company_id = $user->company_id;
+
+        $query->where('company_id', '=', $company_id)->where('status','=','Active');
+        $results = $this->getResults();
+        $results = $results->toArray();
+
+        $reponseArray = array();
+        foreach($results as  $result){
+
+            $reponseArray[] = ValuationProperty::select(['id', 'title'])->find($result['id']);
+            
+        }
+        
+        $meta = $this->getMetaData();
+        return ApiResponse::make(null,  $reponseArray, $meta);
+      
+         }
+
+    public function PropertyDetail($id){
+
+        //app()->make($this->singleRequest);
+
+        $query = $this->parseRequest()
+            ->addIncludes()
+            ->addFilters()
+            ->addOrdering()
+            ->addPaging()
+            ->getQuery();
+
+        $user = api_user();
+        $company_id = $user->company_id;
+
+    
+           
+        $query->select('*')->where('company_id', '=' , $company_id)->where('id', '=' , $id);
+        $result = $query->first();
+
+        $result = $result->toArray();
+
+        
+        $meta = $this->getMetaData();
+        return ApiResponse::make(null,  $result, $meta);
+      
+         }
+         public function search(Request $request){
+             
+          app()->make($this->searchpropertyRequest);
+
+            $query = $this->parseRequest()
+                ->addIncludes()
+                ->addFilters()
+                ->addOrdering()
+                ->addPaging()
+                ->getQuery();
+
+            
+                $filterBy = $request->post('filterBy');
+                $filterByValue = $request->post('filterByValue');
+                $searchResult = array();
+                switch($filterBy){
+                    case 'keyword':
+                        $searchQuery =  $query->select('*')->where('title','LIKE','%'.$filterByValue .'%')->where('status','=','Active')->get();
+                        $searchResult = $searchQuery->toArray();
+                        
+                       
+                        break;
+                    case 'type':
+                        $searchQuery =  $query->select('*')->where('type_id','LIKE','%'.$filterByValue .'%')->where('status','=','Active')->get();
+                        $searchResult = $searchQuery->toArray();
+                      
+                        break;
+                    default:
+
+                }  
+                return ApiResponse::make(null, $searchResult);
+                  
+    
+         }
+
+
+
+
 
     public function show(...$args)
     {
+        
 //        echo "<pre>here--";print_r($args); exit;
         // We need to do this in order to support multiple parameter resource routes. For example,
         // if we map route /user/{user}/comments/{comment} to a controller, Laravel will pass `user`
@@ -151,7 +254,7 @@ class PropertyController extends ApiBaseController
     public function addEditView($id = 0)
     {
         //$this->__customConstruct($this->data);
-        echo "<pre>here--";print_r($id); exit;
+        //echo "<pre>here--";print_r($id); exit;
 
         $this->title = 'valuation::valuation.property.createProperty';
         $this->id = $id;

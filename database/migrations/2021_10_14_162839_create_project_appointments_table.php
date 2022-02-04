@@ -15,7 +15,7 @@ class CreateProjectAppointmentsTable extends Migration
     {
         Schema::create('project_appointments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('project_id')->nullable();
+            $table->unsignedBigInteger('project_id')->nullable();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade')->onUpdate('cascade');
             $table->string('appointment_date_time');
             $table->enum('status', ['Active', 'Inactive','Cancel'])->default('Active');

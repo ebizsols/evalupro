@@ -2,6 +2,7 @@
 
 use Froiden\RestAPI\Facades\ApiRoute;
 
+
 ApiRoute::group(['namespace' => 'Modules\RestAPI\Http\Controllers'], function () {
     ApiRoute::get('app', ['as' => 'api.app', 'uses' => 'AppController@app']);
 
@@ -24,7 +25,7 @@ ApiRoute::group(['namespace' => 'Modules\RestAPI\Http\Controllers'], function ()
     ApiRoute::get('/lang', ['as' => 'lang', 'uses' => 'LanguageController@lang']);
 });
 
-ApiRoute::group(['namespace' => 'Modules\RestAPI\Http\Controllers','middleware' => 'api.auth'], function () {
+ApiRoute::group(['namespace' => 'Modules\RestAPI\Http\Controllers', 'middleware' => 'api.auth'], function () {
 
     ApiRoute::get('dashboard', ['as' => 'api.dashboard', 'uses' => 'DashboardController@dashboard']);
     ApiRoute::get('dashboard/me', ['as' => 'api.dashboard', 'uses' => 'DashboardController@myDashboard']);
@@ -64,12 +65,21 @@ ApiRoute::group(['namespace' => 'Modules\RestAPI\Http\Controllers','middleware' 
     //ApiRoute::get('taskFormFields/sendDummyData/{id?}', 'TaskFormFieldsController@sendDummyData');
     //ApiRoute::resource('taskFormFields', 'TaskFormFieldsController');
     ApiRoute::resource('/task/{task_id}/taskFormFields', 'TaskFormFieldsController');
-    ApiRoute::post('/task/{task_id}/saveTaskFormFields',['uses' => 'TaskFormFieldsController@saveSubTask']);
+    ApiRoute::post('/task/{task_id}/saveTaskFormFields', ['uses' => 'TaskFormFieldsController@saveSubTask']);
 
     ApiRoute::resource('/task/{task_id}/subtask', 'SubTaskController');
     ApiRoute::resource('task', 'TaskController');
     ApiRoute::resource('task-category', 'TaskCategoryController');
     ApiRoute::resource('taskboard-columns', 'TaskboardColumnController');
+
+    // Image Controller
+    ApiRoute::get('/apiImage', [ 'uses' => 'ImageController@APIimage']);
+
+    ApiRoute::get('/propertyList', [ 'uses' => 'PropertyController@list']);
+    //ApiRoute::get('/propertysingle', [ 'uses' => 'PropertyController@single']);
+    ApiRoute::get('PropertyDetail/{id}',['uses' => 'PropertyController@PropertyDetail']);
+    ApiRoute::POST('/search',['uses' => 'PropertyController@search']);
+
 
     ApiRoute::get('/lead/me', ['as' => 'lead.me', 'uses' => 'LeadController@me']);
     ApiRoute::resource('lead', 'LeadController');
@@ -117,9 +127,9 @@ ApiRoute::group(['namespace' => 'Modules\RestAPI\Http\Controllers','middleware' 
     ApiRoute::resource('ticket-group', 'TicketGroupController', ['only' => ['index']]);
     ApiRoute::resource('ticket-channel', 'TicketChannelController', ['only' => ['index']]);
     ApiRoute::resource('ticket-type', 'TicketTypeController', ['only' => ['index']]);
-//    ApiRoute::get('property/addEditView/{id?}', 'PropertyController@addEditView');
+    //    ApiRoute::get('property/addEditView/{id?}', 'PropertyController@addEditView');
     ApiRoute::put('property/saveUpdateData/{id?}', 'PropertyController@saveUpdateData');
-    ApiRoute::resource('property', 'PropertyController',['only' => ['show', 'update']]);
+    ApiRoute::resource('property', 'PropertyController', ['only' => ['show', 'update']]);
     ApiRoute::resource('product', 'ProductController');
     ApiRoute::get(
         '/employee/last-employee-id',

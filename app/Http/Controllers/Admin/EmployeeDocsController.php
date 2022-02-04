@@ -148,7 +148,7 @@ class EmployeeDocsController extends AdminBaseController
                     }
                 }
             }
-        }
+        };
 
         if ($limitReached) {
             return Reply::error(__('messages.storageLimitExceed', ['here' => '<a href=' . route('admin.billing.packages') . '>Here</a>']));

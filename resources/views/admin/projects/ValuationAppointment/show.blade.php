@@ -110,7 +110,7 @@
                                                    id="appointmentList">
                                                 <thead>
                                                 <tr>
-                                                    <!-- <th>paj jao saray</th> -->
+                                                   
                                                     <th>Sr.</th>
                                                     <th>DateTime</th>
                                                     <th>@lang('valuation::app.action')</th>
