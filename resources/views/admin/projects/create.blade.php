@@ -137,7 +137,6 @@
                                     <div class="form-group">
                                         <label class="required">@lang('modules.projects.projectName')</label>
                                         <input type="text" name="project_name" id="project_name" class="form-control">
-                                        <input type="hidden" name="template_id" id="template_id">
                                     </div>
                                 </div>
 
