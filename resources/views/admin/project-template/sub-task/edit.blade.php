@@ -14,7 +14,8 @@
                 <div class="col-xs-12 ">
                     <div class="form-group">
                         <label>@lang('app.name')</label>
-                        <input type="text" name="name[0]" id="name1" class="form-control">
+                        <input type="text" name="name[0]" id="name1" value="{{ $title }}"
+                            class="form-control">
                         <input type="hidden" name="taskID" id="taskID" value="{{ $taskID }}">
                         {{-- @php echo "<pre>"; print_r($taskID); exit; @endphp --}}
                     </div>
@@ -23,7 +24,7 @@
                     <div class="form-group">
                         <label>@lang('app.dueDate')</label>
                         <input type="text" name="due_date" autocomplete="off" id="due_date3"
-                            class="form-control datepicker">
+                            value="{{ $dueDate }}" class="form-control datepicker">
                     </div>
                 </div>
                 <div class="col-xs-12">
@@ -41,7 +42,7 @@
             </div>
         </div>
         <div class="form-actions">
-            <button type="button" id="update-sub-task" onclick="saveSubTask()" class="btn btn-success"> <i
+            <button type="button" id="update-sub-task" onclick="saveEditSubTask()" class="btn btn-success"> <i
                     class="fa fa-check"></i>
                 @lang('app.save')</button>
         </div>
@@ -86,14 +87,16 @@
     }
 
     // Store Holidays
-    function saveSubTask() {
+    function saveEditSubTask() {
         $('#nameBox').removeClass("has-error");
         $('#errorName').html('');
         $('.help-block').remove();
 
-        var url = "{{ route('admin.project-template-sub-task.store') }}";
+        var subTaskID = "<?php echo $subTaskID; ?>";
+        var url = "{{ route('admin.project-template-sub-task.update', ':id') }}";
+        url = url.replace(':id', subTaskID);
         $.easyAjax({
-            type: 'POST',
+            type: 'PUT',
             url: url,
             container: '#createSubTask',
             data: $('#createSubTask').serialize(),

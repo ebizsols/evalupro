@@ -57,20 +57,27 @@ class ProjectTemplateSubTaskController extends AdminBaseController
      */
     public function store(SubTaskStoreRequest $request)
     {
-        $formFieldKey = $request->formFieldKey;
-        $dueDate =
-        Carbon::createFromFormat($this->global->date_format, $request->due_date)->toDateString();
-        // dd($dueDate);
-        foreach ($request->name as $value) {
-            if ($value){
-                ProjectTemplateSubTask::firstOrCreate([
-                    'title' => $value,
-                    'project_template_task_id' => $request->taskID,
-                    'due_date' => $dueDate,
-                    'formFieldKey' => $formFieldKey,
-                ]);
-            }
-        }
+        $subTask = new ProjectTemplateSubTask();
+        $subTask->title = $request->name[0];
+        $subTask->project_template_task_id = $request->taskID;
+        $subTask->formFieldKey = $request->formFieldKey;
+        $subTask->due_date = Carbon::createFromFormat($this->global->date_format, $request->due_date)->format('Y-m-d');
+        $subTask->save();
+        // dd($request->taskID,$request->due_date,$request->name[0],$request->formFieldKey);
+        // $formFieldKey = $request->formFieldKey;
+        // $dueDate =
+        // Carbon::createFromFormat($this->global->date_format, $request->due_date)->toDateString();
+        // // dd($dueDate);
+        // foreach ($request->name as $value) {
+        //     if ($value){
+        //         ProjectTemplateSubTask::firstOrCreate([
+        //             'title' => $value,
+        //             'project_template_task_id' => $request->taskID,
+        //             'due_date' => $dueDate,
+        //             'formFieldKey' => $formFieldKey,
+        //         ]);
+        //     }
+        // }
         return Reply::success(__('messages.templateSubTaskCreatedSuccessfully'));
     }
 
@@ -102,7 +109,16 @@ class ProjectTemplateSubTaskController extends AdminBaseController
      */
     public function edit($id)
     {
-        //
+        $this->subTask = ProjectTemplateSubTask::findOrFail($id);
+        $this->subTaskID = $id;
+        $this->taskID = $this->subTask->project_template_task_id;
+        $this->title = $this->subTask->title;
+        $dueDate = Carbon::parse($this->subTask->due_date)->format('d-m-Y');
+        $this->dueDate = $dueDate;
+        $this->subTaskFormFieldKey = $this->subTask->formFieldKey;
+        $this->subTaskFormElements = TaskLinker::$subTaskFormElement;
+        // dd("Here in Edit",$this->taskID,$this->title,$this->dueDate,$this->subTaskFormFieldKey);
+        return view('admin.project-template.sub-task.edit', $this->data);
     }
 
     /**
@@ -110,9 +126,19 @@ class ProjectTemplateSubTaskController extends AdminBaseController
      * @param $id
      * @return array
      */
-    public function update(StoreTask $request, $id)
+    public function update(SubTaskStoreRequest $request, $id)
     {
-       //
+        $subTask = ProjectTemplateSubTask::findOrFail($id);
+        $taskID = $request->taskID;
+        $subTask->project_template_task_id = $taskID;
+        $subTask->title = $request->name[0];
+        $subTask->formFieldKey = $request->formFieldKey;
+        $subTask->due_date = Carbon::parse($request->due_date)->toDateTimeString();
+        $subTask->save();
+
+        // return Reply::redirect(route('admin.project-template-task.show'), __('Updated Success'));
+
+        return Reply::success(__('messages.templateTaskUpdatedSuccessfully'));
     }
 
     /**

@@ -1,4 +1,3 @@
-
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h4 class="modal-title"><i class="ti-eye"></i> @lang('app.menu.tasks') @lang('app.details')</h4>
@@ -52,11 +51,12 @@
                     <li class="list-group-item row" id="subTaskList{{ $subtask->id }}">
                         <div class="col-xs-9">
                             <div class="checkbox checkbox-success checkbox-circle task-checkbox">
-                                <span>{{ ucfirst($subtask->title) }}</span>
+                                <span>{{ ucfirst($subtask->title) }} ({{ ucfirst($subtask->formFieldKey) }})</span>
                             </div>
                         </div>
 
-                        <div class="col-xs-3 text-right">
+                        <div class="col-xs-3 text-right m-t-10">
+                            <a href="javascript:;" data-sub-task-id="{{ $subtask->id }}" title="@lang('app.edit')" class="edit-sub-task-template m-r-10"><i class="fa fa-pencil"></i></a>
                             <a href="javascript:;" data-sub-task-id="{{ $subtask->id }}" title="@lang('app.delete')" class="delete-sub-task"><i class="fa fa-trash"></i></a>
                         </div>
                     </li>
@@ -78,6 +78,28 @@
 <div class="modal-footer">
     <button type="button" class="btn btn-white waves-effect" data-dismiss="modal">Close</button>
 </div>
+{{--Ajax Modal--}}
+<div class="modal fade bs-modal-md in" id="edit-sub-task-modal" role="dialog" aria-labelledby="myModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-md" id="modal-data-application">
+   <div class="modal-content">
+       <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+           <span class="caption-subject font-red-sunglo bold uppercase" id="modelHeading"></span>
+       </div>
+       <div class="modal-body">
+           Loading...
+       </div>
+       <div class="modal-footer">
+           <button type="button" class="btn default" data-dismiss="modal">Close</button>
+           <button type="button" class="btn blue">Save changes</button>
+       </div>
+   </div>
+   <!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+</div>
+{{--Ajax Modal Ends--}}
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script>
@@ -120,5 +142,13 @@
             }
         });
     });
+
+    // Edit
+    $('body').on('click', '.edit-sub-task-template', function () {
+        var id = $(this).data('sub-task-id');
+        var url = "{{ route('admin.project-template-sub-task.edit',':id') }}";
+        url = url.replace(':id', id);
+        $.ajaxModal('#edit-sub-task-modal', url);
+    })
 </script>
 
