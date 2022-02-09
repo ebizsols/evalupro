@@ -160,7 +160,7 @@
                                             <input class="task-check" data-sub-task-id="{{ $subtask->id }}" id="checkbox{{ $subtask->id }}" type="checkbox"
                                                 @if($subtask->status == 'complete') checked @endif>
                                             <label for="checkbox{{ $subtask->id }}">&nbsp;</label>
-                                            <span>{{ ucfirst($subtask->title) }}</span>
+                                            <span>{{ ucfirst($subtask->title) }} ({{ucfirst($subtask->formFieldKey)}})</span>
                                         </div>
                                         @if($subtask->due_date)<span class="text-muted m-l-5"> - @lang('modules.invoices.due'): {{ $subtask->due_date->format($global->date_format) }}</span>@endif
                                     </div>
@@ -608,6 +608,7 @@
             type: "POST",
             data: $('#createSubTask').serialize(),
             success: function (response) {
+                window.location.reload();
                 $('#subTaskModal').modal('hide');
                 $('#sub-task-list').html(response.view)
             }

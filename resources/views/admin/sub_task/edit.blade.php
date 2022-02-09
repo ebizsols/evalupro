@@ -20,6 +20,17 @@
                         <input type="text" name="due_date" autocomplete="off" @if( $subTask->due_date) value="{{ $subTask->due_date->format($global->date_format) }}" @endif id="due_date3" class="form-control datepicker">
                     </div>
                 </div>
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label class="required">Field Linked With</label>
+                        <select name="formFieldKey" id="fieldLink" class="form-control">
+                            <option value="">--Select Type--</option>
+                            @foreach ($subTaskFormElements as $key => $value)
+                                <option @if (isset($formFieldKey) && !empty($formFieldKey) && $formFieldKey == $key) selected="selected" @endif value="{{ $key }}">{{ $value }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="form-actions">

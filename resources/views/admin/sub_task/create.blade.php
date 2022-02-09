@@ -48,7 +48,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" id="subFieldDiv" @if (isset($field_type) && $field_type != 'select') style="display: none" @endif>
+            {{-- <div class="row" id="subFieldDiv" @if (isset($field_type) && $field_type != 'select') style="display: none" @endif>
                 <div class="pb-10">
                     <button type="button" class="btn btn-primary" id="addMoreField">Add Field</button>
                 </div>
@@ -70,7 +70,7 @@
                         @endif
                     </tbody>
                 </table>
-            </div>
+            </div> --}}
         </div>
         <div class="form-actions">
             <button type="button" onclick="saveSubTask()" class="btn btn-success"> <i class="fa fa-check"></i>

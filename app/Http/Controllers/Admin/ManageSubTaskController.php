@@ -79,6 +79,8 @@ class ManageSubTaskController extends AdminBaseController
     public function edit($id)
     {
         $this->subTask = SubTask::findOrFail($id);
+        $this->formFieldKey = $this->subTask->formFieldKey;
+        $this->subTaskFormElements = TaskLinker::$subTaskFormElement;
 
         return view('admin.sub_task.edit', $this->data);
     }
@@ -96,6 +98,7 @@ class ManageSubTaskController extends AdminBaseController
         $subTask->title = $request->name;
         $subTask->task_id = $request->taskID;
         $subTask->due_date = Carbon::createFromFormat($this->global->date_format, $request->due_date)->format('Y-m-d');
+        $subTask->formFieldKey = $request->formFieldKey;
         $subTask->save();
 
         $this->subTasks = SubTask::where('task_id', $request->taskID)->get();

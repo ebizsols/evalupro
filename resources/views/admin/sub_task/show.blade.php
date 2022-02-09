@@ -9,7 +9,7 @@
             </div>
             @if($subtask->due_date)<span class="text-muted m-l-5"> - @lang('modules.invoices.due'): {{ $subtask->due_date->format($global->date_format) }}</span>@endif
         </div>
-        <div class="col-xs-9">
+        {{-- <div class="col-xs-9">
             <div class="form-group">
                 <label class="required">Field Type</label>
                 <select name="fieldType" id="fieldType" onchange="checkFieldType(this.value)" class="form-control">
@@ -42,7 +42,7 @@
                 @endif
                 </tbody>
             </table>
-        </div>
+        </div> --}}
         <div class="col-xs-3 text-right">
             <a href="javascript:;" data-sub-task-id="{{ $subtask->id }}" title="@lang('app.edit')" class="edit-sub-task"><i class="fa fa-pencil"></i></a>&nbsp;
             <a href="javascript:;" data-sub-task-id="{{ $subtask->id }}"  title="@lang('app.delete')"  class="delete-sub-task"><i class="fa fa-trash"></i></a>
