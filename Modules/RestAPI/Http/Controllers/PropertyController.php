@@ -147,7 +147,7 @@ class PropertyController extends ApiBaseController
       
          }
 
-    public function PropertyDetail($id){
+    public function propertyDetail($id){
 
         //app()->make($this->singleRequest);
 

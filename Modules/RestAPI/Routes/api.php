@@ -75,10 +75,10 @@ ApiRoute::group(['namespace' => 'Modules\RestAPI\Http\Controllers', 'middleware'
     // Image Controller
     ApiRoute::get('/apiImage', [ 'uses' => 'ImageController@APIimage']);
 
-    ApiRoute::get('/propertyList', [ 'uses' => 'PropertyController@list']);
+    ApiRoute::get('property/list', [ 'uses' => 'PropertyController@list']);
     //ApiRoute::get('/propertysingle', [ 'uses' => 'PropertyController@single']);
-    ApiRoute::get('PropertyDetail/{id}',['uses' => 'PropertyController@PropertyDetail']);
-    ApiRoute::POST('/search',['uses' => 'PropertyController@search']);
+    ApiRoute::get('property/detail/{id}',['uses' => 'PropertyController@propertyDetail']);
+    ApiRoute::POST('property/search',['uses' => 'PropertyController@search']);
 
 
     ApiRoute::get('/lead/me', ['as' => 'lead.me', 'uses' => 'LeadController@me']);
